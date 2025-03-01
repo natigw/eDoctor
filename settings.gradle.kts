@@ -23,3 +23,4 @@ rootProject.name = "eDoctor"
 include(":app")
 include(":ui_kit")
 include(":feature:home")
+include(":data")
