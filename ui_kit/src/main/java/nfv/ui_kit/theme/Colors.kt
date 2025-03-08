@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 // Base
 val BaseWhite = Color(0xFFFFFFFF)
 val BaseBlack = Color(0xFF000000)
+val BaseTransparent = Color.Transparent
 
 // Typography
 val Typography50 = Color(0xFFFDFDFD)

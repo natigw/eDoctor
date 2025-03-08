@@ -2,4 +2,11 @@
 <resources>
     <string name="app_name">eDoctor</string>
 
+    <string name="back_test_results">Back</string>
+    <string name="details_test_result">Test result details</string>
+
+    <string name="heading_test_results">Test Results</string>
+
+    <string name="test_date">Test date:\ </string>
+    <string name="lab_name">Laboratory name:\ </string>
 </resources>
