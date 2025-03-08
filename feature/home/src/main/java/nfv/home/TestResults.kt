@@ -1,5 +1,6 @@
 package nfv.home
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.ui_kit.components.SearchBar
 import nfv.ui_kit.theme.BaseBlack
 import nfv.ui_kit.theme.BaseTransparent
 import nfv.ui_kit.theme.BaseWhite
@@ -87,6 +89,48 @@ fun TestResultsScreen(modifier: Modifier = Modifier) {
                 )
             ),
             "Iyun" to listOf(
+                TestResultItem(
+                    4,
+                    "D vitamini",
+                    "Referans Lab",
+                    "20 fevral"
+                ),
+                TestResultItem(
+                    5,
+                    "Kalsium",
+                    "Merkezi klinika",
+                    "28 fevral"
+                )
+            ),
+            "Yanvar1" to listOf(
+                TestResultItem(
+                    0,
+                    "Qan analizi",
+                    "Referans Lab",
+                    "10 yanvar"
+                ),
+                TestResultItem(
+                    1,
+                    "Pregnancy test",
+                    "Merkezi klinika",
+                    "12 yanvar"
+                ),
+                TestResultItem(
+                    2,
+                    "Qlükoza",
+                    "Merkezi klinika",
+                    "15 yanvar"
+                )
+            ),
+            "Mart2" to listOf(
+                TestResultItem(
+                    3,
+                    "Xolesterin",
+                    "Referans Lab",
+                    "5 fevral"
+                )
+            ),
+            "Iyun3" to listOf(
                 TestResultItem(
                     4,
                     "D vitamini",
@@ -193,6 +237,22 @@ fun ResultListByMonth(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
+                                Spacer(Modifier.height(4.dp))
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "download pdf", //TODO -> bunu button component ile evez et
+                                        style = EDoctorTypography.labelMedium.copy(color = Typography500),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(drawableR.ic_arrow_top_right_16),
+                                        contentDescription = stringResource(stringR.download_pdf),
+                                        tint = Typography500
+                                    )
+                                }
                             } else {
                                 Text(
                                     text = "${resultList[testResult].resultDate} • ${resultList[testResult].labName}",
@@ -224,31 +284,55 @@ fun ResultListByMonth(
 
 @Composable
 fun TestResultsTopBar(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .padding(TopBarPadding)
-            .fillMaxWidth()
-    ) {
-        Icon(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(bounded = false),
-                    onClick = {
+    var isSearchClicked by remember { mutableStateOf(false) }
 
-                    }
-                ),
-            imageVector = ImageVector.vectorResource(drawableR.ic_arrow_left),
-            contentDescription = stringResource(stringR.back_test_results),
-            tint = BaseBlack
-        )
-        Text(
-            modifier = Modifier
-                .align(Alignment.Center),
-            text = stringResource(stringR.heading_test_results),
-            style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
-        )
+    Column {
+        Box(
+            modifier = modifier
+                .padding(TopBarPadding)
+                .fillMaxWidth()
+        ) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = {
+
+                        }
+                    ),
+                imageVector = ImageVector.vectorResource(drawableR.ic_arrow_left),
+                contentDescription = stringResource(stringR.back_test_results),
+                tint = BaseBlack
+            )
+            Text(
+                modifier = Modifier
+                    .align(Alignment.Center),
+                text = stringResource(stringR.heading_test_results),
+                style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            )
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = {
+                            isSearchClicked = !isSearchClicked
+                        }
+                    ),
+                imageVector = ImageVector.vectorResource(drawableR.ic_search),
+                contentDescription = stringResource(stringR.search),
+                tint = BaseBlack
+            )
+        }
+
+        AnimatedVisibility(
+            visible = isSearchClicked
+        ) {
+            SearchBar(searchKeywords = stringResource(stringR.search_for_result))
+        }
     }
 }
 

@@ -2,6 +2,17 @@
 <resources>
     <string name="app_name">eDoctor</string>
 
+    <string name="welcome_message">May you always in a good condition</string>
+
+    <string name="notifications">Notifications</string>
+
+    <string name="search...">Search…</string>
+    <string name="search_symptoms_diseases">symptoms, diseases…</string>
+    <string name="search_for_result">Search for a result…</string>
+
+    <string name="search">Search</string>
+    <string name="filter_search">Filter search</string>
+
     <string name="back_test_results">Back</string>
     <string name="details_test_result">Test result details</string>
 
@@ -9,4 +20,5 @@
 
     <string name="test_date">Test date:\ </string>
     <string name="lab_name">Laboratory name:\ </string>
+    <string name="download_pdf">Get the document</string>
 </resources>

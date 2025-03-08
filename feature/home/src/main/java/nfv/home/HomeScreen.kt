@@ -35,15 +35,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.ui_kit.components.SearchBar
 import nfv.ui_kit.theme.Danger50
 import nfv.ui_kit.theme.EDoctorTypography
+import nfv.ui_kit.theme.Gray200
 import nfv.ui_kit.theme.Gray300
-import nfv.ui_kit.theme.Gray500
+import nfv.ui_kit.theme.Gray50
 import nfv.ui_kit.theme.MainCardShape
+import nfv.ui_kit.theme.Primary100
 import nfv.ui_kit.theme.Primary50
 import nfv.ui_kit.theme.PromotionCardShape
 import nfv.ui_kit.theme.Success50
@@ -52,12 +56,13 @@ import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.theme.Typography700
 import nfv.ui_kit.theme.Warning50
 import nfv.ui_kit.R.drawable as drawableR
+import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     Column(modifier = Modifier.background(Color.White)) {
         TopBar()
-        HomeSearchBar()
+        SearchBar(searchKeywords = stringResource(stringR.search_symptoms_diseases))
 
         Column(
             modifier = Modifier.padding(16.dp),
@@ -230,7 +235,7 @@ fun HomeCard(
 fun TopBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .padding(16.dp),
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
@@ -241,16 +246,27 @@ fun TopBar(modifier: Modifier = Modifier) {
                 style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
             Text(
-                text = "May you always in a good condition",
+                text = stringResource(stringR.welcome_message),
                 style = EDoctorTypography.labelMedium.copy(color = Typography700)
             )
         }
         Spacer(Modifier.width(8.dp))
-        Image(
-            modifier = Modifier.size(42.dp),
-            painter = painterResource(drawableR.img_2),
-            contentDescription = "Promotion card image",
-            contentScale = ContentScale.Crop
+        Icon(
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .border(width = 1.dp, color = Gray200, shape = RoundedCornerShape(8.dp)) //TODO -> bu shadow olmalidi
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                    onClick = {
+
+                    }
+                )
+                .background(Gray50)
+                .padding(6.dp)
+                .size(20.dp),
+            imageVector = ImageVector.vectorResource(drawableR.ic_notifications),
+            contentDescription = stringResource(stringR.notifications)
         )
     }
 }
@@ -277,49 +293,6 @@ fun BottomBarItem(
         Text(
             text = text,
             color = if (isSelected) Color(0xFF254EDB) else Color(0xFFA1A1AA)
-        )
-    }
-}
-
-@Composable
-fun HomeSearchBar(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            modifier = Modifier
-                .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(),
-                    onClick = {
-
-                    }
-                )
-                .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(12.dp))
-                .padding(12.dp)
-        ) {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(drawableR.ic_search),
-                contentDescription = "Search",
-                tint = Gray500
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = "symptoms, diseases...",
-                style = EDoctorTypography.bodyMedium.copy(color = Typography500)
-            )
-        }
-        Spacer(Modifier.width(8.dp))
-        Image(
-            modifier = Modifier.size(48.dp),
-            painter = painterResource(drawableR.img_2),
-            contentDescription = "null",
-            contentScale = ContentScale.Crop
         )
     }
 }
