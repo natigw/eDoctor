@@ -1,5 +1,6 @@
 package nfv.home
 
+import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,17 +14,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -40,155 +50,171 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImagePainter.State.Empty.painter
+import nfv.ui_kit.components.BottomBarItem
 import nfv.ui_kit.components.SearchBar
+import nfv.ui_kit.theme.BaseWhite
+import nfv.ui_kit.theme.Danger100
+import nfv.ui_kit.theme.Danger200
 import nfv.ui_kit.theme.Danger50
+import nfv.ui_kit.theme.Danger500
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray200
-import nfv.ui_kit.theme.Gray300
 import nfv.ui_kit.theme.Gray50
 import nfv.ui_kit.theme.MainCardShape
 import nfv.ui_kit.theme.Primary100
+import nfv.ui_kit.theme.Primary200
 import nfv.ui_kit.theme.Primary50
+import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.PromotionCardShape
+import nfv.ui_kit.theme.SquareIconShape
+import nfv.ui_kit.theme.Success100
+import nfv.ui_kit.theme.Success200
 import nfv.ui_kit.theme.Success50
+import nfv.ui_kit.theme.Success500
 import nfv.ui_kit.theme.Typography50
 import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.theme.Typography700
+import nfv.ui_kit.theme.Warning100
+import nfv.ui_kit.theme.Warning200
 import nfv.ui_kit.theme.Warning50
+import nfv.ui_kit.theme.Warning500
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.background(Color.White)) {
-        TopBar()
-        SearchBar(searchKeywords = stringResource(stringR.search_symptoms_diseases))
-
+fun HomeScreen(
+//    onGoToHome: () -> Unit
+) {
+    Scaffold(
+        modifier = Modifier
+            .statusBarsPadding(),
+        topBar = {
+            HomeTopBar()
+        },
+        bottomBar = {
+            HomeBottomBar()
+        }
+    ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BaseWhite)
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
         ) {
-            listOf(
-                MainCardDto(
-                    backgroundColor = Primary50,
-                    icon = drawableR.img_2,
-                    textHeading = "Book an Appointment",
-                    textDescription = "Find a doctor or a specialist",
-                    onClick = {
 
-                    }
-                ),
-                MainCardDto(
-                    backgroundColor = Success50,
-                    icon = drawableR.img_2,
-                    textHeading = "Appointment with QR",
-                    textDescription = "Queuing without the hustle",
-                    onClick = {
+            SearchBar(searchKeywords = stringResource(stringR.search_symptoms_diseases))
 
-                    }
-                ),
-                MainCardDto(
-                    backgroundColor = Warning50,
-                    icon = drawableR.img_2,
-                    textHeading = "Request consultation",
-                    textDescription = "Talk to Specialist",
-                    onClick = {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                listOf(
+                    MainCardDto(
+                        icon = drawableR.ic_book_appointment,
+                        iconColor = Primary500,
+                        iconStrokeColor = Primary200,
+                        iconBackgroundColor = Primary100,
+                        cardBackgroundColor = Primary50,
+                        textHeading = "Book an Appointment",
+                        textDescription = "Find a doctor or a specialist",
+                        onClick = {
 
-                    }
-                ),
-                MainCardDto(
-                    backgroundColor = Danger50,
-                    icon = drawableR.img_2,
-                    textHeading = "Locate a pharmacy",
-                    textDescription = "Purchase medicines",
-                    onClick = {
-
-                    }
-                )
-            ).chunked(2)
-                .forEach { rowColors ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        rowColors.forEach { card ->
-                            HomeCard(
-                                modifier = Modifier.weight(1f),
-                                card
-                            )
                         }
+                    ),
+                    MainCardDto(
+                        icon = drawableR.ic_qr_scan,
+                        iconColor = Success500,
+                        iconStrokeColor = Success200,
+                        iconBackgroundColor = Success100,
+                        cardBackgroundColor = Success50,
+                        textHeading = "Appointment with QR",
+                        textDescription = "Queuing without the hustle",
+                        onClick = {
 
+                        }
+                    ),
+                    MainCardDto(
+                        icon = drawableR.ic_request_consultation,
+                        iconColor = Warning500,
+                        iconStrokeColor = Warning200,
+                        iconBackgroundColor = Warning100,
+                        cardBackgroundColor = Warning50,
+                        textHeading = "Request consultation",
+                        textDescription = "Talk to Specialist",
+                        onClick = {
+
+                        }
+                    ),
+                    MainCardDto(
+                        icon = drawableR.ic_locate_pharmacy,
+                        iconColor = Danger500,
+                        iconStrokeColor = Danger200,
+                        iconBackgroundColor = Danger100,
+                        cardBackgroundColor = Danger50,
+                        textHeading = "Locate a pharmacy",
+                        textDescription = "Purchase medicines",
+                        onClick = {
+
+                        }
+                    )
+                ).chunked(2)
+                    .forEach { rowColors ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            rowColors.forEach { card ->
+                                HomeCard(
+                                    modifier = Modifier.weight(1f),
+                                    card
+                                )
+                            }
+
+                        }
                     }
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            val promotionCardColors = listOf(
+                Color(0xFF254EDB),
+                Color(0xFFF04438),
+                Color(0xFF16B364),
+                Color(0xFFCED2D9),
+                Color(0xFFEF6820)
+            )
+
+
+            val lazyListState = rememberLazyListState()
+            val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
+
+            LazyRow(
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                state = lazyListState,
+                flingBehavior = snapBehavior
+            ) {
+                items(count = 5) {
+                    PromotionCard(
+                        textHeading = "Prevent the spread of COVID-19 Virus",
+                        backgroundColor = promotionCardColors[it]
+                    )
                 }
-        }
-
-        Spacer(Modifier.height(8.dp))
-
-        val promotionCardColors = listOf(
-            Color(0xFF254EDB),
-            Color(0xFFF04438),
-            Color(0xFF16B364),
-            Color(0xFFCED2D9),
-            Color(0xFFEF6820)
-        )
-
-
-        val lazyListState = rememberLazyListState()
-        val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
-
-        LazyRow(
-            contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            state = lazyListState,
-            flingBehavior = snapBehavior
-        ) {
-            items(count = 5) {
-                PromotionCard(
-                    textHeading = "Prevent the spread of COVID-19 Virus",
-                    backgroundColor = promotionCardColors[it]
-                )
             }
-        }
-
-
-        val bottomIcons = listOf(
-            drawableR.img_7,
-            drawableR.img_8,
-            drawableR.img_9,
-            drawableR.img_12,
-            drawableR.img_10
-        )
-        val bottomTexts = listOf(
-            "Home",
-            "Calendar",
-            "History",
-            "Chat",
-            "Account"
-        )
-
-        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-        val itemWidth = screenWidth / 5
-
-        Spacer(Modifier.height(8.dp))
-
-        LazyRow(
-            modifier = Modifier.padding(top = 12.dp)
-        ) {
-            items(count = 5) {
-                BottomBarItem(
-                    modifier = Modifier.width(itemWidth),
-                    icon = bottomIcons[it],
-                    text = bottomTexts[it],
-                    isSelected = it == 0
-                )
-            }
+            Spacer(Modifier.height(8.dp))
         }
     }
 }
 
 data class MainCardDto(
     @DrawableRes val icon: Int,
-    val backgroundColor: Color,
+    val iconColor: Color,
+    val iconStrokeColor: Color,
+    val iconBackgroundColor: Color,
+    val cardBackgroundColor: Color,
     val textHeading: String,
     val textDescription: String,
     val onClick: () -> Unit
@@ -203,7 +229,7 @@ fun HomeCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(MainCardShape)
-            .background(cardItem.backgroundColor)
+            .background(cardItem.cardBackgroundColor)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
@@ -211,11 +237,16 @@ fun HomeCard(
             )
             .padding(12.dp)
     ) {
-        Image(
-            modifier = Modifier.size(42.dp),
-            painter = painterResource(cardItem.icon),
-            contentDescription = "Promotion card image",
-            contentScale = ContentScale.Crop
+        Icon(
+            modifier = Modifier
+                .size(42.dp)
+                .clip(SquareIconShape)
+                .background(cardItem.iconBackgroundColor)
+                .border(width = 1.dp, color = cardItem.iconStrokeColor, shape = SquareIconShape)
+                .padding(5.dp),
+            imageVector = ImageVector.vectorResource(cardItem.icon),
+            contentDescription = "Promotion card icon",
+            tint = cardItem.iconColor
         )
         Spacer(Modifier.height(12.dp))
         Text(
@@ -227,72 +258,6 @@ fun HomeCard(
         Text(
             text = cardItem.textDescription,
             style = EDoctorTypography.labelMedium.copy(color = Typography500)
-        )
-    }
-}
-
-@Composable
-fun TopBar(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = "Hi Natig!",
-                style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
-            )
-            Text(
-                text = stringResource(stringR.welcome_message),
-                style = EDoctorTypography.labelMedium.copy(color = Typography700)
-            )
-        }
-        Spacer(Modifier.width(8.dp))
-        Icon(
-            modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .border(width = 1.dp, color = Gray200, shape = RoundedCornerShape(8.dp)) //TODO -> bu shadow olmalidi
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(),
-                    onClick = {
-
-                    }
-                )
-                .background(Gray50)
-                .padding(6.dp)
-                .size(20.dp),
-            imageVector = ImageVector.vectorResource(drawableR.ic_notifications),
-            contentDescription = stringResource(stringR.notifications)
-        )
-    }
-}
-
-@Composable
-fun BottomBarItem(
-    modifier: Modifier = Modifier,
-    @DrawableRes icon: Int,
-    text: String,
-    isSelected: Boolean = false
-) {
-    Column(
-        modifier = modifier
-            .padding(vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            modifier = Modifier.size(24.dp),
-            painter = painterResource(icon),
-            contentDescription = "bottom nav icon",
-            contentScale = ContentScale.Crop
-        )
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = text,
-            color = if (isSelected) Color(0xFF254EDB) else Color(0xFFA1A1AA)
         )
     }
 }
@@ -340,18 +305,105 @@ fun PromotionCard(
                 style = EDoctorTypography.labelMedium.copy(color = Typography50)
             )
         }
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.TopEnd)
+//                .size(240.dp)
+//                .clip(CircleShape)
+//                .background(Color.Red)
+//                .absoluteOffset(x = 120.dp, y = 16.dp)
+//        )
         Image(
             modifier = Modifier
-                .fillMaxHeight()
-                .align(Alignment.BottomEnd),
-            painter = painterResource(drawableR.img_2),
+                .align(Alignment.BottomEnd)
+                .fillMaxHeight(),
+            painter = painterResource(drawableR.img),
             contentDescription = "Promotion card image",
             contentScale = ContentScale.Crop
         )
     }
 }
 
-@Preview(showSystemUi = true)
+@Composable
+fun HomeTopBar(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = "Hi Natig!",
+                style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            )
+            Text(
+                text = stringResource(stringR.welcome_message),
+                style = EDoctorTypography.labelMedium.copy(color = Typography700)
+            )
+        }
+        Spacer(Modifier.width(8.dp))
+        Icon(
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .border(
+                    width = 1.dp,
+                    color = Gray200,
+                    shape = RoundedCornerShape(8.dp)
+                ) //TODO -> bu shadow olmalidi
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                    onClick = {
+
+                    }
+                )
+                .background(Gray50)
+                .padding(6.dp)
+                .size(20.dp),
+            imageVector = ImageVector.vectorResource(drawableR.ic_notifications),
+            contentDescription = stringResource(stringR.notifications)
+        )
+    }
+}
+
+@Composable
+fun HomeBottomBar(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .background(BaseWhite)
+            .fillMaxWidth()
+            .navigationBarsPadding()
+    ) {
+        BottomBarItem(
+            icon = drawableR.ic_home_filled,
+            label = stringResource(stringR.home),
+            isSelected = true,
+            onClick = {
+
+            }
+        )
+        BottomBarItem(
+            icon = drawableR.ic_history_outlined,
+            label = stringResource(stringR.history),
+            isSelected = false,
+            onClick = {
+
+            }
+        )
+        BottomBarItem(
+            icon = drawableR.ic_profile_outlined,
+            label = stringResource(stringR.profile),
+            isSelected = false,
+            onClick = {
+
+            }
+        )
+    }
+}
+
+@Preview(showSystemUi = false)
 @Composable
 private fun HomeScreenPrev() {
     HomeScreen()

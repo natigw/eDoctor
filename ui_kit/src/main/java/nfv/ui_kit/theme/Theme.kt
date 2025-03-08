@@ -1,6 +1,5 @@
-package nfv.edoctor.ui.theme
+package nfv.ui_kit.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -12,15 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Primary500,
+    secondary = Danger500,
+    tertiary = Success500
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Primary100,
+    secondary = Danger100,
+    tertiary = Success100
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -52,7 +51,7 @@ fun EDoctorTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = EDoctorTypography,
         content = content
     )
 }

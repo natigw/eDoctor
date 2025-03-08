@@ -2,6 +2,11 @@
 <resources>
     <string name="app_name">eDoctor</string>
 
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+
+    <string name="welcome">Welcome!</string>
     <string name="welcome_message">May you always in a good condition</string>
 
     <string name="notifications">Notifications</string>
