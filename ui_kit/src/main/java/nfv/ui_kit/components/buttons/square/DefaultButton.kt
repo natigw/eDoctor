@@ -1,8 +1,9 @@
-package nfv.ui_kit.components.buttons
+package nfv.ui_kit.components.buttons.square
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -34,20 +35,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import nfv.ui_kit.theme.ButtonLargePadding
-import nfv.ui_kit.theme.EDoctorTypography
+import nfv.ui_kit.components.buttons.ButtonState
+import nfv.ui_kit.components.buttons.ButtonTypes
 import nfv.ui_kit.theme.Gray100
+import nfv.ui_kit.theme.Gray200
 import nfv.ui_kit.theme.Gray300
-import nfv.ui_kit.theme.Primary500
+import nfv.ui_kit.theme.Gray50
 import nfv.ui_kit.theme.SquareButtonShape
-import nfv.ui_kit.theme.Typography400
-import nfv.ui_kit.theme.Typography50
-import nfv.ui_kit.theme.Typography600
+import nfv.ui_kit.theme.Typography300
+import nfv.ui_kit.theme.Typography900
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
-fun ActiveButtonLarge(
+fun DefaultButton(
     modifier: Modifier = Modifier,
+    buttonType: ButtonTypes = ButtonTypes.MEDIUM,
     state: ButtonState,
     onClick: (ButtonState) -> Unit,
     textEnabled: String,
@@ -62,20 +64,24 @@ fun ActiveButtonLarge(
     val backgroundColor by animateColorAsState(
         targetValue = when (state) {
             ButtonState.DISABLED -> Gray100
-            ButtonState.ENABLED -> Primary500
+            ButtonState.ENABLED -> Gray50
             ButtonState.LOADING -> Gray300
-            ButtonState.COMPLETED -> Primary500
-        },
-        label = "Active large button background color animation"
+            ButtonState.COMPLETED -> Gray50
+        }
+    )
+    val stokeColor by animateColorAsState(
+        targetValue = when (state) {
+            ButtonState.DISABLED -> Gray200
+            ButtonState.ENABLED -> Gray200
+            ButtonState.LOADING -> Gray300
+            ButtonState.COMPLETED -> Gray200
+        }
     )
     val contentColor by animateColorAsState(
         targetValue = when (state) {
-            ButtonState.DISABLED -> Typography400
-            ButtonState.ENABLED -> Typography50
-            ButtonState.LOADING -> Typography600
-            ButtonState.COMPLETED -> Typography50
-        },
-        label = "Active large button content color animation"
+            ButtonState.DISABLED -> Typography300
+            ButtonState.ENABLED, ButtonState.LOADING, ButtonState.COMPLETED -> Typography900
+        }
     )
 
     Box(
@@ -83,6 +89,7 @@ fun ActiveButtonLarge(
             .sizeIn(minHeight = 32.dp, minWidth = 32.dp)
             .clip(SquareButtonShape)
             .background(backgroundColor)
+            .border(width = 1.dp, color = stokeColor, shape = SquareButtonShape)
             .clickable(
                 enabled = state != ButtonState.DISABLED && state != ButtonState.LOADING,
                 interactionSource = remember { MutableInteractionSource() },
@@ -91,7 +98,7 @@ fun ActiveButtonLarge(
                     onClick(state)
                 }
             )
-            .padding(ButtonLargePadding),
+            .padding(buttonType.buttonPadding),
         contentAlignment = Alignment.Center
     ) {
         when (state) {
@@ -102,23 +109,23 @@ fun ActiveButtonLarge(
                     startIconRes?.let {
                         Icon(
                             modifier = Modifier
-                                .size(24.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(startIconRes),
                             contentDescription = "Button start icon",
                             tint = contentColor
                         )
-                        Spacer(Modifier.width(16.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                     }
                     Text(
                         text = textEnabled,
-                        style = EDoctorTypography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
                         color = contentColor
                     )
                     endIconRes?.let {
-                        Spacer(Modifier.width(16.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                         Icon(
                             modifier = Modifier
-                                .size(24.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(endIconRes),
                             contentDescription = "Button end icon",
                             tint = contentColor
@@ -131,13 +138,13 @@ fun ActiveButtonLarge(
                 if (textLoading != null) {
                     Text(
                         text = textLoading,
-                        style = EDoctorTypography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
                         color = contentColor
                     )
                 } else {
                     CircularProgressIndicator(
-                        modifier = Modifier.requiredSize(18.dp),
-                        strokeWidth = 2.dp,
+                        modifier = Modifier.requiredSize(buttonType.iconSize),
+                        strokeWidth = buttonType.circularProgressStrokeWidth,
                         strokeCap = StrokeCap.Round,
                         color = contentColor
                     )
@@ -151,46 +158,46 @@ fun ActiveButtonLarge(
                     if (onCompletedStartIconRes != null) {
                         Icon(
                             modifier = Modifier
-                                .size(24.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(onCompletedStartIconRes),
                             contentDescription = "Button start complete icon",
                             tint = contentColor
                         )
-                        Spacer(Modifier.width(16.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                     } else {
                         startIconRes?.let {
                             Icon(
                                 modifier = Modifier
-                                    .size(24.dp),
+                                    .size(buttonType.iconSize),
                                 imageVector = ImageVector.vectorResource(startIconRes),
                                 contentDescription = "Button start icon",
                                 tint = contentColor
                             )
-                            Spacer(Modifier.width(16.dp))
+                            Spacer(Modifier.width(buttonType.itemSpacing))
                         }
                     }
 
                     Text(
                         text = textCompleted ?: textEnabled,
-                        style = EDoctorTypography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
                         color = contentColor
                     )
 
                     if (onCompletedEndIconRes != null) {
-                        Spacer(Modifier.width(16.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                         Icon(
                             modifier = Modifier
-                                .size(24.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(onCompletedEndIconRes),
                             contentDescription = "Button end complete icon",
                             tint = contentColor
                         )
                     } else {
                         endIconRes?.let {
-                            Spacer(Modifier.width(16.dp))
+                            Spacer(Modifier.width(buttonType.itemSpacing))
                             Icon(
                                 modifier = Modifier
-                                    .size(24.dp),
+                                    .size(buttonType.iconSize),
                                 imageVector = ImageVector.vectorResource(endIconRes),
                                 contentDescription = "Button start icon",
                                 tint = contentColor
@@ -206,7 +213,7 @@ fun ActiveButtonLarge(
 
 @Preview(showSystemUi = true)
 @Composable
-private fun ActiveButtonLargePrev() {
+private fun DefaultButtonPrev() {
 
     var state by remember { mutableStateOf(ButtonState.DISABLED) }
 
@@ -223,7 +230,8 @@ private fun ActiveButtonLargePrev() {
     }
 
     Column {
-        ActiveButtonLarge(
+        DefaultButton(
+            buttonType = ButtonTypes.SMALL,
             state = state,
             textEnabled = "Button",
             textLoading = "loading...",
@@ -237,7 +245,8 @@ private fun ActiveButtonLargePrev() {
                 }
             }
         )
-        ActiveButtonLarge(
+        DefaultButton(
+            buttonType = ButtonTypes.MEDIUM,
             state = state,
             textEnabled = "Button",
             textLoading = "loading...",
@@ -251,7 +260,8 @@ private fun ActiveButtonLargePrev() {
                 }
             }
         )
-        ActiveButtonLarge(
+        DefaultButton(
+            buttonType = ButtonTypes.LARGE,
             state = state,
             textEnabled = "Button",
             textLoading = "loading...",
@@ -266,10 +276,11 @@ private fun ActiveButtonLargePrev() {
                 }
             }
         )
-        ActiveButtonLarge(
+        DefaultButton(
+            buttonType = ButtonTypes.SMALL,
             state = state,
             textEnabled = "Button",
-            textLoading = "loading...",
+            //textLoading = "loading...",
             startIconRes = drawableR.ic_notifications,
             onCompletedEndIconRes = drawableR.ic_arrow_right,
             onClick = {

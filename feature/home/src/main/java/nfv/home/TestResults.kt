@@ -7,7 +7,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +14,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,14 +38,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.ui_kit.components.IconWithAction
 import nfv.ui_kit.components.SearchBar
-import nfv.ui_kit.theme.BaseBlack
+import nfv.ui_kit.components.TopAppBar
 import nfv.ui_kit.theme.BaseTransparent
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Info50
 import nfv.ui_kit.theme.Primary900
-import nfv.ui_kit.theme.TopBarPadding
 import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.theme.Typography900
 import java.util.Date
@@ -53,99 +54,129 @@ import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun TestResultsScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(BaseWhite)
-    ) {
-        TestResultsTopBar()
-        val data = mapOf(
-            "Yanvar" to listOf(
-                TestResultItem(
-                    0,
-                    "Qan analizi",
-                    "Referans Lab",
-                    "10 yanvar"
-                ),
-                TestResultItem(
-                    1,
-                    "Pregnancy test",
-                    "Merkezi klinika",
-                    "12 yanvar"
-                ),
-                TestResultItem(
-                    2,
-                    "Qlükoza",
-                    "Merkezi klinika",
-                    "15 yanvar"
+    Scaffold(
+        modifier = modifier.systemBarsPadding(),
+        topBar = {
+            var isSearchClicked by remember { mutableStateOf(false) }
+            Column {
+                TopAppBar(
+                    headerText = stringResource(stringR.header_test_results),
+                    leadingIcon = IconWithAction(
+                        icon = drawableR.ic_arrow_left,
+                        action = {
+                            //TODO -> navigate back
+                        }
+                    ),
+                    trailingIcon = IconWithAction(
+                        icon = drawableR.ic_search,
+                        action = {
+                            isSearchClicked = !isSearchClicked
+                        }
+                    )
                 )
-            ),
-            "Mart" to listOf(
-                TestResultItem(
-                    3,
-                    "Xolesterin",
-                    "Referans Lab",
-                    "5 fevral"
-                )
-            ),
-            "Iyun" to listOf(
-                TestResultItem(
-                    4,
-                    "D vitamini",
-                    "Referans Lab",
-                    "20 fevral"
+
+                AnimatedVisibility(
+                    visible = isSearchClicked
+                ) {
+                    SearchBar(searchKeywords = stringResource(stringR.search_for_result))
+                }
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(BaseWhite)
+                .padding(innerPadding)
+        ) {
+            val data = mapOf(
+                "Yanvar" to listOf(
+                    TestResultItem(
+                        0,
+                        "Qan analizi",
+                        "Referans Lab",
+                        "10 yanvar"
+                    ),
+                    TestResultItem(
+                        1,
+                        "Pregnancy test",
+                        "Merkezi klinika",
+                        "12 yanvar"
+                    ),
+                    TestResultItem(
+                        2,
+                        "Qlükoza",
+                        "Merkezi klinika",
+                        "15 yanvar"
+                    )
                 ),
-                TestResultItem(
-                    5,
-                    "Kalsium",
-                    "Merkezi klinika",
-                    "28 fevral"
-                )
-            ),
-            "Yanvar1" to listOf(
-                TestResultItem(
-                    0,
-                    "Qan analizi",
-                    "Referans Lab",
-                    "10 yanvar"
+                "Mart" to listOf(
+                    TestResultItem(
+                        3,
+                        "Xolesterin",
+                        "Referans Lab",
+                        "5 fevral"
+                    )
                 ),
-                TestResultItem(
-                    1,
-                    "Pregnancy test",
-                    "Merkezi klinika",
-                    "12 yanvar"
+                "Iyun" to listOf(
+                    TestResultItem(
+                        4,
+                        "D vitamini",
+                        "Referans Lab",
+                        "20 fevral"
+                    ),
+                    TestResultItem(
+                        5,
+                        "Kalsium",
+                        "Merkezi klinika",
+                        "28 fevral"
+                    )
                 ),
-                TestResultItem(
-                    2,
-                    "Qlükoza",
-                    "Merkezi klinika",
-                    "15 yanvar"
-                )
-            ),
-            "Mart2" to listOf(
-                TestResultItem(
-                    3,
-                    "Xolesterin",
-                    "Referans Lab",
-                    "5 fevral"
-                )
-            ),
-            "Iyun3" to listOf(
-                TestResultItem(
-                    4,
-                    "D vitamini",
-                    "Referans Lab",
-                    "20 fevral"
+                "Yanvar1" to listOf(
+                    TestResultItem(
+                        0,
+                        "Qan analizi",
+                        "Referans Lab",
+                        "10 yanvar"
+                    ),
+                    TestResultItem(
+                        1,
+                        "Pregnancy test",
+                        "Merkezi klinika",
+                        "12 yanvar"
+                    ),
+                    TestResultItem(
+                        2,
+                        "Qlükoza",
+                        "Merkezi klinika",
+                        "15 yanvar"
+                    )
                 ),
-                TestResultItem(
-                    5,
-                    "Kalsium",
-                    "Merkezi klinika",
-                    "28 fevral"
+                "Mart2" to listOf(
+                    TestResultItem(
+                        3,
+                        "Xolesterin",
+                        "Referans Lab",
+                        "5 fevral"
+                    )
+                ),
+                "Iyun3" to listOf(
+                    TestResultItem(
+                        4,
+                        "D vitamini",
+                        "Referans Lab",
+                        "20 fevral"
+                    ),
+                    TestResultItem(
+                        5,
+                        "Kalsium",
+                        "Merkezi klinika",
+                        "28 fevral"
+                    )
                 )
             )
-        )
-        ResultListByMonth(groupedResults = data)
+            ResultListByMonth(groupedResults = data)
+        }
     }
 }
 
@@ -278,60 +309,6 @@ fun ResultListByMonth(
                         HorizontalDivider(color = Info50)
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun TestResultsTopBar(modifier: Modifier = Modifier) {
-    var isSearchClicked by remember { mutableStateOf(false) }
-
-    Column {
-        Box(
-            modifier = modifier
-                .padding(TopBarPadding)
-                .fillMaxWidth()
-        ) {
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(bounded = false),
-                        onClick = {
-
-                        }
-                    ),
-                imageVector = ImageVector.vectorResource(drawableR.ic_arrow_left),
-                contentDescription = stringResource(stringR.back_test_results),
-                tint = BaseBlack
-            )
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Center),
-                text = stringResource(stringR.heading_test_results),
-                style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
-            )
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(bounded = false),
-                        onClick = {
-                            isSearchClicked = !isSearchClicked
-                        }
-                    ),
-                imageVector = ImageVector.vectorResource(drawableR.ic_search),
-                contentDescription = stringResource(stringR.search),
-                tint = BaseBlack
-            )
-        }
-
-        AnimatedVisibility(
-            visible = isSearchClicked
-        ) {
-            SearchBar(searchKeywords = stringResource(stringR.search_for_result))
         }
     }
 }

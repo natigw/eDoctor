@@ -13,9 +13,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +32,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.R
+import nfv.ui_kit.theme.BaseTransparent
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray300
 import nfv.ui_kit.theme.Gray500
@@ -32,6 +40,7 @@ import nfv.ui_kit.theme.Primary100
 import nfv.ui_kit.theme.Primary50
 import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.Typography500
+import nfv.ui_kit.theme.Typography900
 
 @Composable
 fun SearchBar(
@@ -75,7 +84,11 @@ fun SearchBar(
             Icon(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .border(width = 1.dp, color = Primary100, shape = RoundedCornerShape(8.dp)) //TODO -> bu shadow olmalidi
+                    .border(
+                        width = 1.dp,
+                        color = Primary100,
+                        shape = RoundedCornerShape(8.dp)
+                    ) //TODO -> bu shadow olmalidi
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(),
@@ -94,10 +107,61 @@ fun SearchBar(
     }
 }
 
+@Composable
+fun aa(
+    modifier: Modifier = Modifier,
+    hintText: String? = null
+) {
+    var text by remember { mutableStateOf("") }
+    TextField(
+        modifier = modifier
+            .padding(16.dp)
+            //.height(48.dp) //TODO -> min height 56.dp deyesen bele altin qoyur
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(),
+                onClick = {
+
+                }
+            )
+            .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(12.dp)),
+        value = text,
+        onValueChange = {
+            text = it
+        },
+        textStyle = EDoctorTypography.bodyMedium,
+        placeholder = {
+            Text(
+                //TODO -> text ve icon arasinda 12.dp bosluq olmalidi burda defaultda daha cox var
+                text = hintText ?: stringResource(R.string.search___),
+                style = EDoctorTypography.bodyMedium.copy(color = Typography500)
+            )
+        },
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_search),
+                contentDescription = "Search",
+                tint = Gray500
+            )
+        },
+        colors = OutlinedTextFieldDefaults.colors(
+            cursorColor = Typography900,
+            unfocusedContainerColor = BaseTransparent,
+            focusedContainerColor = BaseTransparent,
+            unfocusedBorderColor = BaseTransparent,
+            focusedBorderColor = BaseTransparent
+        )
+    )
+}
+
 @Preview(showSystemUi = true)
 @Composable
 private fun SearchBarPrev() {
     Column {
+        aa()
+        aa()
         SearchBar()
         SearchBar(addFilterButton = false, searchKeywords = "Test search")
         SearchBar(addFilterButton = false, searchKeywords = "")
