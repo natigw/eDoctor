@@ -1,4 +1,4 @@
-package nfv.ui_kit.components.buttons
+package nfv.ui_kit.components.buttons.square
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
@@ -34,20 +34,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import nfv.ui_kit.theme.ButtonSmallPadding
-import nfv.ui_kit.theme.EDoctorTypography
+import nfv.ui_kit.components.buttons.ButtonState
+import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.theme.Danger500
+import nfv.ui_kit.theme.Danger700
 import nfv.ui_kit.theme.Gray100
-import nfv.ui_kit.theme.Gray300
-import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.SquareButtonShape
 import nfv.ui_kit.theme.Typography400
 import nfv.ui_kit.theme.Typography50
-import nfv.ui_kit.theme.Typography600
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
-fun ActiveButtonSmall(
+fun DangerButton(
     modifier: Modifier = Modifier,
+    buttonType: ButtonTypes = ButtonTypes.MEDIUM,
     state: ButtonState,
     onClick: (ButtonState) -> Unit,
     textEnabled: String,
@@ -62,20 +62,18 @@ fun ActiveButtonSmall(
     val backgroundColor by animateColorAsState(
         targetValue = when (state) {
             ButtonState.DISABLED -> Gray100
-            ButtonState.ENABLED -> Primary500
-            ButtonState.LOADING -> Gray300
-            ButtonState.COMPLETED -> Primary500
-        },
-        label = "Active small button background color animation"
+            ButtonState.ENABLED -> Danger500
+            ButtonState.LOADING -> Danger700
+            ButtonState.COMPLETED -> Danger500
+        }
     )
     val contentColor by animateColorAsState(
         targetValue = when (state) {
             ButtonState.DISABLED -> Typography400
             ButtonState.ENABLED -> Typography50
-            ButtonState.LOADING -> Typography600
+            ButtonState.LOADING -> Typography50
             ButtonState.COMPLETED -> Typography50
-        },
-        label = "Active small button content color animation"
+        }
     )
 
     Box(
@@ -91,7 +89,7 @@ fun ActiveButtonSmall(
                     onClick(state)
                 }
             )
-            .padding(ButtonSmallPadding),
+            .padding(buttonType.buttonPadding),
         contentAlignment = Alignment.Center
     ) {
         when (state) {
@@ -102,23 +100,23 @@ fun ActiveButtonSmall(
                     startIconRes?.let {
                         Icon(
                             modifier = Modifier
-                                .size(18.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(startIconRes),
                             contentDescription = "Button start icon",
                             tint = contentColor
                         )
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                     }
                     Text(
                         text = textEnabled,
-                        style = EDoctorTypography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                        style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
                         color = contentColor
                     )
                     endIconRes?.let {
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                         Icon(
                             modifier = Modifier
-                                .size(18.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(endIconRes),
                             contentDescription = "Button end icon",
                             tint = contentColor
@@ -131,13 +129,13 @@ fun ActiveButtonSmall(
                 if (textLoading != null) {
                     Text(
                         text = textLoading,
-                        style = EDoctorTypography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                        style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
                         color = contentColor
                     )
                 } else {
                     CircularProgressIndicator(
-                        modifier = Modifier.requiredSize(18.dp),
-                        strokeWidth = 2.dp,
+                        modifier = Modifier.requiredSize(buttonType.iconSize),
+                        strokeWidth = buttonType.circularProgressStrokeWidth,
                         strokeCap = StrokeCap.Round,
                         color = contentColor
                     )
@@ -151,46 +149,46 @@ fun ActiveButtonSmall(
                     if (onCompletedStartIconRes != null) {
                         Icon(
                             modifier = Modifier
-                                .size(18.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(onCompletedStartIconRes),
                             contentDescription = "Button start complete icon",
                             tint = contentColor
                         )
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                     } else {
                         startIconRes?.let {
                             Icon(
                                 modifier = Modifier
-                                    .size(18.dp),
+                                    .size(buttonType.iconSize),
                                 imageVector = ImageVector.vectorResource(startIconRes),
                                 contentDescription = "Button start icon",
                                 tint = contentColor
                             )
-                            Spacer(Modifier.width(12.dp))
+                            Spacer(Modifier.width(buttonType.itemSpacing))
                         }
                     }
 
                     Text(
                         text = textCompleted ?: textEnabled,
-                        style = EDoctorTypography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                        style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
                         color = contentColor
                     )
 
                     if (onCompletedEndIconRes != null) {
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.width(buttonType.itemSpacing))
                         Icon(
                             modifier = Modifier
-                                .size(18.dp),
+                                .size(buttonType.iconSize),
                             imageVector = ImageVector.vectorResource(onCompletedEndIconRes),
                             contentDescription = "Button end complete icon",
                             tint = contentColor
                         )
                     } else {
                         endIconRes?.let {
-                            Spacer(Modifier.width(12.dp))
+                            Spacer(Modifier.width(buttonType.itemSpacing))
                             Icon(
                                 modifier = Modifier
-                                    .size(18.dp),
+                                    .size(buttonType.iconSize),
                                 imageVector = ImageVector.vectorResource(endIconRes),
                                 contentDescription = "Button start icon",
                                 tint = contentColor
@@ -206,7 +204,7 @@ fun ActiveButtonSmall(
 
 @Preview(showSystemUi = true)
 @Composable
-private fun ActiveButtonSmallPrev() {
+private fun DangerButtonPrev() {
 
     var state by remember { mutableStateOf(ButtonState.DISABLED) }
 
@@ -223,7 +221,8 @@ private fun ActiveButtonSmallPrev() {
     }
 
     Column {
-        ActiveButtonSmall(
+        DangerButton(
+            buttonType = ButtonTypes.SMALL,
             state = state,
             textEnabled = "Button",
             textLoading = "loading...",
@@ -237,7 +236,8 @@ private fun ActiveButtonSmallPrev() {
                 }
             }
         )
-        ActiveButtonSmall(
+        DangerButton(
+            buttonType = ButtonTypes.MEDIUM,
             state = state,
             textEnabled = "Button",
             textLoading = "loading...",
@@ -251,7 +251,8 @@ private fun ActiveButtonSmallPrev() {
                 }
             }
         )
-        ActiveButtonSmall(
+        DangerButton(
+            buttonType = ButtonTypes.LARGE,
             state = state,
             textEnabled = "Button",
             textLoading = "loading...",
@@ -266,10 +267,11 @@ private fun ActiveButtonSmallPrev() {
                 }
             }
         )
-        ActiveButtonSmall(
+        DangerButton(
+            buttonType = ButtonTypes.SMALL,
             state = state,
             textEnabled = "Button",
-            textLoading = "loading...",
+            //textLoading = "loading...",
             startIconRes = drawableR.ic_notifications,
             onCompletedEndIconRes = drawableR.ic_arrow_right,
             onClick = {
