@@ -26,6 +26,7 @@ import nfv.ui_kit.components.TopAppBar
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.components.buttons.square.OutlinedButton
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray100
@@ -82,7 +83,31 @@ fun LoginScreen() {
             Spacer(Modifier.height(16.dp))
             HorizontalDivider(color = Gray100)
             Spacer(Modifier.height(16.dp))
+            OutlinedButton(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                buttonType = ButtonTypes.LARGE,
+                state = ButtonState.ENABLED,
+                textEnabled = "Sign in with Google",
+                startIconRes = drawableR.logo_google,
+                onClick = {
 
+                }
+            )
+            Spacer(Modifier.height(16.dp))
+            ActiveButton(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                buttonType = ButtonTypes.LARGE,
+                state = ButtonState.ENABLED,
+                textEnabled = "Sign in with Facebook",
+                startIconRes = drawableR.logo_facebook_outlined,
+                onClick = {
+
+                }
+            )
+
+            Spacer(Modifier.weight(1f))
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -105,11 +130,13 @@ fun LoginScreen() {
                 },
                 textAlign = TextAlign.Center
             )
+
+            Spacer(Modifier.height(36.dp))
         }
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 private fun LoginScreenPrev() {
     LoginScreen()

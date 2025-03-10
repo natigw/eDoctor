@@ -37,9 +37,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.Gray100
 import nfv.ui_kit.theme.Gray200
-import nfv.ui_kit.theme.Gray50
 import nfv.ui_kit.theme.Primary200
 import nfv.ui_kit.theme.Primary50
 import nfv.ui_kit.theme.Primary500
@@ -65,9 +65,9 @@ fun OutlinedButton(
     val backgroundColor by animateColorAsState(
         targetValue = when (state) {
             ButtonState.DISABLED -> Gray100
-            ButtonState.ENABLED -> Gray50
+            ButtonState.ENABLED -> BaseWhite
             ButtonState.LOADING -> Primary50
-            ButtonState.COMPLETED -> Gray50
+            ButtonState.COMPLETED -> BaseWhite
         }
     )
     val stokeColor by animateColorAsState(

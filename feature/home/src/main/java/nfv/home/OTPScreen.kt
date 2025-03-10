@@ -25,6 +25,7 @@ import nfv.ui_kit.components.TopAppBar
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.components.buttons.transparent.ActiveTransparentButton
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Primary500
@@ -85,6 +86,17 @@ fun OTPScreen(
 
             Spacer(Modifier.weight(1f))
 
+            ActiveTransparentButton(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                buttonType = ButtonTypes.LARGE,
+                state = ButtonState.ENABLED,
+                textEnabled = "Resend Code",
+                onClick = {
+
+                }
+            )
+            Spacer(Modifier.height(16.dp))
             ActiveButton(
                 modifier = Modifier
                     .fillMaxWidth(),

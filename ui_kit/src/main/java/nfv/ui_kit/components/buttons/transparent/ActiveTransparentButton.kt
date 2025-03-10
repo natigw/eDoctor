@@ -38,6 +38,7 @@ import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
 import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.Primary700
+import nfv.ui_kit.theme.SquareButtonShape
 import nfv.ui_kit.theme.Typography400
 import nfv.ui_kit.R.drawable as drawableR
 
@@ -45,6 +46,7 @@ import nfv.ui_kit.R.drawable as drawableR
 fun ActiveTransparentButton(
     modifier: Modifier = Modifier,
     buttonType: ButtonTypes = ButtonTypes.MEDIUM,
+    isCircular: Boolean = false,
     state: ButtonState,
     onClick: (ButtonState) -> Unit,
     textEnabled: String,
@@ -68,7 +70,7 @@ fun ActiveTransparentButton(
     Box(
         modifier = modifier
             .sizeIn(minHeight = 32.dp, minWidth = 32.dp)
-            .clip(CircleShape)
+            .clip(if (isCircular) CircleShape else SquareButtonShape)
             .clickable(
                 enabled = state != ButtonState.DISABLED && state != ButtonState.LOADING,
                 interactionSource = remember { MutableInteractionSource() },
@@ -242,6 +244,7 @@ private fun ActiveTransparentButtonPrev() {
         ActiveTransparentButton(
             buttonType = ButtonTypes.LARGE,
             state = state,
+            isCircular = true,
             textEnabled = "Button",
             textLoading = "loading...",
             startIconRes = drawableR.ic_notifications,
