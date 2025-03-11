@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.components.IconWithAction
 import nfv.ui_kit.components.TopAppBar
-import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.square.OutlinedButton
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
