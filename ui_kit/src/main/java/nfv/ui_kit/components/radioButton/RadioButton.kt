@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -81,7 +81,7 @@ fun RadioButton(
             .clickable(
                 enabled = isDisabled.not(),
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = rippleColor),
+                indication = ripple(color = rippleColor),
                 onClick = onClick
             )
     ) {

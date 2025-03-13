@@ -26,7 +26,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ripple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -79,12 +79,13 @@ import nfv.ui_kit.R.string as stringR
 @Composable
 fun HomeScreen(
 //    onGoToHome: () -> Unit
+    username: String
 ) {
     Scaffold(
         modifier = Modifier
             .systemBarsPadding(),
         topBar = {
-            HomeTopBar()
+            HomeTopBar(username = username)
         },
         bottomBar = {
             HomeBottomBar()
@@ -226,7 +227,7 @@ fun HomeCard(
             .background(cardItem.cardBackgroundColor)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
+                indication = ripple(),
                 onClick = cardItem.onClick
             )
             .padding(12.dp)
@@ -273,7 +274,7 @@ fun PromotionCard(
             .background(backgroundColor)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
+                indication = ripple(),
                 onClick = {
 
                 }
@@ -319,7 +320,10 @@ fun PromotionCard(
 }
 
 @Composable
-fun HomeTopBar(modifier: Modifier = Modifier) {
+fun HomeTopBar(
+    modifier: Modifier = Modifier,
+    username: String
+) {
     Row(
         modifier = modifier
             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
@@ -329,7 +333,7 @@ fun HomeTopBar(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Hi Natig!",
+                text = "Hi $username!",
                 style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
             Text(
@@ -348,7 +352,7 @@ fun HomeTopBar(modifier: Modifier = Modifier) {
                 ) //TODO -> bu shadow olmalidi
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(),
+                    indication = ripple(),
                     onClick = {
 
                     }
@@ -399,5 +403,5 @@ fun HomeBottomBar(modifier: Modifier = Modifier) {
 @Preview(showSystemUi = false)
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen()
+    HomeScreen("Natig")
 }

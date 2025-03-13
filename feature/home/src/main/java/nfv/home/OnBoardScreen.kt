@@ -33,7 +33,9 @@ import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
 @Composable
-fun OnBoardScreen() {
+fun OnBoardScreen(
+    onClickNext: (ButtonState) -> Unit
+) {
     Column(
         modifier = Modifier
             .systemBarsPadding()
@@ -91,9 +93,7 @@ fun OnBoardScreen() {
                     buttonType = ButtonTypes.LARGE,
                     state = ButtonState.ENABLED,
                     textEnabled = "Next",
-                    onClick = {
-
-                    }
+                    onClick = onClickNext
                 )
             }
 
@@ -105,5 +105,9 @@ fun OnBoardScreen() {
 @Preview(showBackground = true)
 @Composable
 private fun OnBoardScreenPrev() {
-    OnBoardScreen()
+    OnBoardScreen(
+        onClickNext = {
+
+        }
+    )
 }

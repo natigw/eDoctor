@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -104,7 +104,7 @@ fun ToggleButton(
             .clickable(
                 enabled = isDisabled.not(),
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = rippleColor),
+                indication = ripple(color = rippleColor),
                 onClick = onToggle
             )
 //            .pointerInput(Unit) {
