@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,20 +24,15 @@ import nfv.ui_kit.components.TopAppBar
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
-import nfv.ui_kit.components.buttons.square.OutlinedButton
 import nfv.ui_kit.components.buttons.transparent.ActiveTransparentButton
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
-import nfv.ui_kit.theme.Gray100
 import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.Typography700
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
-fun LoginScreen(
-    onClickGoogleLogin: (ButtonState)-> Unit,
-    onClickRegister: (ButtonState)-> Unit
-) {
+fun RegisterFormScreen() {
     Scaffold(
         modifier = Modifier
             .systemBarsPadding(),
@@ -63,52 +57,29 @@ fun LoginScreen(
         ) {
             Spacer(Modifier.height(16.dp))
             Text(
-                text = "Welcome back",
+                text = "Register",
                 style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                text = "Please enter a form to login this app",
+                text = "Please fill the form to continue the registration",
                 style = EDoctorTypography.bodyMedium.copy(color = Typography700)
             )
-            Spacer(Modifier.height(32.dp))
+
+            Spacer(Modifier.weight(1f))
 
             ActiveButton(
                 modifier = Modifier
                     .fillMaxWidth(),
                 buttonType = ButtonTypes.LARGE,
                 state = ButtonState.DISABLED,
-                textEnabled = "Sign in",
-                onClick = {
-
-                }
-            )
-            Spacer(Modifier.height(16.dp))
-            HorizontalDivider(color = Gray100)
-            Spacer(Modifier.height(16.dp))
-            OutlinedButton(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                buttonType = ButtonTypes.LARGE,
-                state = ButtonState.ENABLED,
-                textEnabled = "Sign in with Google",
-                startIconRes = drawableR.logo_google,
-                onClick = onClickGoogleLogin
-            )
-            Spacer(Modifier.height(16.dp))
-            ActiveButton(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                buttonType = ButtonTypes.LARGE,
-                state = ButtonState.ENABLED,
-                textEnabled = "Sign in with Facebook",
-                startIconRes = drawableR.logo_facebook_outlined,
+                textEnabled = "Sign up",
                 onClick = {
 
                 }
             )
 
-            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(16.dp))
 
             ActiveTransparentButton(
                 modifier = Modifier
@@ -121,7 +92,7 @@ fun LoginScreen(
                         style = EDoctorTypography.bodyMedium.copy(color = Typography700)
                             .toSpanStyle()
                     ) {
-                        append("Don’t have an account? ")
+                        append("Have an account? ")
                     }
                     withStyle(
                         style = EDoctorTypography.bodyMedium.copy(
@@ -130,10 +101,12 @@ fun LoginScreen(
                         )
                             .toSpanStyle()
                     ) {
-                        append("Register")
+                        append("Sign in")
                     }
                 },
-                onClick = onClickRegister
+                onClick = {
+
+                }
             )
 
             Spacer(Modifier.height(16.dp))
@@ -143,6 +116,6 @@ fun LoginScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginScreenPrev() {
-    LoginScreen(onClickGoogleLogin = { }, onClickRegister = { })
+private fun RegisterFormScreenPrev() {
+    RegisterFormScreen()
 }

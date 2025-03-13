@@ -38,6 +38,7 @@ import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray400
 import nfv.ui_kit.theme.Gray500
 import nfv.ui_kit.theme.Primary500
+import kotlin.math.min
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
@@ -76,8 +77,12 @@ fun LockScreen() {
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            repeat(pinList.size) { CredentialDot(isFilled = true) }
-            repeat(4 - pinList.size) { CredentialDot() }
+            repeat(min(pinList.size, 4)) {
+                CredentialDot(isFilled = true)
+            }
+            repeat(4 - min(pinList.size, 4)) {
+                CredentialDot()
+            }
         }
 
 

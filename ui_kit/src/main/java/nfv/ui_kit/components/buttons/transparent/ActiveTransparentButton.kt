@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,6 +51,7 @@ fun ActiveTransparentButton(
     state: ButtonState,
     onClick: (ButtonState) -> Unit,
     textEnabled: String,
+    textEnabledAnnotated: AnnotatedString? = null,
     textLoading: String? = null,
     textCompleted: String? = null,
     @DrawableRes startIconRes: Int? = null,
@@ -97,11 +99,18 @@ fun ActiveTransparentButton(
                         )
                         Spacer(Modifier.width(buttonType.itemSpacing))
                     }
-                    Text(
-                        text = textEnabled,
-                        style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
-                        color = contentColor
-                    )
+                    if (textEnabledAnnotated != null)
+                        Text(
+                            text = textEnabledAnnotated,
+                            style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
+                            color = contentColor
+                        )
+                    else
+                        Text(
+                            text = textEnabled,
+                            style = buttonType.textTypography.copy(fontWeight = FontWeight.Bold),
+                            color = contentColor
+                        )
                     endIconRes?.let {
                         Spacer(Modifier.width(buttonType.itemSpacing))
                         Icon(

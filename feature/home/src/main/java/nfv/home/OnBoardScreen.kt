@@ -21,9 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.square.DefaultButton
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.DefaultScreenPadding

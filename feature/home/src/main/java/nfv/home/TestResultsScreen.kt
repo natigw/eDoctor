@@ -1,6 +1,7 @@
 package nfv.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,11 +17,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ripple
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.components.IconWithAction
-import nfv.ui_kit.components.SearchBar
+import nfv.ui_kit.components.SearchBarWithFilterButton
 import nfv.ui_kit.components.TopAppBar
 import nfv.ui_kit.theme.BaseTransparent
 import nfv.ui_kit.theme.BaseWhite
@@ -55,7 +56,8 @@ import nfv.ui_kit.R.string as stringR
 @Composable
 fun TestResultsScreen(
     modifier: Modifier = Modifier,
-    onClickBack: ()-> Unit
+    onClickBack: () -> Unit,
+    onClickDownloadDocument: (String) -> Unit
 ) {
     Scaffold(
         modifier = modifier.systemBarsPadding(),
@@ -79,7 +81,15 @@ fun TestResultsScreen(
                 AnimatedVisibility(
                     visible = isSearchClicked
                 ) {
-                    SearchBar(searchKeywords = stringResource(stringR.search_for_result))
+                    SearchBarWithFilterButton(
+                        searchKeywords = stringResource(stringR.search_for_result),
+                        onClickSearchBar = {
+
+                        },
+                        onClickFilterButton = {
+
+                        }
+                    )
                 }
             }
         }
@@ -176,7 +186,12 @@ fun TestResultsScreen(
                     )
                 )
             )
-            ResultListByMonth(groupedResults = data)
+            ResultListByMonth(
+                groupedResults = data,
+                onClickDownloadDocument = {
+                    onClickDownloadDocument(it)
+                }
+            )
         }
     }
 }
@@ -185,7 +200,8 @@ fun TestResultsScreen(
 @Composable
 fun ResultListByMonth(
     modifier: Modifier = Modifier,
-    groupedResults: Map<String, List<TestResultItem>> //TODO stringi date etmek lazimdi??
+    groupedResults: Map<String, List<TestResultItem>>, //TODO stringi date etmek lazimdi??
+    onClickDownloadDocument: (String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -242,6 +258,7 @@ fun ResultListByMonth(
                         Column(
                             modifier = Modifier
                                 .weight(1f)
+                                .animateContentSize()
                         ) {
                             Text(
                                 text = resultList[testResult].title,
@@ -274,6 +291,16 @@ fun ResultListByMonth(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
+                                        modifier = Modifier
+                                            .clickable(
+                                                interactionSource = remember { MutableInteractionSource() },
+                                                indication = ripple(),
+                                                onClick = {
+                                                    onClickDownloadDocument(
+                                                        resultList[testResult].title
+                                                    )
+                                                }
+                                            ),
                                         text = "download pdf", //TODO -> bunu button component ile evez et
                                         style = EDoctorTypography.labelMedium.copy(color = Typography500),
                                         maxLines = 1,
@@ -366,5 +393,5 @@ data class ReferenceInterval(
 @Preview(showSystemUi = true)
 @Composable
 private fun TestResultsPrev() {
-    TestResultsScreen(onClickBack = { })
+    TestResultsScreen(onClickBack = { }, onClickDownloadDocument = { })
 }

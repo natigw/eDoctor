@@ -1,19 +1,27 @@
 package nfv.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,6 +29,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.components.IconWithAction
+import nfv.ui_kit.components.OtpInputField
 import nfv.ui_kit.components.TopAppBar
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.ButtonState
@@ -73,7 +82,8 @@ fun OTPScreen(
                         append("Enter the 6-digit that we have sent via the phone number to ")
                     }
                     withStyle(
-                        style = EDoctorTypography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        style = EDoctorTypography.bodyMedium
+                            .copy(fontWeight = FontWeight.Bold)
                             .toSpanStyle()
                     ) {
                         append(receiver)
@@ -83,6 +93,37 @@ fun OTPScreen(
             Spacer(Modifier.height(32.dp))
 
 
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    repeat(6) {
+                        OtpInputField()
+                    }
+                }
+
+                Spacer(Modifier.height(24.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(drawableR.ic_timer),
+                        contentDescription = "Remaining time to expiration of OTP",
+                        tint = Primary500
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = "00:59",
+                        style = EDoctorTypography.labelMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Typography700
+                        )
+                    )
+                }
+            }
 
             Spacer(Modifier.weight(1f))
 
@@ -122,6 +163,7 @@ fun OTPScreen(
                     withStyle(
                         style = EDoctorTypography.labelMedium.copy(color = Primary500).toSpanStyle()
                     ) {
+                        //TODO -> bura onClick qoy
                         append("Terms of Service")
                     }
                     withStyle(
@@ -148,6 +190,6 @@ fun OTPScreen(
 @Composable
 private fun OTPScreenPrev() {
     OTPScreen(
-        receiver = "+62 812- 2569 - 2023"
+        receiver = "+994 51 649 91 93"
     )
 }

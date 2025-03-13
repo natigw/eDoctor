@@ -1,6 +1,5 @@
 package nfv.ui_kit.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,7 +34,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.R
+import nfv.ui_kit.components.buttons.ButtonState
+import nfv.ui_kit.components.buttons.icon.FlexibleIconButton
 import nfv.ui_kit.theme.BaseTransparent
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray300
@@ -44,12 +45,51 @@ import nfv.ui_kit.theme.Primary50
 import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.theme.Typography900
+import nfv.ui_kit.R.drawable as drawableR
+import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    addFilterButton: Boolean = true,
-    searchKeywords: String? = null
+    searchKeywords: String? = null,
+    onClickSearchBar: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = ripple(),
+                onClick = onClickSearchBar
+            )
+            .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(12.dp))
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = ImageVector.vectorResource(drawableR.ic_search),
+            contentDescription = stringResource(stringR.description_search),
+            tint = Gray500
+        )
+        Spacer(Modifier.width(12.dp))
+        Text(
+            text = searchKeywords ?: stringResource(stringR.search___),
+            style = EDoctorTypography.bodyMedium.copy(color = Typography500),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+fun SearchBarWithFilterButton(
+    modifier: Modifier = Modifier,
+    searchKeywords: String? = null,
+    onClickSearchBar: () -> Unit,
+    onClickFilterButton: (ButtonState) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -64,9 +104,7 @@ fun SearchBar(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(),
-                    onClick = {
-
-                    }
+                    onClick = onClickSearchBar
                 )
                 .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(12.dp))
                 .padding(12.dp),
@@ -74,44 +112,32 @@ fun SearchBar(
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_search),
+                imageVector = ImageVector.vectorResource(drawableR.ic_search),
                 contentDescription = "Search",
                 tint = Gray500
             )
             Spacer(Modifier.width(12.dp))
             Text(
-                text = searchKeywords ?: stringResource(R.string.search___),
+                text = searchKeywords ?: stringResource(stringR.search___),
                 style = EDoctorTypography.bodyMedium.copy(color = Typography500),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
-        if (addFilterButton) {
-            Spacer(Modifier.width(8.dp))
-            Icon(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .border(
-                        width = 1.dp,
-                        color = Primary100,
-                        shape = RoundedCornerShape(8.dp)
-                    ) //TODO -> bu shadow olmalidi
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(),
-                        onClick = {
+        Spacer(Modifier.width(8.dp))
 
-                        }
-                    )
-                    .background(Primary50)
-                    .padding(12.dp)
-                    .aspectRatio(1f)
-                    .fillMaxHeight(),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_filter),
-                contentDescription = stringResource(R.string.filter_search),
-                tint = Primary500
-            )
-        }
+        FlexibleIconButton(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .fillMaxHeight(),
+            state = ButtonState.ENABLED,
+            iconRes = drawableR.ic_filter,
+            buttonShape = RoundedCornerShape(10.dp),
+            buttonBackgroundColor = Primary50,
+            borderStrokeColor = Primary100,
+            iconColor = Primary500,
+            onClick = onClickFilterButton
+        )
     }
 }
 
@@ -142,14 +168,14 @@ fun aa(
         placeholder = {
             Text(
                 //TODO -> text ve icon arasinda 12.dp bosluq olmalidi burda defaultda daha cox var
-                text = hintText ?: stringResource(R.string.search___),
+                text = hintText ?: stringResource(stringR.search___),
                 style = EDoctorTypography.bodyMedium.copy(color = Typography500)
             )
         },
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_search),
+                imageVector = ImageVector.vectorResource(drawableR.ic_search),
                 contentDescription = "Search",
                 tint = Gray500
             )
@@ -170,8 +196,20 @@ private fun SearchBarPrev() {
     Column {
         aa()
         aa()
-        SearchBar()
-        SearchBar(addFilterButton = false, searchKeywords = "Test search")
-        SearchBar(addFilterButton = false, searchKeywords = "")
+        SearchBar(onClickSearchBar = { })
+        SearchBarWithFilterButton(
+            onClickSearchBar = { },
+            onClickFilterButton = { }
+        )
+        SearchBarWithFilterButton(
+            searchKeywords = "Test search",
+            onClickSearchBar = { },
+            onClickFilterButton = { }
+        )
+        SearchBarWithFilterButton(
+            searchKeywords = "",
+            onClickSearchBar = { },
+            onClickFilterButton = { }
+        )
     }
 }

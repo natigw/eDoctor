@@ -15,8 +15,8 @@
     <string name="search_symptoms_diseases">symptoms, diseases…</string>
     <string name="search_for_result">Search for a result…</string>
 
-    <string name="search">Search</string>
-    <string name="filter_search">Filter search</string>
+    <string name="description_search">Search</string>
+    <string name="description_filter_search">Filter search</string>
 
     <string name="back_test_results">Back</string>
     <string name="details_test_result">Test result details</string>

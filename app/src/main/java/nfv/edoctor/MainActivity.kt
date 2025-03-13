@@ -4,16 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import nfv.home.LockScreen
+import nfv.home.LoginScreen
 import nfv.home.OnBoardScreen
+import nfv.home.RegisterScreen
 import nfv.home.TestResultsScreen
+import nfv.home.download.AndroidDownloader
 import nfv.home.presentation.HomeScreen
-import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.theme.EDoctorTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,12 +45,23 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable<ScreenOnBoard> {
                         OnBoardScreen(
-                            onClickNext = { buttonState: ButtonState ->
-                                if (buttonState == ButtonState.ENABLED) {
-                                    navController.navigate(ScreenHome(name = "Natigue"))
-                                }
+                            onClickNext = {
+                                navController.navigate(ScreenLogin)
                             }
                         )
+                    }
+                    composable<ScreenLogin> {
+                        LoginScreen(
+                            onClickGoogleLogin = {
+                                navController.navigate(ScreenHome(name = "Natigue"))
+                            },
+                            onClickRegister = {
+                                navController.navigate(ScreenRegister)
+                            }
+                        )
+                    }
+                    composable<ScreenRegister> {
+                        RegisterScreen()
                     }
 
                     composable<ScreenHome> {
@@ -66,9 +81,18 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable<ScreenHistory> {
+                        val context = LocalContext.current
+                        val downloader = remember { AndroidDownloader(context) }
+
                         TestResultsScreen(
                             onClickBack = {
                                 navController.popBackStack()
+                            },
+                            onClickDownloadDocument = {
+                                downloader.downloadFile(
+                                    url = "https://pl-coding.com/wp-content/uploads/2022/04/pic-squared.jpg",
+                                    titleAppendix = it
+                                )
                             }
                         )
                     }
@@ -89,6 +113,12 @@ object ScreenOnBoard
 data class ScreenHome(          //diqqet: bu data class oldu, yuxaridaki ise object!!!
     val name: String //argument
 )
+
+@Serializable
+object ScreenLogin
+
+@Serializable
+object ScreenRegister
 
 @Serializable
 object ScreenHistory

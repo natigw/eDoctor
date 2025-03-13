@@ -56,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import nfv.ui_kit.components.BottomBarItem
 import nfv.ui_kit.components.SearchBar
+import nfv.ui_kit.components.SearchBarWithFilterButton
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.Danger100
 import nfv.ui_kit.theme.Danger200
@@ -116,7 +117,15 @@ fun HomeScreen(
         ) {
 
             Spacer(Modifier.height(8.dp))
-            SearchBar(searchKeywords = stringResource(stringR.search_symptoms_diseases))
+            SearchBarWithFilterButton (
+                searchKeywords = stringResource(stringR.search_symptoms_diseases),
+                onClickSearchBar = {
+
+                },
+                onClickFilterButton = {
+
+                }
+            )
 
             Column(
                 modifier = Modifier.padding(16.dp),
