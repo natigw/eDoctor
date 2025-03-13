@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
 
+    // Splash Api
+    implementation(libs.androidx.core.splashscreen)
+
 //    // Pager and indicators - accompanist
 //    implementation("com.google.accompanist:accompanist-pager:")
 

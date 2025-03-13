@@ -46,7 +46,7 @@ fun OnBoardScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.55f),
-            painter = painterResource(drawableR.image_onboard_illustration_1),
+            painter = painterResource(drawableR.img_onboard_illustration_1),
             contentDescription = "Onboard screen presentation image",
             contentScale = ContentScale.Crop
         )

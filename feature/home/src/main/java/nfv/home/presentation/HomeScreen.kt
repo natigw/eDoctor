@@ -1,4 +1,4 @@
-package nfv.home
+package nfv.home.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -10,6 +10,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -44,7 +46,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewDynamicColors
+import androidx.compose.ui.tooling.preview.PreviewFontScale
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import nfv.ui_kit.components.BottomBarItem
 import nfv.ui_kit.components.SearchBar
 import nfv.ui_kit.theme.BaseWhite
@@ -79,7 +88,10 @@ import nfv.ui_kit.R.string as stringR
 @Composable
 fun HomeScreen(
 //    onGoToHome: () -> Unit
-    username: String
+    username: String,
+    onClickHome: () -> Unit,
+    onClickHistory: () -> Unit,
+    onClickProfile: () -> Unit
 ) {
     Scaffold(
         modifier = Modifier
@@ -88,7 +100,11 @@ fun HomeScreen(
             HomeTopBar(username = username)
         },
         bottomBar = {
-            HomeBottomBar()
+            HomeBottomBar(
+                onClickHome = onClickHome,
+                onClickHistory = onClickHistory,
+                onClickProfile = onClickProfile
+            )
         }
     ) { innerPadding ->
         Column(
@@ -269,6 +285,8 @@ fun PromotionCard(
     Box(
         modifier = modifier
             .width(cardWidth)
+//            .wrapContentHeight()
+//            .height(max(cardWidth / 3, IntrinsicSize.Max))
             .height(cardWidth / 3)
             .clip(PromotionCardShape)
             .background(backgroundColor)
@@ -310,7 +328,7 @@ fun PromotionCard(
 //        )
         Image(
             modifier = Modifier
-                .align(Alignment.BottomEnd)
+                .align(Alignment.CenterEnd)
                 .fillMaxHeight(),
             painter = painterResource(drawableR.img),
             contentDescription = "Promotion card image",
@@ -326,7 +344,7 @@ fun HomeTopBar(
 ) {
     Row(
         modifier = modifier
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            .padding(top = 16.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
@@ -367,7 +385,12 @@ fun HomeTopBar(
 }
 
 @Composable
-fun HomeBottomBar(modifier: Modifier = Modifier) {
+fun HomeBottomBar(
+    modifier: Modifier = Modifier,
+    onClickHome: () -> Unit,
+    onClickHistory: () -> Unit,
+    onClickProfile: () -> Unit
+) {
     Row(
         modifier = modifier
             .background(BaseWhite)
@@ -377,31 +400,29 @@ fun HomeBottomBar(modifier: Modifier = Modifier) {
             icon = drawableR.ic_home_filled,
             label = stringResource(stringR.home),
             isSelected = true,
-            onClick = {
-
-            }
+            onClick = onClickHome
         )
         BottomBarItem(
             icon = drawableR.ic_history_outlined,
             label = stringResource(stringR.history),
             isSelected = false,
-            onClick = {
-
-            }
+            onClick = onClickHistory
         )
         BottomBarItem(
             icon = drawableR.ic_profile_outlined,
             label = stringResource(stringR.profile),
             isSelected = false,
-            onClick = {
-
-            }
+            onClick = onClickProfile
         )
     }
 }
 
+//@PreviewScreenSizes
+//@PreviewFontScale
+//@PreviewLightDark
+//@PreviewDynamicColors
 @Preview(showSystemUi = false)
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen("Natig")
+    HomeScreen("Natig", {}, {}, {})
 }

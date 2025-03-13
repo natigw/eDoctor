@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.EDoctor" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.EDoctor" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/teal_200</item>
+    </style>
+
+    <style name="Theme.CustomSplashTheme" parent="Theme.SplashScreen">
+        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_book_appointment</item>
+        <item name="windowSplashScreenAnimationDuration">600</item>
+        <item name="postSplashScreenTheme">@style/Theme.EDoctor</item>
+    </style>
+
 </resources>

@@ -53,7 +53,10 @@ import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
 @Composable
-fun TestResultsScreen(modifier: Modifier = Modifier) {
+fun TestResultsScreen(
+    modifier: Modifier = Modifier,
+    onClickBack: ()-> Unit
+) {
     Scaffold(
         modifier = modifier.systemBarsPadding(),
         topBar = {
@@ -63,9 +66,7 @@ fun TestResultsScreen(modifier: Modifier = Modifier) {
                     headerText = stringResource(stringR.header_test_results),
                     leadingIcon = IconWithAction(
                         icon = drawableR.ic_arrow_left,
-                        action = {
-                            //TODO -> navigate back
-                        }
+                        action = onClickBack
                     ),
                     trailingIcon = IconWithAction(
                         icon = drawableR.ic_search,
@@ -365,5 +366,5 @@ data class ReferenceInterval(
 @Preview(showSystemUi = true)
 @Composable
 private fun TestResultsPrev() {
-    TestResultsScreen()
+    TestResultsScreen(onClickBack = { })
 }

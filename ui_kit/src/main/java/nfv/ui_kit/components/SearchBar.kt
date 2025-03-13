@@ -5,8 +5,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.R
@@ -48,6 +53,7 @@ fun SearchBar(
 ) {
     Row(
         modifier = modifier
+            .height(IntrinsicSize.Min)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -63,7 +69,8 @@ fun SearchBar(
                     }
                 )
                 .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(12.dp))
-                .padding(12.dp)
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
@@ -74,7 +81,9 @@ fun SearchBar(
             Spacer(Modifier.width(12.dp))
             Text(
                 text = searchKeywords ?: stringResource(R.string.search___),
-                style = EDoctorTypography.bodyMedium.copy(color = Typography500)
+                style = EDoctorTypography.bodyMedium.copy(color = Typography500),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
         if (addFilterButton) {
@@ -96,7 +105,8 @@ fun SearchBar(
                     )
                     .background(Primary50)
                     .padding(12.dp)
-                    .size(24.dp),
+                    .aspectRatio(1f)
+                    .fillMaxHeight(),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_filter),
                 contentDescription = stringResource(R.string.filter_search),
                 tint = Primary500

@@ -42,6 +42,12 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
+    // Navigation
+    implementation(libs.androidx.navigation.compose) //TODO -> normalda bu navigation modulunda olmalidi ve onu import etmeliyik
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+
     implementation(project(":ui_kit"))
 
     implementation(libs.androidx.core.ktx)
