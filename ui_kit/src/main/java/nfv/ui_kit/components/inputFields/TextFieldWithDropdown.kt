@@ -1,4 +1,4 @@
-package nfv.ui_kit.components
+package nfv.ui_kit.components.inputFields
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

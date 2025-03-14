@@ -11,3 +11,7 @@ val PromotionCardShape = RoundedCornerShape(12.dp)
 val MainCardShape = RoundedCornerShape(12.dp)
 
 val SquareButtonShape = RoundedCornerShape(10.dp)
+
+
+
+val InputFieldShape = RoundedCornerShape(12.dp)

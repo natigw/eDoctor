@@ -39,9 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.IconWithAction
-import nfv.ui_kit.components.SearchBarWithFilterButton
-import nfv.ui_kit.components.TopAppBar
+import nfv.ui_kit.components.systemBars.IconWithAction
+import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
+import nfv.ui_kit.components.systemBars.TopAppBar
 import nfv.ui_kit.theme.BaseTransparent
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
@@ -82,8 +82,8 @@ fun TestResultsScreen(
                     visible = isSearchClicked
                 ) {
                     SearchBarWithFilterButton(
-                        searchKeywords = stringResource(stringR.search_for_result),
-                        onClickSearchBar = {
+                        hintText = stringResource(stringR.search_for_result),
+                        onComplete = {
 
                         },
                         onClickFilterButton = {

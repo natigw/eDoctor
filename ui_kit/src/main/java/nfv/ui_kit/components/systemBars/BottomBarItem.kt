@@ -1,4 +1,4 @@
-package nfv.ui_kit.components
+package nfv.ui_kit.components.systemBars
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable

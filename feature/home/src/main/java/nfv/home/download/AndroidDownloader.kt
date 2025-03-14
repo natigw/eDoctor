@@ -6,7 +6,7 @@ import android.os.Environment
 import androidx.core.net.toUri
 
 class AndroidDownloader(
-    private val context: Context
+    context: Context
 ): Downloader {
 
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
@@ -16,7 +16,7 @@ class AndroidDownloader(
 //            .setMimeType("application/pdf")
             .setMimeType("image/jpeg")
             .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
-            //.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE)
+//            .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setTitle("eDoctor - test result - $titleAppendix")
             .setDescription("Downloading test result...")

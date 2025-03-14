@@ -17,6 +17,7 @@
 
     <string name="description_search">Search</string>
     <string name="description_filter_search">Filter search</string>
+    <string name="description_clear_button">Clear all text</string>
 
     <string name="back_test_results">Back</string>
     <string name="details_test_result">Test result details</string>

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -28,9 +27,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.IconWithAction
-import nfv.ui_kit.components.OtpInputField
-import nfv.ui_kit.components.TopAppBar
+import nfv.ui_kit.components.systemBars.IconWithAction
+import nfv.ui_kit.components.inputFields.OtpInputField
+import nfv.ui_kit.components.systemBars.TopAppBar
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes

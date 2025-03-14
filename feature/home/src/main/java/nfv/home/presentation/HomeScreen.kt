@@ -10,7 +10,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -46,17 +44,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewDynamicColors
-import androidx.compose.ui.tooling.preview.PreviewFontScale
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import nfv.ui_kit.components.BottomBarItem
-import nfv.ui_kit.components.SearchBar
-import nfv.ui_kit.components.SearchBarWithFilterButton
+import nfv.ui_kit.components.systemBars.BottomBarItem
+import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.Danger100
 import nfv.ui_kit.theme.Danger200
@@ -118,8 +108,8 @@ fun HomeScreen(
 
             Spacer(Modifier.height(8.dp))
             SearchBarWithFilterButton (
-                searchKeywords = stringResource(stringR.search_symptoms_diseases),
-                onClickSearchBar = {
+                hintText = stringResource(stringR.search_symptoms_diseases),
+                onComplete = {
 
                 },
                 onClickFilterButton = {

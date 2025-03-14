@@ -19,12 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.IconWithAction
-import nfv.ui_kit.components.TopAppBar
+import nfv.ui_kit.components.systemBars.IconWithAction
+import nfv.ui_kit.components.systemBars.TopAppBar
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.transparent.ActiveTransparentButton
+import nfv.ui_kit.components.inputFields.CustomTextField
+import nfv.ui_kit.components.inputFields.CustomTextFieldPassword
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Primary500
@@ -66,6 +68,39 @@ fun RegisterFormScreen() {
                 style = EDoctorTypography.bodyMedium.copy(color = Typography700)
             )
 
+            Spacer(Modifier.height(32.dp))
+
+            CustomTextField(
+                titleText = "Full name",
+                hintText = "Enter your full name",
+                onComplete = {
+
+                }
+            )
+            Spacer(Modifier.height(16.dp))
+            CustomTextField(
+                titleText = "Email",
+                hintText = "Enter your email",
+                onComplete = {
+
+                }
+            )
+            Spacer(Modifier.height(16.dp))
+            CustomTextFieldPassword (
+                titleText = "Password",
+                hintText = "Enter your password",
+                onComplete = {
+
+                }
+            )
+            Spacer(Modifier.height(16.dp))
+            CustomTextFieldPassword (
+                titleText = "Confirm password",
+                hintText = "Confirm your password",
+                onComplete = {
+
+                }
+            )
             Spacer(Modifier.weight(1f))
 
             ActiveButton(
