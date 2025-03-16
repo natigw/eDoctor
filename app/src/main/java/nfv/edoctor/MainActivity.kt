@@ -11,9 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import nfv.home.LockScreen
 import nfv.home.LoginScreen
 import nfv.home.OnBoardScreen
+import nfv.home.ProfileScreen
 import nfv.home.RegisterScreen
 import nfv.home.TestResultsScreen
 import nfv.home.download.AndroidDownloader
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     composable<ScreenLogin> {
                         LoginScreen(
                             onClickGoogleLogin = {
-                                navController.navigate(ScreenHome(name = "Natigue"))
+                                navController.navigate(ScreenHome(name = "Natig"))
                             },
                             onClickRegister = {
                                 navController.navigate(ScreenRegister)
@@ -68,14 +68,14 @@ class MainActivity : ComponentActivity() {
                         val args = it.toRoute<ScreenHome>()
                         HomeScreen(
                             username = args.name,
-                            onClickHome = {
+                            onGoToHome = {
 
                             },
-                            onClickHistory = {
+                            onGotoHistory = {
                                 navController.navigate(ScreenHistory)
                             },
-                            onClickProfile = {
-                                navController.navigate(ScreenLock)
+                            onGoToProfile = {
+                                navController.navigate(ScreenProfile)
                             }
                         )
                     }
@@ -97,8 +97,18 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable<ScreenLock> {
-                        LockScreen()
+                    composable<ScreenProfile> {
+                        ProfileScreen(
+                            onGoToHome = {
+                                navController.navigate(ScreenHome(name = "Natigg"))
+                            },
+                            onGotoHistory = {
+                                navController.navigate(ScreenHistory)
+                            },
+                            onGoToProfile = {
+
+                            }
+                        )
                     }
                 }
             }

@@ -26,10 +26,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ripple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -45,8 +45,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.systemBars.BottomBarItem
+import nfv.ui_kit.R
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
+import nfv.ui_kit.components.systemBars.BottomBar
+import nfv.ui_kit.components.systemBars.BottomBarItemData
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.Danger100
 import nfv.ui_kit.theme.Danger200
@@ -60,6 +62,7 @@ import nfv.ui_kit.theme.Primary100
 import nfv.ui_kit.theme.Primary200
 import nfv.ui_kit.theme.Primary50
 import nfv.ui_kit.theme.Primary500
+import nfv.ui_kit.theme.Primary900
 import nfv.ui_kit.theme.PromotionCardShape
 import nfv.ui_kit.theme.SquareIconShape
 import nfv.ui_kit.theme.Success100
@@ -78,23 +81,24 @@ import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun HomeScreen(
-//    onGoToHome: () -> Unit
     username: String,
-    onClickHome: () -> Unit,
-    onClickHistory: () -> Unit,
-    onClickProfile: () -> Unit
+    onGoToHome: () -> Unit,
+    onGotoHistory: () -> Unit,
+    onGoToProfile: () -> Unit
 ) {
     Scaffold(
         modifier = Modifier
-            .systemBarsPadding(),
+            .background(Color.Green)
+            .systemBarsPadding()
+            .background(Color.Red),
         topBar = {
             HomeTopBar(username = username)
         },
         bottomBar = {
             HomeBottomBar(
-                onClickHome = onClickHome,
-                onClickHistory = onClickHistory,
-                onClickProfile = onClickProfile
+                onClickHome = onGoToHome,
+                onClickHistory = onGotoHistory,
+                onClickProfile = onGoToProfile
             )
         }
     ) { innerPadding ->
@@ -107,7 +111,8 @@ fun HomeScreen(
         ) {
 
             Spacer(Modifier.height(8.dp))
-            SearchBarWithFilterButton (
+            SearchBarWithFilterButton(
+                modifier = Modifier.padding(16.dp),
                 hintText = stringResource(stringR.search_symptoms_diseases),
                 onComplete = {
 
@@ -351,7 +356,10 @@ fun HomeTopBar(
         ) {
             Text(
                 text = "Hi $username!",
-                style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = EDoctorTypography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Primary900
+                )
             )
             Text(
                 text = stringResource(stringR.welcome_message),
@@ -390,30 +398,27 @@ fun HomeBottomBar(
     onClickHistory: () -> Unit,
     onClickProfile: () -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .background(BaseWhite)
-            .fillMaxWidth()
-    ) {
-        BottomBarItem(
-            icon = drawableR.ic_home_filled,
-            label = stringResource(stringR.home),
-            isSelected = true,
-            onClick = onClickHome
-        )
-        BottomBarItem(
-            icon = drawableR.ic_history_outlined,
-            label = stringResource(stringR.history),
-            isSelected = false,
-            onClick = onClickHistory
-        )
-        BottomBarItem(
-            icon = drawableR.ic_profile_outlined,
-            label = stringResource(stringR.profile),
-            isSelected = false,
-            onClick = onClickProfile
-        )
-    }
+    BottomBar(
+        modifier = modifier,
+        items = listOf(
+            BottomBarItemData(
+                icon = R.drawable.ic_home_filled,
+                label = stringResource(R.string.home),
+                onClick = onClickHome
+            ),
+            BottomBarItemData(
+                icon = R.drawable.ic_history_outlined,
+                label = stringResource(R.string.history),
+                onClick = onClickHistory
+            ),
+            BottomBarItemData(
+                icon = R.drawable.ic_profile_outlined,
+                label = stringResource(R.string.profile),
+                onClick = onClickProfile
+            )
+        ),
+        selectedItemIndex = 0
+    )
 }
 
 //@PreviewScreenSizes

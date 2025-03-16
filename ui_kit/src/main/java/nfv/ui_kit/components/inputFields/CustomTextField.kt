@@ -87,7 +87,7 @@ fun CustomTextField(
                     onDone = {
                         onComplete(text)
                         keyboardController?.hide()
-//                    focusManager.clearFocus()  //TODO -> focusda problem var: focus qoyanda ne focus getmir ne de keyboard hide olmur ve deyesen tek focus qoyanda da asagidaki textfieldlerden yuxari atir focusu -> bunu fix et ve textden kenara basanda da focus clear olsun
+                        focusManager.clearFocus()  //TODO -> focusda problem var: focus qoyanda ne focus getmir ne de keyboard hide olmur ve deyesen tek focus qoyanda da asagidaki textfieldlerden yuxari atir focusu -> bunu fix et ve textden kenara basanda da focus clear olsun
                     }
                 ),
                 decorationBox = { innerTextField ->

@@ -20,7 +20,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.components.systemBars.IconWithAction
-import nfv.ui_kit.components.systemBars.TopAppBar
+import nfv.ui_kit.components.systemBars.TopBar
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
@@ -39,7 +39,7 @@ fun RegisterFormScreen() {
         modifier = Modifier
             .systemBarsPadding(),
         topBar = {
-            TopAppBar(
+            TopBar(
                 leadingIcon = IconWithAction(
                     icon = drawableR.ic_arrow_left,
                     action = {

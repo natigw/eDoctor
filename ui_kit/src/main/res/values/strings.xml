@@ -19,8 +19,13 @@
     <string name="description_filter_search">Filter search</string>
     <string name="description_clear_button">Clear all text</string>
 
+    <string name="description_user_profile_picture">User profile picture</string>
+    <string name="description_edit_user_profile_picture">Edit profile picture</string>
+
     <string name="back_test_results">Back</string>
     <string name="details_test_result">Test result details</string>
+
+    <string name="details_option">Option details</string>
 
     <string name="header_test_results">Test Results</string>
 

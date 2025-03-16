@@ -62,8 +62,8 @@ fun LockScreen() {
                 .size(64.dp)
                 .clip(CircleShape),
             model = "aaa",  //TODO -> backendden link
-            placeholder = painterResource(drawableR.ic_delete),
-            error = painterResource(drawableR.ic_user_profile),
+            placeholder = painterResource(drawableR.img_user_profile),
+            error = painterResource(drawableR.img_user_profile),
             contentDescription = "User profile picture",
             contentScale = ContentScale.Crop
         )

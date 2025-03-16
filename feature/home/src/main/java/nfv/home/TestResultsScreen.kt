@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
@@ -39,9 +40,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
-import nfv.ui_kit.components.systemBars.TopAppBar
+import nfv.ui_kit.components.systemBars.IconWithAction
+import nfv.ui_kit.components.systemBars.TopBar
 import nfv.ui_kit.theme.BaseTransparent
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
@@ -64,7 +65,7 @@ fun TestResultsScreen(
         topBar = {
             var isSearchClicked by remember { mutableStateOf(false) }
             Column {
-                TopAppBar(
+                TopBar(
                     headerText = stringResource(stringR.header_test_results),
                     leadingIcon = IconWithAction(
                         icon = drawableR.ic_arrow_left,
@@ -82,6 +83,7 @@ fun TestResultsScreen(
                     visible = isSearchClicked
                 ) {
                     SearchBarWithFilterButton(
+                        modifier = Modifier.padding(16.dp),
                         hintText = stringResource(stringR.search_for_result),
                         onComplete = {
 
@@ -290,6 +292,12 @@ fun ResultListByMonth(
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
+                                    Icon(
+                                        modifier = Modifier.size(16.dp),
+                                        imageVector = ImageVector.vectorResource(drawableR.ic_download_file_outlined),
+                                        contentDescription = stringResource(stringR.download_pdf),
+                                        tint = Typography500
+                                    )
                                     Text(
                                         modifier = Modifier
                                             .clickable(
@@ -301,15 +309,10 @@ fun ResultListByMonth(
                                                     )
                                                 }
                                             ),
-                                        text = "download pdf", //TODO -> bunu button component ile evez et
+                                        text = " download pdf", //TODO -> bunu button component ile evez et
                                         style = EDoctorTypography.labelMedium.copy(color = Typography500),
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
-                                    )
-                                    Icon(
-                                        imageVector = ImageVector.vectorResource(drawableR.ic_arrow_top_right_16),
-                                        contentDescription = stringResource(stringR.download_pdf),
-                                        tint = Typography500
                                     )
                                 }
                             } else {
