@@ -13,20 +13,25 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.systemBars.IconWithAction
-import nfv.ui_kit.components.systemBars.TopBar
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.transparent.ActiveTransparentButton
 import nfv.ui_kit.components.inputFields.CustomTextField
 import nfv.ui_kit.components.inputFields.CustomTextFieldPassword
+import nfv.ui_kit.components.inputFields.PasswordStrength
+import nfv.ui_kit.components.systemBars.IconWithAction
+import nfv.ui_kit.components.systemBars.TopBar
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Primary500
@@ -86,17 +91,20 @@ fun RegisterFormScreen() {
                 }
             )
             Spacer(Modifier.height(16.dp))
-            CustomTextFieldPassword (
+            var state by remember { mutableStateOf<PasswordStrength?>(PasswordStrength.MEDIUM) }
+            CustomTextFieldPassword(
                 titleText = "Password",
                 hintText = "Enter your password",
+                passwordStrength = state,
                 onComplete = {
 
                 }
             )
             Spacer(Modifier.height(16.dp))
-            CustomTextFieldPassword (
+            CustomTextFieldPassword(
                 titleText = "Confirm password",
                 hintText = "Confirm your password",
+                passwordStrength = null,
                 onComplete = {
 
                 }

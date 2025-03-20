@@ -237,8 +237,7 @@ fun ResultListByMonth(
                 var isExpanded by remember { mutableStateOf(false) }
                 val rotationAngle by animateFloatAsState(
                     targetValue = if (isExpanded) 90f else 0f,
-                    animationSpec = tween(durationMillis = 300),
-                    label = "RotationAnimation"
+                    animationSpec = tween(durationMillis = 300)
                 )
 
                 var isRead by remember { mutableStateOf(false) }
@@ -290,6 +289,16 @@ fun ResultListByMonth(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Row(
+                                    modifier = Modifier
+                                        .clickable(
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            indication = ripple(),
+                                            onClick = {
+                                                onClickDownloadDocument(
+                                                    resultList[testResult].title
+                                                )
+                                            }
+                                        ),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
@@ -299,16 +308,6 @@ fun ResultListByMonth(
                                         tint = Typography500
                                     )
                                     Text(
-                                        modifier = Modifier
-                                            .clickable(
-                                                interactionSource = remember { MutableInteractionSource() },
-                                                indication = ripple(),
-                                                onClick = {
-                                                    onClickDownloadDocument(
-                                                        resultList[testResult].title
-                                                    )
-                                                }
-                                            ),
                                         text = " download pdf", //TODO -> bunu button component ile evez et
                                         style = EDoctorTypography.labelMedium.copy(color = Typography500),
                                         maxLines = 1,

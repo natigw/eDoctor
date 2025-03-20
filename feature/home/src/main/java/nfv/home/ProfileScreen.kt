@@ -69,7 +69,9 @@ import nfv.ui_kit.R.string as stringR
 fun ProfileScreen(
     onGoToHome: () -> Unit,
     onGotoHistory: () -> Unit,
-    onGoToProfile: () -> Unit
+    onGoToProfile: () -> Unit,
+    onClickMedicalInfo: () -> Unit,
+    onGoToChangePasscode: () -> Unit
 ) {
     Scaffold(
         modifier = Modifier
@@ -94,7 +96,8 @@ fun ProfileScreen(
         ) {
             ProfileHeader(
                 profileImageLink = "sss",
-                userFullName = "Natig Mammadov"
+                userFullName = "Natig Mammadov",
+                onClickMedicalInfo = onClickMedicalInfo
             )
 
             Spacer(Modifier.height(24.dp))
@@ -132,7 +135,7 @@ fun ProfileScreen(
                         icon = drawableR.ic_passcode_outlined,
                         title = "Change passcode",
                         currentOption = null,
-                        onClick = {}
+                        onClick = onGoToChangePasscode
                     ),
                     OptionItemData(
                         icon = drawableR.ic_fingerprint,
@@ -193,7 +196,8 @@ fun ProfileScreen(
 fun ProfileHeader(
     modifier: Modifier = Modifier,
     profileImageLink: String,
-    userFullName: String
+    userFullName: String,
+    onClickMedicalInfo: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -253,7 +257,7 @@ fun ProfileHeader(
             state = ButtonState.ENABLED,
             textEnabled = "Medical info",
             onClick = {
-
+                onClickMedicalInfo()
             }
         )
 
@@ -319,7 +323,7 @@ fun OptionItem(
                 onClick = {
                     if (optionItem.withSwitchButton)
                         toggleState = !toggleState
-                    optionItem.onClick
+                    optionItem.onClick()
                 }
             )
             .padding(vertical = 16.dp, horizontal = 4.dp),
@@ -402,6 +406,8 @@ private fun ProfileScreenPrev() {
     ProfileScreen(
         onGoToHome = {},
         onGotoHistory = {},
-        onGoToProfile = {}
+        onGoToProfile = {},
+        onClickMedicalInfo = {},
+        onGoToChangePasscode = {}
     )
 }

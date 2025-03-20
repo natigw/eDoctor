@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,16 +66,17 @@ fun ToggleButton(
         targetValue = if (isToggleOn) Primary300 else Gray500
     )
 
-
-//    val thumbSize by animateDpAsState(
-//        targetValue = if (isToggleOn) 26.dp else 24.dp
-//    )
-//
-//    val alignment by animateDpAsState(
-//        targetValue = if (isToggleOn) 27.dp else 4.dp
-//    )
-
+    val interactionSource = remember { MutableInteractionSource() }
     var isPressed by remember { mutableStateOf(false) }
+
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { interaction ->
+            when (interaction) {
+                is PressInteraction.Press -> isPressed = true
+                is PressInteraction.Release, is PressInteraction.Cancel -> isPressed = false
+            }
+        }
+    }
 
     val thumbSize by animateDpAsState(
         targetValue = when {
@@ -103,20 +106,10 @@ fun ToggleButton(
             .background(backgroundColor)
             .clickable(
                 enabled = isDisabled.not(),
-                interactionSource = remember { MutableInteractionSource() },
+                interactionSource = interactionSource,
                 indication = ripple(color = rippleColor),
                 onClick = onToggle
-            )
-//            .pointerInput(Unit) {
-//                detectTapGestures(
-//                    onPress = {
-//                        isPressed = true
-//                        tryAwaitRelease()
-//                        isPressed = false
-//                    }
-//                )
-//            }
-        ,
+            ),
         contentAlignment = Alignment.CenterStart
     ) {
         Box(
@@ -133,20 +126,10 @@ fun ToggleButton(
 @Composable
 private fun ToggleButtonPrev() {
 
-    var isDisabledState by remember { mutableStateOf(false) }
     var toggleState by remember { mutableStateOf(true) }
 
-//    LaunchedEffect(Unit) {
-//        while (true) {
-//            delay(1000)
-//            isDisabledState = !isDisabledState
-//            delay(1000)
-//            toggleState = !toggleState
-//        }
-//    }
-
     ToggleButton(
-        isDisabled = isDisabledState,
+        isDisabled = false,
         isToggleOn = toggleState,
         onToggle = {
             toggleState = !toggleState

@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ripple
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -45,6 +45,7 @@ import nfv.ui_kit.theme.Primary50
 import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.SquareButtonShape
 import nfv.ui_kit.theme.Typography300
+import nfv.ui_kit.theme.Typography50
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
@@ -61,13 +62,34 @@ fun OutlinedButton(
     @DrawableRes onCompletedStartIconRes: Int? = null,
     @DrawableRes onCompletedEndIconRes: Int? = null
 ) {
+    // TODO -> Eger yaxsi olsa butun outlined butonlara elave et, ripple null etmek yaddan cixmasin
+    val interactionSource = remember { MutableInteractionSource() }
+    var isPressed by remember { mutableStateOf(false) }
+
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect {
+            when (it) {
+                is PressInteraction.Press -> isPressed = true
+                is PressInteraction.Release, is PressInteraction.Cancel -> isPressed = false
+            }
+        }
+    }
 
     val backgroundColor by animateColorAsState(
-        targetValue = when (state) {
-            ButtonState.DISABLED -> Gray100
-            ButtonState.ENABLED -> BaseWhite
-            ButtonState.LOADING -> Primary50
-            ButtonState.COMPLETED -> BaseWhite
+        targetValue = if (isPressed) {
+            when (state) {
+                ButtonState.DISABLED -> Gray100  //cannot be pressed
+                ButtonState.ENABLED -> Primary500
+                ButtonState.LOADING -> Primary50 //cannot be pressed
+                ButtonState.COMPLETED -> Primary500
+            }
+        } else {
+            when (state) {
+                ButtonState.DISABLED -> Gray100
+                ButtonState.ENABLED -> BaseWhite
+                ButtonState.LOADING -> Primary50
+                ButtonState.COMPLETED -> BaseWhite
+            }
         }
     )
     val stokeColor by animateColorAsState(
@@ -79,9 +101,16 @@ fun OutlinedButton(
         }
     )
     val contentColor by animateColorAsState(
-        targetValue = when (state) {
-            ButtonState.DISABLED -> Typography300
-            ButtonState.ENABLED, ButtonState.LOADING, ButtonState.COMPLETED -> Primary500
+        targetValue = if (isPressed) {
+            when (state) {
+                ButtonState.DISABLED -> Typography300  //cannot be pressed
+                ButtonState.ENABLED, ButtonState.LOADING, ButtonState.COMPLETED -> Typography50
+            }
+        } else {
+            when (state) {
+                ButtonState.DISABLED -> Typography300
+                ButtonState.ENABLED, ButtonState.LOADING, ButtonState.COMPLETED -> Primary500
+            }
         }
     )
 
@@ -93,8 +122,8 @@ fun OutlinedButton(
             .border(width = 1.dp, color = stokeColor, shape = SquareButtonShape)
             .clickable(
                 enabled = state != ButtonState.DISABLED && state != ButtonState.LOADING,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
+                interactionSource = interactionSource,
+                indication = null,
                 onClick = {
                     onClick(state)
                 }

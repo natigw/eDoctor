@@ -2,40 +2,42 @@ package nfv.ui_kit.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Primary500,
-    secondary = Danger500,
-    tertiary = Success500
-)
+object EDoctorColorScheme {
+    val Light = lightColorScheme(
+        primary = Primary500,
+        secondary = Warning500,
+        tertiary = Success500,
+        onPrimary = Gray50,
+        onSecondary = Gray50,
+        onTertiary = Gray50,
+        background = BaseWhite,
+        surface = BaseWhite, // Ensures consistent surface colors
+        onBackground = BaseBlack,
+        onSurface = BaseBlack
+    )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Primary100,
-    secondary = Danger100,
-    tertiary = Success100
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
+    val Dark = darkColorScheme(
+        primary = Primary500,
+        secondary = Warning500,
+        tertiary = Success500,
+        onPrimary = Gray50,
+        onSecondary = Gray50,
+        onTertiary = Gray50,
+        background = BaseBlack,
+        surface = BaseBlack,
+        onBackground = BaseWhite,
+        onSurface = BaseWhite
+    )
+}
 
 @Composable
 fun EDoctorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -44,9 +46,8 @@ fun EDoctorTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> EDoctorColorScheme.Dark
+        else -> EDoctorColorScheme.Light
     }
 
     MaterialTheme(
@@ -54,4 +55,11 @@ fun EDoctorTheme(
         typography = EDoctorTypography,
         content = content
     )
+}
+
+object EDoctorTheme {
+    val colors: ColorScheme
+        @Composable
+        @ReadOnlyComposable
+        get() = MaterialTheme.colorScheme
 }

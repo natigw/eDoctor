@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,11 +67,21 @@ fun ToggleButtonSmall(
         targetValue = if (isToggleOn) Primary300 else Gray500
     )
 
+    val interactionSource = remember { MutableInteractionSource() }
     var isPressed by remember { mutableStateOf(false) }
+
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { interaction ->
+            when (interaction) {
+                is PressInteraction.Press -> isPressed = true
+                is PressInteraction.Release, is PressInteraction.Cancel -> isPressed = false
+            }
+        }
+    }
 
     val thumbSize by animateDpAsState(
         targetValue = when {
-            isToggleOn && isPressed -> 24.dp
+            isToggleOn && isPressed -> 23.5.dp
             isToggleOn && isPressed.not() -> 22.dp
             isToggleOn.not() && isPressed -> 22.dp
             isToggleOn.not() && isPressed.not() -> 20.dp
@@ -79,7 +91,7 @@ fun ToggleButtonSmall(
 
     val alignment by animateDpAsState(
         targetValue = when {
-            isToggleOn && isPressed -> 20.dp
+            isToggleOn && isPressed -> 20.5.dp
             isToggleOn && isPressed.not() -> 21.5.dp
             isToggleOn.not() && isPressed -> 2.5.dp
             isToggleOn.not() && isPressed.not() -> 3.5.dp
@@ -95,20 +107,10 @@ fun ToggleButtonSmall(
             .background(backgroundColor)
             .clickable(
                 enabled = isDisabled.not(),
-                interactionSource = remember { MutableInteractionSource() },
+                interactionSource = interactionSource,
                 indication = ripple(color = rippleColor),
                 onClick = onToggle
-            )
-//            .pointerInput(Unit) {
-//                detectTapGestures(
-//                    onPress = {
-//                        isPressed = true
-//                        tryAwaitRelease()
-//                        isPressed = false
-//                    }
-//                )
-//            }
-        ,
+            ),
         contentAlignment = Alignment.CenterStart
     ) {
         Box(
@@ -125,28 +127,18 @@ fun ToggleButtonSmall(
 @Composable
 private fun ToggleButtonSmallPrev() {
 
-    var isDisabledState by remember { mutableStateOf(false) }
     var toggleState by remember { mutableStateOf(false) }
-
-//    LaunchedEffect(Unit) {
-//        while (true) {
-//            delay(1000)
-//            isDisabledState = !isDisabledState
-//            delay(1000)
-//            toggleState = !toggleState
-//        }
-//    }
 
     Column {
         ToggleButton(
-            isDisabled = isDisabledState,
+            isDisabled = false,
             isToggleOn = toggleState,
             onToggle = {
                 toggleState = !toggleState
             }
         )
         ToggleButtonSmall(
-            isDisabled = isDisabledState,
+            isDisabled = false,
             isToggleOn = toggleState,
             onToggle = {
                 toggleState = !toggleState
