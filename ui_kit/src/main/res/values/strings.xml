@@ -35,4 +35,8 @@
     <string name="test_date">Test date:\ </string>
     <string name="lab_name">Laboratory name:\ </string>
     <string name="download_pdf">Get the document</string>
+
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="system">System</string>
 </resources>

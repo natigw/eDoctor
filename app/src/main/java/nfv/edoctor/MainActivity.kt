@@ -11,6 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import nfv.home.InfoAboutUsScreen
+import nfv.home.InfoTermsConditionsScreen
 import nfv.home.LockScreen
 import nfv.home.LoginScreen
 import nfv.home.MedicalInfoScreen
@@ -116,12 +118,34 @@ class MainActivity : ComponentActivity() {
                             onGoToChangePasscode = {
                                 println("niye getmediki??")
                                 navController.navigate(ScreenLock)
+                            },
+                            onGoToTermsInfo = {
+                                navController.navigate(ScreenTermsInfo)
+                            },
+                            onGoToAboutUsInfo = {
+                                navController.navigate(ScreenAboutUsInfo)
                             }
                         )
                     }
 
                     composable<ScreenMedicalInfo> {
                         MedicalInfoScreen(
+                            onClickBack = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
+
+                    composable<ScreenTermsInfo> {
+                        InfoTermsConditionsScreen(
+                            onClickBack = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
+
+                    composable<ScreenAboutUsInfo> {
+                        InfoAboutUsScreen(
                             onClickBack = {
                                 navController.popBackStack()
                             }
@@ -159,6 +183,12 @@ object ScreenProfile
 
 @Serializable
 object ScreenMedicalInfo
+
+@Serializable
+object ScreenTermsInfo
+
+@Serializable
+object ScreenAboutUsInfo
 
 @Serializable
 object ScreenLock

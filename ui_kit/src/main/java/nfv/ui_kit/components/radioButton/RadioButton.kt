@@ -2,6 +2,7 @@ package nfv.ui_kit.components.radioButton
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -47,7 +48,8 @@ fun RadioButton(
             isDisabled.not() && isSelected.not() -> Gray300
             isDisabled.not() && isSelected -> Primary500
             else -> Color.Unspecified
-        }
+        },
+        animationSpec = tween(500)
     )
     val backgroundColor by animateColorAsState(
         targetValue = when {
@@ -56,13 +58,16 @@ fun RadioButton(
             isDisabled.not() && isSelected.not() -> Gray50
             isDisabled.not() && isSelected -> Primary50
             else -> Color.Unspecified
-        }
+        },
+        animationSpec = tween(500)
     )
     val rippleColor by animateColorAsState(
-        targetValue = if (isSelected) Primary300 else Gray500
+        targetValue = if (isSelected) Primary300 else Gray500,
+        animationSpec = tween(500)
     )
     val innerCircleSize by animateDpAsState(
-        targetValue = if (isSelected) 10.dp else 0.dp
+        targetValue = if (isSelected) 10.dp else 0.dp,
+        animationSpec = tween(500)
     )
     val strokeSize by animateDpAsState(
         targetValue = if (isSelected) 1.5.dp else 1.dp
@@ -96,7 +101,7 @@ fun RadioButton(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun RadioButtonPrev() {
 

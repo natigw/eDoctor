@@ -20,7 +20,7 @@ enum class ButtonTypes(
         buttonPadding = ButtonLargePadding,
         iconSize = 24.dp,
         itemSpacing = 16.dp,
-        textTypography = EDoctorTypography.bodyLarge,
+        textTypography = EDoctorTypography.titleSmall,
         circularProgressStrokeWidth = 3.dp
     ),
     MEDIUM(

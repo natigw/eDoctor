@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -41,6 +43,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.R
+import nfv.ui_kit.components.buttons.ButtonState
+import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.components.buttons.square.OutlinedButton
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
 import nfv.ui_kit.theme.BaseWhite
@@ -78,6 +83,7 @@ fun MedicalInfoScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(BaseWhite)
+                .verticalScroll(rememberScrollState())
         ) {
             Spacer(Modifier.height(16.dp))
             PersonalDetailsSection(
@@ -104,7 +110,7 @@ fun PersonalDetailsSection(
                 color = Primary900
             )
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(12.dp))
         Text(
             text = "Personal details",
             style = EDoctorTypography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
@@ -117,6 +123,7 @@ fun PersonalDetailsSection(
         )
         AnimatedVisibility(isExpanded) {
             Column {
+                Spacer(Modifier.height(8.dp))
                 PersonalDetailsItem(
                     detailItem = PersonalDetailsItemData(
                         title = "Blood type",
@@ -143,6 +150,16 @@ fun PersonalDetailsSection(
                         title = "Date of Birth",
                         details = "18 Mar 2005"
                     )
+                )
+                Spacer(Modifier.height(10.dp))
+                OutlinedButton(
+                    buttonType = ButtonTypes.SMALL,
+                    state = ButtonState.ENABLED,
+                    startIconRes = drawableR.ic_edit_outlined,
+                    textEnabled = "Edit details",
+                    onClick = {
+
+                    }
                 )
             }
         }

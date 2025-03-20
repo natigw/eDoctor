@@ -71,7 +71,9 @@ fun ProfileScreen(
     onGotoHistory: () -> Unit,
     onGoToProfile: () -> Unit,
     onClickMedicalInfo: () -> Unit,
-    onGoToChangePasscode: () -> Unit
+    onGoToChangePasscode: () -> Unit,
+    onGoToTermsInfo: () -> Unit,
+    onGoToAboutUsInfo: () -> Unit
 ) {
     Scaffold(
         modifier = Modifier
@@ -163,13 +165,13 @@ fun ProfileScreen(
                         icon = drawableR.ic_terms_outlined,
                         title = "Terms and Conditions",
                         currentOption = null,
-                        onClick = {}
+                        onClick = onGoToTermsInfo
                     ),
                     OptionItemData(
                         icon = drawableR.ic_info_outlined,
                         title = "About us",
                         currentOption = null,
-                        onClick = {}
+                        onClick = onGoToAboutUsInfo
                     )
                 )
             )
@@ -408,6 +410,8 @@ private fun ProfileScreenPrev() {
         onGotoHistory = {},
         onGoToProfile = {},
         onClickMedicalInfo = {},
-        onGoToChangePasscode = {}
+        onGoToChangePasscode = {},
+        onGoToTermsInfo = {},
+        onGoToAboutUsInfo = {}
     )
 }

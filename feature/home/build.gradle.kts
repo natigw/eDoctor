@@ -41,6 +41,8 @@ dependencies {
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.coil.svg)
+
 
     // Navigation
     implementation(libs.androidx.navigation.compose) //TODO -> normalda bu navigation modulunda olmalidi ve onu import etmeliyik

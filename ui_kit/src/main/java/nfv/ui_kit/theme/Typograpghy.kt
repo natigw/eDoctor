@@ -35,6 +35,14 @@ val EDoctorTypography = Typography(
         letterSpacing = (fontUnit * 0.2).sp,
         color = Typography900
     ),
+    titleSmall = TextStyle(
+        fontFamily = ManropeFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = (fontUnit * 18).sp,
+        lineHeight = (fontUnit * 30).sp,
+        letterSpacing = (fontUnit * 0.2).sp,
+        color = Typography900
+    ),
     bodyLarge = TextStyle(
         fontFamily = ManropeFontFamily,
         fontWeight = FontWeight.Medium,
