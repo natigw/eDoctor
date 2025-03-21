@@ -62,7 +62,8 @@ import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
 fun MedicalInfoScreen(
-    onClickBack: () -> Unit
+    onClickBack: () -> Unit,
+    onClickLabTests: () -> Unit
 ) {
     Scaffold(
         modifier = Modifier
@@ -90,7 +91,7 @@ fun MedicalInfoScreen(
                 modifier = Modifier.padding(DefaultScreenPadding)
             )
             Spacer(Modifier.height(16.dp))
-            MedicalInfoSection()
+            MedicalInfoSection(onClickLabTests = onClickLabTests)
         }
     }
 }
@@ -210,7 +211,10 @@ data class PersonalDetailsItemData(
 )
 
 @Composable
-fun MedicalInfoSection(modifier: Modifier = Modifier) {
+fun MedicalInfoSection(
+    modifier: Modifier = Modifier,
+    onClickLabTests: () -> Unit
+) {
     Column(
         modifier = modifier
     ) {
@@ -246,7 +250,7 @@ fun MedicalInfoSection(modifier: Modifier = Modifier) {
                 icon = drawableR.ic_tests_filled,
                 title = "Lab tests",
                 recordCount = 7,
-                onClick = {}
+                onClick = onClickLabTests
             )
         )
         Spacer(Modifier.height(10.dp))
@@ -335,6 +339,7 @@ data class MedicalItemData(
 @Composable
 private fun MedicalInfoScreenPrev() {
     MedicalInfoScreen(
-        onClickBack = {}
+        onClickBack = {},
+        onClickLabTests = {}
     )
 }

@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import nfv.home.ChangePasscodeScreen
 import nfv.home.InfoAboutUsScreen
 import nfv.home.InfoTermsConditionsScreen
 import nfv.home.LockScreen
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity() {
 
                             },
                             onGotoHistory = {
-                                navController.navigate(ScreenHistory)
+                                navController.navigate(ScreenHistory(isComingFromProfile = false))
                             },
                             onGoToProfile = {
                                 navController.navigate(ScreenProfile)
@@ -85,17 +86,29 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable<ScreenHistory> {
+                        val args = it.toRoute<ScreenHistory>()
+
                         val context = LocalContext.current
                         val downloader = remember { AndroidDownloader(context) }
 
                         TestResultsScreen(
+                            isComingFromProfile = args.isComingFromProfile,
+                            onGoToHome = {
+                                navController.navigate(ScreenHome(name = "Natihistory"))
+                            },
+                            onGotoHistory = {
+
+                            },
+                            onGoToProfile = {
+                                navController.navigate(ScreenProfile)
+                            },
                             onClickBack = {
                                 navController.popBackStack()
                             },
-                            onClickDownloadDocument = {
+                            onClickDownloadDocument = { title ->
                                 downloader.downloadFile(
                                     url = "https://pl-coding.com/wp-content/uploads/2022/04/pic-squared.jpg",
-                                    titleAppendix = it
+                                    titleAppendix = title
                                 )
                             }
                         )
@@ -107,7 +120,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(ScreenHome(name = "Natigg"))
                             },
                             onGotoHistory = {
-                                navController.navigate(ScreenHistory)
+                                navController.navigate(ScreenHistory(isComingFromProfile = false))
                             },
                             onGoToProfile = {
 
@@ -116,8 +129,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(ScreenMedicalInfo)
                             },
                             onGoToChangePasscode = {
-                                println("niye getmediki??")
-                                navController.navigate(ScreenLock)
+                                navController.navigate(ScreenChangePasscode)
                             },
                             onGoToTermsInfo = {
                                 navController.navigate(ScreenTermsInfo)
@@ -132,6 +144,9 @@ class MainActivity : ComponentActivity() {
                         MedicalInfoScreen(
                             onClickBack = {
                                 navController.popBackStack()
+                            },
+                            onClickLabTests = {
+                                navController.navigate(ScreenHistory(isComingFromProfile = true))
                             }
                         )
                     }
@@ -152,6 +167,14 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
+                    composable<ScreenChangePasscode> {
+                        ChangePasscodeScreen(
+                            onClickBack = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
+
                     composable<ScreenLock> {
                         LockScreen()
                     }
@@ -165,18 +188,20 @@ class MainActivity : ComponentActivity() {
 object ScreenOnBoard
 
 @Serializable
-data class ScreenHome(          //diqqet: bu data class oldu, yuxaridaki ise object!!!
-    val name: String //argument
-)
-
-@Serializable
 object ScreenLogin
 
 @Serializable
 object ScreenRegister
 
 @Serializable
-object ScreenHistory
+data class ScreenHome(          //diqqet: bu data class oldu, yuxaridaki ise object!!!
+    val name: String //argument
+)
+
+@Serializable
+data class ScreenHistory(
+    val isComingFromProfile: Boolean
+)
 
 @Serializable
 object ScreenProfile
@@ -189,6 +214,9 @@ object ScreenTermsInfo
 
 @Serializable
 object ScreenAboutUsInfo
+
+@Serializable
+object ScreenChangePasscode
 
 @Serializable
 object ScreenLock

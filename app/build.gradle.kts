@@ -42,6 +42,9 @@ android {
 
 dependencies {
 
+    // Biometrics
+    implementation(libs.androidx.biometric)
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
 

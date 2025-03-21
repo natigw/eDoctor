@@ -38,6 +38,9 @@ android {
 
 dependencies {
 
+    // Biometrics
+    implementation(libs.androidx.biometric)
+
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)

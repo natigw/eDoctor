@@ -18,8 +18,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -56,6 +58,7 @@ import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray200
 import nfv.ui_kit.theme.Gray400
 import nfv.ui_kit.theme.Gray500
+import nfv.ui_kit.theme.Primary100
 import nfv.ui_kit.theme.Primary200
 import nfv.ui_kit.theme.Primary300
 import nfv.ui_kit.theme.Primary500
@@ -65,6 +68,7 @@ import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     onGoToHome: () -> Unit,
@@ -104,6 +108,42 @@ fun ProfileScreen(
 
             Spacer(Modifier.height(24.dp))
 
+            var isLanguageSheetOpen by remember { mutableStateOf(false) }
+            var isThemeSheetOpen by remember { mutableStateOf(false) }
+
+            if (isLanguageSheetOpen) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        isLanguageSheetOpen = false
+                    },
+                    dragHandle = { },
+                    containerColor = Primary100
+                ) {
+                    ChangeLanguageDialog(
+                        currentLanguage = SupportedLanguages.RUSSIAN,
+                        onConfirm = {
+
+                        }
+                    )
+                }
+            }
+            if (isThemeSheetOpen) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        isThemeSheetOpen = false
+                    },
+                    dragHandle = { },
+                    containerColor = Primary100
+                ) {
+                    ChangeThemeDialog(
+                        currentTheme = SupportedThemes.DARK,
+                        onConfirm = {
+
+                        }
+                    )
+                }
+            }
+
             OptionGroup(
                 titleGroup = "General",
                 options = listOf(
@@ -117,13 +157,17 @@ fun ProfileScreen(
                         icon = drawableR.ic_globe_outlined,
                         title = "Language",
                         currentOption = "English",
-                        onClick = {}
+                        onClick = {
+                            isLanguageSheetOpen = true
+                        }
                     ),
                     OptionItemData(
                         icon = drawableR.ic_theme_outlined,
                         title = "Theme",
                         currentOption = "System",
-                        onClick = {}
+                        onClick = {
+                            isThemeSheetOpen = true
+                        }
                     )
                 )
             )
@@ -270,13 +314,12 @@ fun ProfileHeader(
 
 @Composable
 fun ProfileBottomBar(
-    modifier: Modifier = Modifier,
     onGoToHome: () -> Unit,
     onGoToHistory: () -> Unit,
     onGoToProfile: () -> Unit
 ) {
     BottomBar(
-        modifier = modifier,
+        modifier = Modifier,
         items = listOf(
             BottomBarItemData(
                 icon = R.drawable.ic_home_outlined,

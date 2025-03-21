@@ -40,7 +40,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.ui_kit.R
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
+import nfv.ui_kit.components.systemBars.BottomBar
+import nfv.ui_kit.components.systemBars.BottomBarItemData
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
 import nfv.ui_kit.theme.BaseTransparent
@@ -56,21 +59,26 @@ import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun TestResultsScreen(
-    modifier: Modifier = Modifier,
+    onGoToHome: () -> Unit,
+    onGotoHistory: () -> Unit,
+    onGoToProfile: () -> Unit,
+    isComingFromProfile: Boolean,
     onClickBack: () -> Unit,
     onClickDownloadDocument: (String) -> Unit
 ) {
     Scaffold(
-        modifier = modifier.systemBarsPadding(),
+        modifier = Modifier.systemBarsPadding(),
         topBar = {
             var isSearchClicked by remember { mutableStateOf(false) }
             Column {
                 TopBar(
                     headerText = stringResource(stringR.header_test_results),
-                    leadingIcon = IconWithAction(
-                        icon = drawableR.ic_arrow_left,
-                        action = onClickBack
-                    ),
+                    leadingIcon = if (isComingFromProfile)
+                        IconWithAction(
+                            icon = drawableR.ic_arrow_left,
+                            action = onClickBack
+                        )
+                    else null,
                     trailingIcon = IconWithAction(
                         icon = drawableR.ic_search,
                         action = {
@@ -94,10 +102,18 @@ fun TestResultsScreen(
                     )
                 }
             }
+        },
+        bottomBar = {
+            if (isComingFromProfile.not())
+                HistoryBottomBar(
+                    onGoToHome = onGoToHome,
+                    onGoToHistory = onGotoHistory,
+                    onGoToProfile = onGoToProfile
+                )
         }
     ) { innerPadding ->
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(BaseWhite)
                 .padding(innerPadding)
@@ -196,6 +212,34 @@ fun TestResultsScreen(
             )
         }
     }
+}
+
+@Composable
+fun HistoryBottomBar(
+    onGoToHome: () -> Unit,
+    onGoToHistory: () -> Unit,
+    onGoToProfile: () -> Unit
+) {
+    BottomBar(
+        items = listOf(
+            BottomBarItemData(
+                icon = R.drawable.ic_home_outlined,
+                label = stringResource(R.string.home),
+                onClick = onGoToHome
+            ),
+            BottomBarItemData(
+                icon = R.drawable.ic_history_filled,
+                label = stringResource(R.string.history),
+                onClick = onGoToHistory
+            ),
+            BottomBarItemData(
+                icon = R.drawable.ic_profile_outlined,
+                label = stringResource(R.string.profile),
+                onClick = onGoToProfile
+            )
+        ),
+        selectedItemIndex = 1
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -395,5 +439,12 @@ data class ReferenceInterval(
 @Preview(showSystemUi = true)
 @Composable
 private fun TestResultsPrev() {
-    TestResultsScreen(onClickBack = { }, onClickDownloadDocument = { })
+    TestResultsScreen(
+        isComingFromProfile = false,
+        onGoToHome = {},
+        onGotoHistory = {},
+        onGoToProfile = {},
+        onClickBack = { },
+        onClickDownloadDocument = { }
+    )
 }
