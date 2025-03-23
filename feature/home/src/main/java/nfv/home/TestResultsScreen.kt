@@ -215,7 +215,7 @@ fun TestResultsScreen(
 }
 
 @Composable
-fun HistoryBottomBar(
+private fun HistoryBottomBar(
     onGoToHome: () -> Unit,
     onGoToHistory: () -> Unit,
     onGoToProfile: () -> Unit

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -74,54 +73,16 @@ fun ChangeLanguageDialog(
         FlagDialogItemData(
             flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/ru.svg",
             language = SupportedLanguages.RUSSIAN
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/az.svg",
-            language = SupportedLanguages.AZERBAIJANI
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/gb.svg",
-            language = SupportedLanguages.ENGLISH
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/ru.svg",
-            language = SupportedLanguages.RUSSIAN
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/az.svg",
-            language = SupportedLanguages.AZERBAIJANI
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/gb.svg",
-            language = SupportedLanguages.ENGLISH
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/ru.svg",
-            language = SupportedLanguages.RUSSIAN
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/az.svg",
-            language = SupportedLanguages.AZERBAIJANI
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/gb.svg",
-            language = SupportedLanguages.ENGLISH
-        ),
-        FlagDialogItemData(
-            flagLink = "https://cdn.jsdelivr.net/npm/flag-icon-css/flags/1x1/ru.svg",
-            language = SupportedLanguages.RUSSIAN
-        ),
+        )
     )
 
     var selectedLanguage by remember { mutableStateOf(currentLanguage) }
 
     Column(
         modifier = modifier
-            .systemBarsPadding() //TODO -> bunu nece ede bilerem
             .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
             .background(Info50)
-            .padding(vertical = 16.dp)
-            .verticalScroll(rememberScrollState()),
+            .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -144,7 +105,9 @@ fun ChangeLanguageDialog(
         )
 
         Column(
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 2.dp)
+            modifier = Modifier
+                .padding(vertical = 16.dp, horizontal = 2.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             languageList.forEach { item ->
                 FlagDialogItem(
@@ -156,7 +119,7 @@ fun ChangeLanguageDialog(
             }
         }
 
-        ActiveButton(
+        ActiveButton(  //TODO -> nece edimki button hemise fixed asagida dursun data cox olanda gerek en axira scroll edesen
             modifier = Modifier
                 .padding(top = 4.dp, start = 20.dp, end = 20.dp)
                 .fillMaxWidth(),

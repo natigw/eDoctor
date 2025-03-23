@@ -27,6 +27,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -44,27 +45,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.R
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
 import nfv.ui_kit.components.systemBars.BottomBar
 import nfv.ui_kit.components.systemBars.BottomBarItemData
-import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.Danger100
 import nfv.ui_kit.theme.Danger200
 import nfv.ui_kit.theme.Danger50
 import nfv.ui_kit.theme.Danger500
-import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.EDoctorTypography
-import nfv.ui_kit.theme.Gray200
-import nfv.ui_kit.theme.Gray50
+import nfv.ui_kit.theme.Info500
 import nfv.ui_kit.theme.MainCardShape
 import nfv.ui_kit.theme.Primary100
 import nfv.ui_kit.theme.Primary200
 import nfv.ui_kit.theme.Primary50
 import nfv.ui_kit.theme.Primary500
-import nfv.ui_kit.theme.Primary900
 import nfv.ui_kit.theme.PromotionCardShape
 import nfv.ui_kit.theme.SquareIconShape
 import nfv.ui_kit.theme.Success100
@@ -73,7 +69,6 @@ import nfv.ui_kit.theme.Success50
 import nfv.ui_kit.theme.Success500
 import nfv.ui_kit.theme.Typography50
 import nfv.ui_kit.theme.Typography500
-import nfv.ui_kit.theme.Typography700
 import nfv.ui_kit.theme.Warning100
 import nfv.ui_kit.theme.Warning200
 import nfv.ui_kit.theme.Warning50
@@ -83,32 +78,35 @@ import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun HomeScreen(
-    username: String,
-    onGoToHome: () -> Unit,
-    onGotoHistory: () -> Unit,
-    onGoToProfile: () -> Unit
+    state: HomeState,
+    onUiEvent: (HomeEvent) -> Unit
 ) {
     Scaffold(
         modifier = Modifier
             .background(Color.Green)
-            .systemBarsPadding()
-            .background(Color.Red),
+            .systemBarsPadding(),
         topBar = {
-            HomeTopBar(username = username)
+            HomeTopBar(username = state.username)
         },
         bottomBar = {
             HomeBottomBar(
-                onClickHome = onGoToHome,
-                onClickHistory = onGotoHistory,
-                onClickProfile = onGoToProfile
+                onClickHome = {
+
+                },
+                onClickHistory = {
+                    onUiEvent(HomeEvent.GoToHistory)
+                },
+                onClickProfile = {
+                    onUiEvent(HomeEvent.GoToProfile)
+                }
             )
         }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(EDoctorTheme.colors.background)
                 .padding(innerPadding)
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
         ) {
 
@@ -131,7 +129,7 @@ fun HomeScreen(
                 listOf(
                     MainCardDto(
                         icon = drawableR.ic_book_appointment,
-                        iconColor = Primary500,
+                        iconColor = Primary500,  //TODO -> bu rengler qaldi
                         iconStrokeColor = Primary200,
                         iconBackgroundColor = Primary100,
                         cardBackgroundColor = Primary50,
@@ -186,7 +184,7 @@ fun HomeScreen(
                             rowColors.forEach { card ->
                                 HomeCard(
                                     modifier = Modifier.weight(1f),
-                                    card
+                                    cardItem = card
                                 )
                             }
 
@@ -197,11 +195,11 @@ fun HomeScreen(
             Spacer(Modifier.height(8.dp))
 
             val promotionCardColors = listOf(
-                Color(0xFF254EDB),
-                Color(0xFFF04438),
-                Color(0xFF16B364),
-                Color(0xFFCED2D9),
-                Color(0xFFEF6820)
+                Primary500,
+                Danger500,
+                Success500,
+                Info500,
+                Warning500
             )
 
 
@@ -350,6 +348,7 @@ fun HomeTopBar(
 ) {
     Row(
         modifier = modifier
+            .background(MaterialTheme.colorScheme.surface)
             .padding(top = 16.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -360,12 +359,12 @@ fun HomeTopBar(
                 text = "Hi $username!",
                 style = EDoctorTypography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    color = Primary900
+                    color = MaterialTheme.colorScheme.inversePrimary
                 )
             )
             Text(
                 text = stringResource(stringR.welcome_message),
-                style = EDoctorTypography.labelMedium.copy(color = Typography700)
+                style = EDoctorTypography.labelMedium.copy(color = MaterialTheme.colorScheme.surfaceContainerHighest)
             )
         }
         Spacer(Modifier.width(8.dp))
@@ -374,7 +373,7 @@ fun HomeTopBar(
                 .clip(RoundedCornerShape(8.dp))
                 .border(
                     width = 1.dp,
-                    color = Gray200,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = RoundedCornerShape(8.dp)
                 ) //TODO -> bu shadow olmalidi
                 .clickable(
@@ -384,7 +383,7 @@ fun HomeTopBar(
 
                     }
                 )
-                .background(Gray50)
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                 .padding(6.dp)
                 .size(20.dp),
             imageVector = ImageVector.vectorResource(drawableR.ic_notifications),
@@ -394,14 +393,12 @@ fun HomeTopBar(
 }
 
 @Composable
-fun HomeBottomBar(
-    modifier: Modifier = Modifier,
+private fun HomeBottomBar(
     onClickHome: () -> Unit,
     onClickHistory: () -> Unit,
     onClickProfile: () -> Unit
 ) {
     BottomBar(
-        modifier = modifier,
         items = listOf(
             BottomBarItemData(
                 icon = R.drawable.ic_home_filled,
@@ -430,5 +427,8 @@ fun HomeBottomBar(
 @Preview(showSystemUi = false)
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen("Natig", {}, {}, {})
+    HomeScreen(
+        state = HomeState("Natig"),
+        onUiEvent = {}
+    )
 }

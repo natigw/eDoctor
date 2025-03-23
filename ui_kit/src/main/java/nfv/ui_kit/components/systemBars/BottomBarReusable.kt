@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -26,11 +25,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
+import nfv.ui_kit.theme.Gray100
+import nfv.ui_kit.theme.Gray400
+import nfv.ui_kit.theme.Primary500
+import nfv.ui_kit.theme.Typography400
 import nfv.ui_kit.R.drawable as drawableR
 
-data class BottomBarItemData(
-    @DrawableRes val icon: Int,
+data class BottomBarItemData2(
+    @DrawableRes val iconSelected: Int,
+    @DrawableRes val iconUnselected: Int,
     val label: String,
     val onClick: () -> Unit
 )
@@ -38,7 +43,7 @@ data class BottomBarItemData(
 @Composable
 private fun RowScope.BottomBarItem(
     modifier: Modifier = Modifier,
-    bottomItem: BottomBarItemData,
+    bottomItem: BottomBarItemData2,
     isSelected: Boolean = false
 ) {
     Column(
@@ -54,16 +59,16 @@ private fun RowScope.BottomBarItem(
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = ImageVector.vectorResource(bottomItem.icon),
+            imageVector = ImageVector.vectorResource(if (isSelected) bottomItem.iconSelected else bottomItem.iconUnselected),
             contentDescription = bottomItem.label,
-            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+            tint = if (isSelected) Primary500 else Gray400
         )
         Spacer(Modifier.height(4.dp))
         Text(
             text = bottomItem.label,
             style = EDoctorTypography.labelMedium.copy(
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                color = if (isSelected) Primary500 else Typography400
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -73,18 +78,20 @@ private fun RowScope.BottomBarItem(
 
 @Composable
 fun BottomBar(
-    items: List<BottomBarItemData>,
+    modifier: Modifier = Modifier,
+    items: List<BottomBarItemData2>,
     selectedItemIndex: Int
 ) {
 
     val safeSelectedIndex = selectedItemIndex.coerceIn(0, items.size - 1)
 
-    Column(
-        modifier = Modifier.background(MaterialTheme.colorScheme.surface)   //TODO -> background burda verilmelidi?
-    ) {
-        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerLow)
+    Column {
+        HorizontalDivider(color = Gray100)
 
-        Row {
+        Row(
+            modifier = modifier
+                .background(BaseWhite)   //TODO -> background burda verilmelidi?
+        ) {
             items.forEachIndexed { index, item ->
                 BottomBarItem(
                     bottomItem = item,
@@ -101,50 +108,21 @@ private fun BottomBarPrev() {
     Column {
         BottomBar(
             items = listOf(
-                BottomBarItemData(
-                    icon = drawableR.ic_search,
-                    label = "Search",
+                BottomBarItemData2(
+                    iconSelected = drawableR.ic_home_filled,
+                    iconUnselected = drawableR.ic_home_outlined,
+                    label = "Home",
                     onClick = {}
                 ),
-                BottomBarItemData(
-                    icon = drawableR.ic_profile_filled,
-                    label = "Profile",
+                BottomBarItemData2(
+                    iconSelected = drawableR.ic_history_filled,
+                    iconUnselected = drawableR.ic_history_outlined,
+                    label = "History",
                     onClick = {}
                 ),
-                BottomBarItemData(
-                    icon = drawableR.ic_filter,
-                    label = "Search",
-                    onClick = {}
-                ),
-                BottomBarItemData(
-                    icon = drawableR.ic_profile_outlined,
-                    label = "Profile",
-                    onClick = {}
-                )
-            ),
-            selectedItemIndex = 1
-        )
-
-
-        BottomBar(
-            items = listOf(
-                BottomBarItemData(
-                    icon = drawableR.ic_search,
-                    label = "Search",
-                    onClick = {}
-                ),
-                BottomBarItemData(
-                    icon = drawableR.ic_profile_outlined,
-                    label = "Profile",
-                    onClick = {}
-                ),
-                BottomBarItemData(
-                    icon = drawableR.ic_filter,
-                    label = "Search",
-                    onClick = {}
-                ),
-                BottomBarItemData(
-                    icon = drawableR.ic_profile_outlined,
+                BottomBarItemData2(
+                    iconSelected = drawableR.ic_profile_filled,
+                    iconUnselected = drawableR.ic_profile_outlined,
                     label = "Profile",
                     onClick = {}
                 )

@@ -23,6 +23,7 @@ import nfv.home.RegisterScreen
 import nfv.home.TestResultsScreen
 import nfv.home.download.AndroidDownloader
 import nfv.home.presentation.HomeScreen
+import nfv.home.presentation.HomeState
 import nfv.ui_kit.theme.EDoctorTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,7 +59,7 @@ class MainActivity : ComponentActivity() {
                     composable<ScreenLogin> {
                         LoginScreen(
                             onClickGoogleLogin = {
-                                navController.navigate(ScreenHome(name = "Natig"))
+                                navController.navigate(ScreenHistory(isComingFromProfile = false))
                             },
                             onClickRegister = {
                                 navController.navigate(ScreenRegister)
@@ -72,16 +73,19 @@ class MainActivity : ComponentActivity() {
                     composable<ScreenHome> {
                         val args = it.toRoute<ScreenHome>()
                         HomeScreen(
-                            username = args.name,
-                            onGoToHome = {
+                            state = HomeState(username = args.name),
+                            onUiEvent = {
 
                             },
-                            onGotoHistory = {
-                                navController.navigate(ScreenHistory(isComingFromProfile = false))
-                            },
-                            onGoToProfile = {
-                                navController.navigate(ScreenProfile)
-                            }
+//                            onGoToHome = {
+//
+//                            },
+//                            onGotoHistory = {
+//                                navController.navigate(ScreenHistory(isComingFromProfile = false))
+//                            },
+//                            onGoToProfile = {
+//                                navController.navigate(ScreenProfile)
+//                            }
                         )
                     }
 

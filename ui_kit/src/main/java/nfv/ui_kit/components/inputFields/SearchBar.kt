@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -45,13 +46,7 @@ import androidx.compose.ui.unit.dp
 import nfv.ui_kit.components.buttons.ButtonState
 import nfv.ui_kit.components.buttons.icon.FlexibleIconButton
 import nfv.ui_kit.theme.EDoctorTypography
-import nfv.ui_kit.theme.Gray300
-import nfv.ui_kit.theme.Gray500
 import nfv.ui_kit.theme.InputFieldShape
-import nfv.ui_kit.theme.Primary100
-import nfv.ui_kit.theme.Primary50
-import nfv.ui_kit.theme.Primary500
-import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
@@ -75,7 +70,11 @@ fun SearchBar(
 
                 }
             )
-            .border(width = 1.dp, color = Gray300, shape = InputFieldShape)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = InputFieldShape
+            )
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -83,7 +82,7 @@ fun SearchBar(
             modifier = Modifier.size(24.dp),
             imageVector = ImageVector.vectorResource(drawableR.ic_search),
             contentDescription = stringResource(stringR.description_search),
-            tint = Gray500
+            tint = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.width(12.dp))
         BasicTextField(
@@ -94,7 +93,7 @@ fun SearchBar(
             },
             textStyle = EDoctorTypography.bodyMedium,
             singleLine = true,
-            cursorBrush = SolidColor(Typography500),
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.surfaceContainerHigh),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search
             ),
@@ -102,7 +101,7 @@ fun SearchBar(
                 onSearch = {
                     onComplete(text)
                     keyboardController?.hide()
-                    focusManager.clearFocus()  //TODO -> focusda problem var: focus qoyanda ne focus getmir ne de keyboard hide olmur ve deyesen tek focus qoyanda da asagidaki textfieldlerden yuxari atir focusu -> bunu fix et ve textden kenara basanda da focus clear olsun
+                    focusManager.clearFocus()
                 }
             ),
             decorationBox = { innerTextField ->
@@ -110,7 +109,7 @@ fun SearchBar(
                     Text(
                         text = hintText ?: stringResource(stringR.search___),
                         style = EDoctorTypography.bodyMedium,
-                        color = Typography500,
+                        color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -138,7 +137,7 @@ fun SearchBar(
                     ),
                 imageVector = ImageVector.vectorResource(drawableR.ic_clear),
                 contentDescription = stringResource(stringR.description_clear_button),
-                tint = Gray500
+                tint = MaterialTheme.colorScheme.surfaceContainerHigh
             )
         }
     }
@@ -170,9 +169,9 @@ fun SearchBarWithFilterButton(
             state = ButtonState.ENABLED,
             iconRes = drawableR.ic_filter,
             buttonShape = RoundedCornerShape(10.dp),
-            buttonBackgroundColor = Primary50,
-            borderStrokeColor = Primary100,
-            iconColor = Primary500,
+            buttonBackgroundColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            borderStrokeColor = MaterialTheme.colorScheme.surfaceVariant,
+            iconColor = MaterialTheme.colorScheme.primary,
             onClick = onClickFilterButton
         )
     }

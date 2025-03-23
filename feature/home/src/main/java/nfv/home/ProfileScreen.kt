@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -113,6 +114,7 @@ fun ProfileScreen(
 
             if (isLanguageSheetOpen) {
                 ModalBottomSheet(
+                    modifier = Modifier.statusBarsPadding(),
                     onDismissRequest = {
                         isLanguageSheetOpen = false
                     },
@@ -129,6 +131,7 @@ fun ProfileScreen(
             }
             if (isThemeSheetOpen) {
                 ModalBottomSheet(
+                    modifier = Modifier.statusBarsPadding(),
                     onDismissRequest = {
                         isThemeSheetOpen = false
                     },
@@ -313,13 +316,12 @@ fun ProfileHeader(
 }
 
 @Composable
-fun ProfileBottomBar(
+private fun ProfileBottomBar(
     onGoToHome: () -> Unit,
     onGoToHistory: () -> Unit,
     onGoToProfile: () -> Unit
 ) {
     BottomBar(
-        modifier = Modifier,
         items = listOf(
             BottomBarItemData(
                 icon = R.drawable.ic_home_outlined,

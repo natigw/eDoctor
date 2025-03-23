@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -99,7 +101,9 @@ fun ChangeThemeDialog(
         )
 
         Column(
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 2.dp)
+            modifier = Modifier
+                .padding(vertical = 16.dp, horizontal = 2.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             themeList.forEach { item ->
                 ThemeDialogItem(
@@ -111,7 +115,7 @@ fun ChangeThemeDialog(
             }
         }
 
-        ActiveButton(
+        ActiveButton(  //TODO -> nece edimki button hemise fixed asagida dursun data cox olanda gerek en axira scroll edesen
             modifier = Modifier
                 .padding(top = 4.dp, start = 20.dp, end = 20.dp)
                 .fillMaxWidth(),
