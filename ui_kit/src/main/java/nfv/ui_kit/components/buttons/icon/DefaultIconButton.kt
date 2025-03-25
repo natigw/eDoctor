@@ -31,8 +31,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import nfv.ui_kit.components.buttons.ButtonState
-import nfv.ui_kit.components.buttons.IconButtonTypes
+import nfv.ui_kit.components.buttons.model.ButtonState
+import nfv.ui_kit.components.buttons.icon.model.IconButtonTypes
 import nfv.ui_kit.theme.Gray100
 import nfv.ui_kit.theme.Gray200
 import nfv.ui_kit.theme.Gray300

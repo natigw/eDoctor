@@ -19,6 +19,8 @@
     <string name="description_filter_search">Filter search</string>
     <string name="description_clear_button">Clear all text</string>
 
+    <string name="description_password_visibility">Password visibility</string>
+
     <string name="description_user_profile_picture">User profile picture</string>
     <string name="description_edit_user_profile_picture">Edit profile picture</string>
 
@@ -28,6 +30,7 @@
     <string name="details_option">Option details</string>
 
     <string name="header_test_results">Test Results</string>
+    <string name="header_profile">Profile</string>
 
     <string name="top_bar_leading_icon">Top bar leading icon</string>
     <string name="top_bar_trailing_icon">Top bar trailing icon</string>
@@ -36,7 +39,21 @@
     <string name="lab_name">Laboratory name:\ </string>
     <string name="download_pdf">Get the document</string>
 
+    <string name="option_group_general">General</string>
+    <string name="option_group_security">Security</string>
+    <string name="option_group_about">About</string>
+    <string name="option_edit_profile">Edit profile</string>
+    <string name="option_language">Language</string>
+    <string name="option_theme">Theme</string>
+    <string name="option_change_passcode">Change passcode</string>
+    <string name="option_biometrics">Biometrics</string>
+    <string name="option_allow_screenshots">Allow screenshots</string>
+    <string name="option_terms_conditions">Terms and Conditions</string>
+    <string name="option_about_us">About us</string>
+
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="system">System</string>
+
+    <string name="logout">Logout</string>
 </resources>

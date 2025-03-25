@@ -37,6 +37,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,6 +57,7 @@ import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
 enum class PasswordStrength(val value: String) {
+    NONE("None"),
     WEAK("Weak"),
     MEDIUM("Medium"),
     STRONG("Strong")
@@ -63,23 +66,17 @@ enum class PasswordStrength(val value: String) {
 @Composable
 fun CustomTextFieldPassword(
     modifier: Modifier = Modifier,
+    passwordStrength: PasswordStrength,
     titleText: String,
     hintText: String? = null,
-    passwordStrength: PasswordStrength?, //if null, no indicator
+    text: String,
+    onTextChange: (String) -> Unit,
+    onTextClear: () -> Unit,
     onComplete: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-
-    val indicatorColor by animateColorAsState(
-        targetValue = when (passwordStrength) {
-            PasswordStrength.WEAK -> Danger500
-            PasswordStrength.MEDIUM -> Info500
-            PasswordStrength.STRONG -> Success500
-            else -> Primary500
-        }
-    )
 
     Column(
         modifier = modifier
@@ -104,9 +101,7 @@ fun CustomTextFieldPassword(
             BasicTextField(
                 modifier = Modifier.weight(1f),
                 value = text,
-                onValueChange = {
-                    text = it
-                },
+                onValueChange = onTextChange,
                 textStyle = EDoctorTypography.bodyMedium,
                 singleLine = true,
                 cursorBrush = SolidColor(Typography500),
@@ -128,7 +123,10 @@ fun CustomTextFieldPassword(
                         )
                     }
                     innerTextField()
-                }
+                },
+                visualTransformation =
+                if (isPasswordVisible) VisualTransformation.None
+                else PasswordVisualTransformation('⬤')
             )
 
             AnimatedVisibility(
@@ -143,9 +141,7 @@ fun CustomTextFieldPassword(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(),
-                            onClick = {
-                                text = ""
-                            }
+                            onClick = onTextClear
                         ),
                     imageVector = ImageVector.vectorResource(drawableR.ic_clear),
                     contentDescription = stringResource(stringR.description_clear_button),
@@ -155,49 +151,74 @@ fun CustomTextFieldPassword(
 
             Spacer(Modifier.width(12.dp))
             Icon(
-                modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(drawableR.ic_eye_closed),
-                contentDescription = stringResource(stringR.description_search), //TODO -> bunu deyis
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(bounded = false),
+                        onClick = {
+                            isPasswordVisible = !isPasswordVisible
+                        }
+                    ),
+                imageVector = ImageVector.vectorResource(if (isPasswordVisible) drawableR.ic_eye_opened else drawableR.ic_eye_closed),
+                contentDescription = stringResource(stringR.description_password_visibility),
                 tint = Gray500
             )
         }
 
-        passwordStrength?.let {
-            Spacer(Modifier.height(8.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .weight(1f),
-                    text = passwordStrength.value,
-                    style = EDoctorTypography.labelMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = indicatorColor
-                )
-                repeat(passwordStrength.ordinal + 1) {
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 4.dp)
-                            .height(4.dp)
-                            .width(48.dp)
-                            .clip(CircleShape)
-                            .background(indicatorColor)
-                    )
-                }
-                repeat(2 - passwordStrength.ordinal) {
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 4.dp)
-                            .height(4.dp)
-                            .width(48.dp)
-                            .clip(CircleShape)
-                            .background(Gray200)
-                    )
-                }
-            }
+        AnimatedVisibility(passwordStrength != PasswordStrength.NONE) {
+            PasswordStrengthSection(passwordStrength)
+        }
+    }
+}
+
+@Composable
+fun PasswordStrengthSection(
+    passwordStrength: PasswordStrength
+) {
+
+    val indicatorColor by animateColorAsState(
+        targetValue = when (passwordStrength) {
+            PasswordStrength.WEAK -> Danger500
+            PasswordStrength.MEDIUM -> Info500
+            PasswordStrength.STRONG -> Success500
+            else -> Primary500
+        }
+    )
+
+    Spacer(Modifier.height(12.dp))
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .weight(1f),
+            text = passwordStrength.value,
+            style = EDoctorTypography.labelMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = indicatorColor
+        )
+        repeat(passwordStrength.ordinal) {
+            Box(
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .height(4.dp)
+                    .width(48.dp)
+                    .clip(CircleShape)
+                    .background(indicatorColor)
+            )
+        }
+        repeat(3 - passwordStrength.ordinal) {
+            Box(
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .height(4.dp)
+                    .width(48.dp)
+                    .clip(CircleShape)
+                    .background(Gray200)
+            )
         }
     }
 }
@@ -206,16 +227,16 @@ fun CustomTextFieldPassword(
 @Composable
 private fun CustomTextFieldPasswordPrev() {
 
-    var state by remember { mutableStateOf<PasswordStrength?>(null) }
+    var state by remember { mutableStateOf(PasswordStrength.NONE) }
 
     LaunchedEffect(Unit) {
         while (true) {
             delay(2000)
             state = when (state) {
-                null -> PasswordStrength.WEAK
+                PasswordStrength.NONE -> PasswordStrength.WEAK
                 PasswordStrength.WEAK -> PasswordStrength.MEDIUM
                 PasswordStrength.MEDIUM -> PasswordStrength.STRONG
-                PasswordStrength.STRONG -> null
+                PasswordStrength.STRONG -> PasswordStrength.NONE
             }
         }
     }
@@ -225,10 +246,11 @@ private fun CustomTextFieldPasswordPrev() {
             modifier = Modifier.padding(16.dp),
             titleText = "Password",
             hintText = "Enter your password",
+            text = "Sample text",
             passwordStrength = state,
-            onComplete = {
-
-            }
+            onTextChange = {},
+            onTextClear = {},
+            onComplete = {}
         )
     }
 }

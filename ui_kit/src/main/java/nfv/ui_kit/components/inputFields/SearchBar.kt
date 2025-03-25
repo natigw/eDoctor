@@ -43,7 +43,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.buttons.ButtonState
+import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.icon.FlexibleIconButton
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.InputFieldShape

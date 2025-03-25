@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import nfv.ui_kit.components.buttons.ButtonState
+import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.theme.Gray100
 import nfv.ui_kit.theme.Gray200
 import nfv.ui_kit.theme.Gray300

@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hiltPlugin)
+    kotlin("kapt")
 }
 
 android {
@@ -58,8 +59,17 @@ dependencies {
 //    // Pager and indicators - accompanist
 //    implementation("com.google.accompanist:accompanist-pager:")
 
-    implementation(project(":ui_kit"))
+    implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
+    implementation(project(":navigation"))
+    implementation(project(":ui_kit"))
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    // Hilt
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

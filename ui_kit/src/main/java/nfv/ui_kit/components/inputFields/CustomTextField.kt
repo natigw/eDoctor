@@ -48,9 +48,11 @@ fun CustomTextField(
     modifier: Modifier = Modifier,
     titleText: String,
     hintText: String? = null,
+    text: String,
+    onTextChange: (String)-> Unit,
+    onTextClear: ()-> Unit,
     onComplete: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
@@ -77,9 +79,7 @@ fun CustomTextField(
             BasicTextField(
                 modifier = Modifier.weight(1f),
                 value = text,
-                onValueChange = {
-                    text = it
-                },
+                onValueChange = onTextChange,
                 textStyle = EDoctorTypography.bodyMedium,
                 singleLine = true,
                 cursorBrush = SolidColor(Typography500),
@@ -116,9 +116,7 @@ fun CustomTextField(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(),
-                            onClick = {
-                                text = ""
-                            }
+                            onClick = onTextClear
                         ),
                     imageVector = ImageVector.vectorResource(drawableR.ic_clear),
                     contentDescription = stringResource(stringR.description_clear_button),
@@ -137,9 +135,10 @@ private fun CustomTextFieldPrev() {
             modifier = Modifier.padding(16.dp),
             titleText = "Full name",
             hintText = "Enter your full name",
-            onComplete = {
-
-            }
+            text = "sample text",
+            onTextChange = {},
+            onTextClear = {},
+            onComplete = {}
         )
     }
 }

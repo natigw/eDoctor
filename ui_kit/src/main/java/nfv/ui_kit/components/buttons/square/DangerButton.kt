@@ -34,8 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import nfv.ui_kit.components.buttons.ButtonState
-import nfv.ui_kit.components.buttons.ButtonTypes
+import nfv.ui_kit.components.buttons.model.ButtonState
+import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.theme.Danger500
 import nfv.ui_kit.theme.Danger700
 import nfv.ui_kit.theme.Gray100

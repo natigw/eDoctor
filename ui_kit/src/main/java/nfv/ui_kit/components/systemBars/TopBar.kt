@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -26,10 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.R
-import nfv.ui_kit.theme.BaseBlack
-import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
-import nfv.ui_kit.theme.Gray100
 import nfv.ui_kit.theme.TopBarPadding
 import nfv.ui_kit.R.string as stringR
 
@@ -40,7 +38,6 @@ data class IconWithAction(
 
 @Composable
 fun TopBar(
-    modifier: Modifier = Modifier,
     headerText: String? = null,
     leadingIcon: IconWithAction? = null,
     trailingIcon: IconWithAction? = null,
@@ -48,9 +45,9 @@ fun TopBar(
 ) {
     Column {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .background(BaseWhite)  //TODO -> background burda verilmelidi?
+                .background(MaterialTheme.colorScheme.surface)  //TODO -> background burda verilmelidi?
                 .padding(TopBarPadding)
         ) {
 
@@ -66,7 +63,7 @@ fun TopBar(
                         ),
                     imageVector = ImageVector.vectorResource(leadingIcon.icon),
                     contentDescription = stringResource(stringR.top_bar_leading_icon),
-                    tint = BaseBlack
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
 
@@ -78,7 +75,10 @@ fun TopBar(
                         end = if (trailingIcon != null) 32.dp else 8.dp
                     ),
                 text = headerText ?: "",
-                style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                style = EDoctorTypography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.outline
+                ),
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -96,13 +96,13 @@ fun TopBar(
                         ),
                     imageVector = ImageVector.vectorResource(trailingIcon.icon),
                     contentDescription = stringResource(stringR.top_bar_trailing_icon),
-                    tint = BaseBlack
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
 
         if (hasBottomLine)
-            HorizontalDivider(color = Gray100)
+            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerLow)
     }
 }
 
