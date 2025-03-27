@@ -22,6 +22,7 @@ class NavigationModule {
 }
 
 class Navigator {
+
     private val navigationChannel = Channel<NavController.()->Unit>()
 
     suspend fun command(command: NavController.()->Unit) {

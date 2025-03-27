@@ -1,7 +1,7 @@
 package nfv.profile.presentation.screens.profile
 
-import nfv.profile.presentation.screens.changeLanguage.SupportedLanguages
-import nfv.profile.presentation.screens.changeTheme.SupportedThemes
+import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
+import nfv.profile.presentation.screens.changeTheme.model.SupportedThemes
 
 sealed interface ProfileEvent {
     data object GoToHome: ProfileEvent

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,29 +26,28 @@ import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.square.DefaultButton
-import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.DefaultScreenPadding
 import nfv.ui_kit.theme.EDoctorTypography
-import nfv.ui_kit.theme.Typography700
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun OnBoardScreen(
-    onClickNext: (ButtonState) -> Unit
+//    state: OnBoardState,
+    onUiEvent: (OnBoardEvent) -> Unit
 ) {
     Column(
         modifier = Modifier
             .systemBarsPadding()
             .fillMaxSize()
-            .background(BaseWhite)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Image(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.55f),
             painter = painterResource(drawableR.img_onboard_illustration_1),
-            contentDescription = "Onboard screen presentation image",
+            contentDescription = null,
             contentScale = ContentScale.Crop
         )
 
@@ -63,13 +63,16 @@ fun OnBoardScreen(
             Spacer(Modifier.height(24.dp))
 
             Text(
-                text = stringResource(stringR.welcome),
-                style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                text = stringResource(stringR.onboard_title1),
+                style = EDoctorTypography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.outline
+                )
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                text = "We will assist you in efficiently and easily scheduling appointments with doctors.\nLet's get started!",
-                style = EDoctorTypography.bodyMedium.copy(color = Typography700)
+                text = stringResource(stringR.onboard_description1),
+                style = EDoctorTypography.bodyMedium.copy(color = MaterialTheme.colorScheme.outlineVariant)
             )
 
             Spacer(Modifier.weight(1f))
@@ -82,9 +85,9 @@ fun OnBoardScreen(
                         .weight(1f),
                     buttonType = ButtonTypes.LARGE,
                     state = ButtonState.ENABLED,
-                    textEnabled = "Skip",
+                    textEnabled = stringResource(stringR.skip),
                     onClick = {
-
+                        onUiEvent(OnBoardEvent.OnSkipClicked)
                     }
                 )
                 ActiveButton(
@@ -92,8 +95,10 @@ fun OnBoardScreen(
                         .weight(1f),
                     buttonType = ButtonTypes.LARGE,
                     state = ButtonState.ENABLED,
-                    textEnabled = "Next",
-                    onClick = onClickNext
+                    textEnabled = stringResource(stringR.next),
+                    onClick = {
+                        onUiEvent(OnBoardEvent.OnNextClicked)
+                    }
                 )
             }
 
@@ -106,8 +111,9 @@ fun OnBoardScreen(
 @Composable
 private fun OnBoardScreenPrev() {
     OnBoardScreen(
-        onClickNext = {
-
-        }
+//        state = OnBoardState(
+//
+//        ),
+        onUiEvent = { }
     )
 }

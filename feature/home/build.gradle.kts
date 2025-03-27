@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hiltPlugin)
+    kotlin("kapt")
 }
 
 android {
@@ -38,6 +40,16 @@ android {
 
 dependencies {
 
+    implementation(project(":navigation"))
+    implementation(project(":ui_kit"))
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    // Hilt
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+
     // Biometrics
     implementation(libs.androidx.biometric)
 
@@ -45,15 +57,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.svg)
-
-
-    // Navigation
-    implementation(libs.androidx.navigation.compose) //TODO -> normalda bu navigation modulunda olmalidi ve onu import etmeliyik
-    // Serialization
-    implementation(libs.kotlinx.serialization.json)
-
-
-    implementation(project(":ui_kit"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -59,8 +59,13 @@ dependencies {
 //    // Pager and indicators - accompanist
 //    implementation("com.google.accompanist:accompanist-pager:")
 
+    implementation(libs.accompanist.systemuicontroller)
+
+
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:history"))
+    implementation(project(":feature:profile"))
     implementation(project(":navigation"))
     implementation(project(":ui_kit"))
 

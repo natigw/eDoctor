@@ -6,8 +6,40 @@
     <string name="history">History</string>
     <string name="profile">Profile</string>
 
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="continue_">Continue</string>
+
     <string name="welcome">Welcome!</string>
     <string name="welcome_message">May you always in a good condition</string>
+
+    <string name="onboard_title1">Welcome!</string>
+    <string name="onboard_description1">We will assist you in efficiently and easily scheduling appointments with doctors.\nLet\'s get started!</string>
+
+    <string name="register">Register</string>
+    <string name="register_instruction_number">Please enter your number to continue your registration</string>
+    <string name="register_terms1">By signing up or logging in, I accept the apps\n</string>
+    <string name="register_terms2">\ and\ </string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
+    <string name="register_instruction_form">Please fill the form to continue the registration</string>
+    <string name="full_name">Full name</string>
+    <string name="full_name_description">Enter your full name</string>
+    <string name="email">Email</string>
+    <string name="email_description">Enter your email</string>
+    <string name="password">Password</string>
+    <string name="password_description">Enter your password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="confirm_password_description">Confirm your password</string>
+    <string name="passwords_incompatible">*passwords incompatible</string>
+    <string name="already_have_an_account">Have an account?\ </string>
+
+
+    <string name="login_welcome_back">Welcome back</string>
+    <string name="login_instruction">Please enter credentials to login</string>
+    <string name="dont_have_an_account">Don’t have an account?\ </string>
+
 
     <string name="notifications">Notifications</string>
 
@@ -31,6 +63,7 @@
 
     <string name="header_test_results">Test Results</string>
     <string name="header_profile">Profile</string>
+    <string name="header_change_passcode">Change passcode</string>
 
     <string name="top_bar_leading_icon">Top bar leading icon</string>
     <string name="top_bar_trailing_icon">Top bar trailing icon</string>
@@ -55,5 +88,8 @@
     <string name="dark">Dark</string>
     <string name="system">System</string>
 
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="logout">Logout</string>
 </resources>

@@ -12,24 +12,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -49,12 +47,12 @@ fun CustomTextField(
     titleText: String,
     hintText: String? = null,
     text: String,
-    onTextChange: (String)-> Unit,
-    onTextClear: ()-> Unit,
-    onComplete: (String) -> Unit
+    bottomHelperText: String? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    onTextChange: (String) -> Unit,
+    onTextClear: () -> Unit
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = modifier
@@ -83,13 +81,8 @@ fun CustomTextField(
                 textStyle = EDoctorTypography.bodyMedium,
                 singleLine = true,
                 cursorBrush = SolidColor(Typography500),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        onComplete(text)
-                        keyboardController?.hide()
-                        focusManager.clearFocus()  //TODO -> focusda problem var: focus qoyanda ne focus getmir ne de keyboard hide olmur ve deyesen tek focus qoyanda da asagidaki textfieldlerden yuxari atir focusu -> bunu fix et ve textden kenara basanda da focus clear olsun
-                    }
-                ),
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
                 decorationBox = { innerTextField ->
                     if (text.isEmpty()) {
                         Text(
@@ -109,6 +102,7 @@ fun CustomTextField(
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
+                Spacer(Modifier.width(8.dp))  //TODO -> bu niye cixmadiki
                 Icon(
                     modifier = Modifier
                         .size(20.dp)
@@ -120,9 +114,21 @@ fun CustomTextField(
                         ),
                     imageVector = ImageVector.vectorResource(drawableR.ic_clear),
                     contentDescription = stringResource(stringR.description_clear_button),
-                    tint = Gray500
+                    tint = MaterialTheme.colorScheme.surfaceContainerHigh
                 )
             }
+        }
+
+        AnimatedVisibility(bottomHelperText != null) {
+            Spacer(Modifier.height(8.dp))
+            Text(
+                modifier = Modifier.padding(start = 4.dp),
+                text = bottomHelperText ?: "",
+                style = EDoctorTypography.labelMedium,
+                color = MaterialTheme.colorScheme.secondaryContainer,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }
@@ -136,9 +142,9 @@ private fun CustomTextFieldPrev() {
             titleText = "Full name",
             hintText = "Enter your full name",
             text = "sample text",
+            bottomHelperText = "*error",
             onTextChange = {},
-            onTextClear = {},
-            onComplete = {}
+            onTextClear = {}
         )
     }
 }

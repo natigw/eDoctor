@@ -9,5 +9,6 @@ data class RegisterFormState(
     val passwordText: String,
     val confirmPasswordText: String,
     val passwordStrength: PasswordStrength,
+    val arePasswordsIncompatible: Boolean,
     val continueButtonState: ButtonState
 )

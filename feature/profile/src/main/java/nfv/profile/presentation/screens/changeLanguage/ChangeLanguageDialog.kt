@@ -38,6 +38,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.svg.SvgDecoder
+import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
@@ -70,7 +71,7 @@ fun ChangeLanguageDialog(
     var selectedLanguage by remember { mutableStateOf(currentLanguage) }
 
     val dialogBackgroundColor = MaterialTheme.colorScheme.surfaceBright //light blue
-    val titleColor = MaterialTheme.colorScheme.outlineVariant           //a bit dark blue
+    val titleColor = MaterialTheme.colorScheme.onPrimary                //a bit dark blue
     val contentColor = MaterialTheme.colorScheme.primary                //primary blue
 
     Column(

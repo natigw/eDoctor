@@ -10,13 +10,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,12 +37,10 @@ import nfv.ui_kit.components.inputFields.CustomTextFieldPassword
 import nfv.ui_kit.components.inputFields.PasswordStrength
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
-import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.DefaultScreenPadding
 import nfv.ui_kit.theme.EDoctorTypography
-import nfv.ui_kit.theme.Primary500
-import nfv.ui_kit.theme.Typography700
 import nfv.ui_kit.R.drawable as drawableR
+import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun RegisterFormScreen(
@@ -56,12 +62,13 @@ fun RegisterFormScreen(
         }
     ) { innerPadding ->
 
-
         val isFormValid = state.fullNameText.isNotBlank() &&
                 state.emailText.isNotBlank() &&
                 state.passwordText.isNotBlank() &&
                 state.confirmPasswordText.isNotBlank() &&
-                state.passwordText == state.confirmPasswordText
+                state.arePasswordsIncompatible.not() //&&
+//                state.passwordStrength != PasswordStrength.NONE &&   //TODO -> burani duz etmisem yoxsa remember olmalidi??
+//                state.passwordStrength != PasswordStrength.WEAK
 
         val continueButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
 
@@ -70,7 +77,7 @@ fun RegisterFormScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BaseWhite)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .padding(DefaultScreenPadding)
@@ -105,13 +112,16 @@ fun RegisterInfoSection() {
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
         Text(
-            text = "Register",
-            style = EDoctorTypography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            text = stringResource(stringR.register),
+            style = EDoctorTypography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.outline
+            )
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "Please fill the form to continue the registration",
-            style = EDoctorTypography.bodyMedium.copy(color = Typography700)
+            text = stringResource(stringR.register_instruction_form),
+            style = EDoctorTypography.bodyMedium.copy(color = MaterialTheme.colorScheme.outlineVariant)
         )
     }
 }
@@ -121,66 +131,80 @@ fun RegisterFormSection(
     state: RegisterFormState,
     onUiEvent: (RegisterFormEvent) -> Unit
 ) {
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         CustomTextField(
-            titleText = "Full name",
-            hintText = "Enter your full name",
+            titleText = stringResource(stringR.full_name),
+            hintText = stringResource(stringR.full_name_description),
             text = state.fullNameText,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
             onTextChange = {
                 onUiEvent(RegisterFormEvent.OnFullNameChanged(it))
             },
             onTextClear = {
                 onUiEvent(RegisterFormEvent.OnFullNameChanged(""))
-            },
-            onComplete = {
-                //TODO -> butun fieldleri yoxla ve signin ucun request at
             }
         )
         CustomTextField(
-            titleText = "Email",
-            hintText = "Enter your email",
+            titleText = stringResource(stringR.email),
+            hintText = stringResource(stringR.email_description),
             text = state.emailText,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
+            ),
             onTextChange = {
                 onUiEvent(RegisterFormEvent.OnEmailChanged(it))
             },
             onTextClear = {
                 onUiEvent(RegisterFormEvent.OnEmailChanged(""))
-            },
-            onComplete = {
-                //TODO -> butun fieldleri yoxla ve signin ucun request at
             }
         )
         CustomTextFieldPassword(
             passwordStrength = state.passwordStrength,
-            titleText = "Password",
-            hintText = "Enter your password",
+            titleText = stringResource(stringR.password),
+            hintText = stringResource(stringR.password_description),
             text = state.passwordText,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Next
+            ),
             onTextChange = {
                 onUiEvent(RegisterFormEvent.OnPasswordChanged(it))
             },
             onTextClear = {
                 onUiEvent(RegisterFormEvent.OnPasswordChanged(""))
-            },
-            onComplete = {
-
             }
         )
         CustomTextFieldPassword(
             passwordStrength = PasswordStrength.NONE,
-            titleText = "Confirm password",
-            hintText = "Confirm your password",
+            titleText = stringResource(stringR.confirm_password),
+            hintText = stringResource(stringR.confirm_password_description),
             text = state.confirmPasswordText,
+            bottomHelperText = if (state.arePasswordsIncompatible) stringResource(stringR.passwords_incompatible) else null,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                    focusManager.clearFocus()
+                }
+            ),
             onTextChange = {
                 onUiEvent(RegisterFormEvent.OnConfirmPasswordChanged(it))
             },
             onTextClear = {
                 onUiEvent(RegisterFormEvent.OnConfirmPasswordChanged(""))
-            },
-            onComplete = {
-
             }
         )
     }
@@ -200,9 +224,12 @@ fun ButtonSection(
                 .fillMaxWidth(),
             buttonType = ButtonTypes.LARGE,
             state = state.continueButtonState,
-            textEnabled = "Continue",
+            textEnabled = stringResource(stringR.continue_),
             onClick = {
-                onUiEvent(RegisterFormEvent.OnClickContinue)
+                onUiEvent(RegisterFormEvent.OnClickContinue(
+                    email = state.emailText,
+                    password = state.passwordText
+                ))
             }
         )
         ActiveTransparentButton(
@@ -213,19 +240,19 @@ fun ButtonSection(
             textEnabled = "",
             textEnabledAnnotated = buildAnnotatedString {
                 withStyle(
-                    style = EDoctorTypography.bodyMedium.copy(color = Typography700)
+                    style = EDoctorTypography.bodyMedium.copy(color = MaterialTheme.colorScheme.outlineVariant)
                         .toSpanStyle()
                 ) {
-                    append("Have an account? ")
+                    append(stringResource(stringR.already_have_an_account))
                 }
                 withStyle(
                     style = EDoctorTypography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Primary500
+                        color = MaterialTheme.colorScheme.primary
                     )
                         .toSpanStyle()
                 ) {
-                    append("Sign in")
+                    append(stringResource(stringR.sign_in))
                 }
             },
             onClick = {
@@ -244,16 +271,11 @@ private fun checkPasswordStrength(password: String): PasswordStrength {
 
     if (password.isBlank() || passwordLength < 4)
         return PasswordStrength.NONE
-
     else if (passwordLength < 6 || !hasLowerCase || !hasUpperCase || !hasDigit) {
         return PasswordStrength.WEAK
-    }
-
-    else if (!hasSpecialChar) {
+    } else if (!hasSpecialChar) {
         return PasswordStrength.MEDIUM
-    }
-
-    else return PasswordStrength.STRONG
+    } else return PasswordStrength.STRONG
 }
 
 @Preview(showBackground = true)
@@ -266,6 +288,7 @@ private fun RegisterFormScreenPrev() {
             passwordText = "",
             confirmPasswordText = "",
             passwordStrength = PasswordStrength.NONE,
+            arePasswordsIncompatible = false,
             continueButtonState = ButtonState.DISABLED
         ),
         onUiEvent = { }

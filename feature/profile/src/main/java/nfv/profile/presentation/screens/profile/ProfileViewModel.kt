@@ -7,8 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
-import nfv.profile.presentation.screens.changeLanguage.SupportedLanguages
-import nfv.profile.presentation.screens.changeTheme.SupportedThemes
+import nfv.navigation.routes.HistoryRoute
+import nfv.navigation.routes.HomeRoute
+import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
+import nfv.profile.presentation.screens.changeTheme.model.SupportedThemes
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,57 +51,63 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.GoToMedicalInfo -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate(MedicalInfoNavigation)
+//                        navigate()
                     }
                 }
             }
 
-            ProfileEvent.OnOptionEditProfileClicked ->  {
+            ProfileEvent.OnOptionEditProfileClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate()
+//                        navigate()
                     }
                 }
             }
-            ProfileEvent.OnOptionChangePasscodeClicked ->  {
+
+            ProfileEvent.OnOptionChangePasscodeClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate()
+//                        navigate()
                     }
                 }
             }
-            ProfileEvent.OnOptionBiometricsClicked ->  {
+
+            ProfileEvent.OnOptionBiometricsClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate()
+//                        navigate()
                     }
                 }
             }
+
             ProfileEvent.OnOptionAllowScreenshotsClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate()
+//                        navigate()
                     }
                 }
             }
-            ProfileEvent.OnOptionTermsClicked ->  {
+
+            ProfileEvent.OnOptionTermsClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate()
+//                        navigate()
                     }
                 }
             }
+
             ProfileEvent.OnOptionAboutUsClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate()
+//                        navigate()
                     }
                 }
             }
+
             ProfileEvent.OnLogoutClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate()
+//                        navigate()
                     }
                 }
             }
@@ -108,7 +116,11 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.GoToHome -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate(HomeNavigation)
+                        navigate(HomeRoute) {
+                            popUpTo(HomeRoute) {
+                                inclusive = true
+                            }
+                        }
                     }
                 }
             }
@@ -116,14 +128,21 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.GoToHistory -> {
                 viewModelScope.launch {
                     navigator.command {
-                        this.navigate(HistoryNavigation)
+//                        navigate(HistoryNavigation) {        //TODO -> navigation olmalidi yoxsa route?
+//                            popUpTo(HistoryNavigation) {
+//                                inclusive = true
+//                            }
+//                        }
+                        navigate(HistoryRoute) {
+                            popUpTo(HistoryRoute) {
+                                inclusive = true
+                            }
+                        }
                     }
                 }
             }
 
-            ProfileEvent.GoToProfile -> {
-
-            }
+            ProfileEvent.GoToProfile -> {}
         }
     }
 }

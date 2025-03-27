@@ -91,7 +91,7 @@ fun HomeScreen(
         bottomBar = {
             HomeBottomBar(
                 onClickHome = {
-
+                    onUiEvent(HomeEvent.GoToHome)
                 },
                 onClickHistory = {
                     onUiEvent(HomeEvent.GoToHistory)
@@ -114,11 +114,22 @@ fun HomeScreen(
             SearchBarWithFilterButton(
                 modifier = Modifier.padding(16.dp),
                 hintText = stringResource(stringR.search_symptoms_diseases),
-                onComplete = {
-
+                text = state.searchText,
+                onTextChange = {
+                    onUiEvent(HomeEvent.OnSearchTextChanged(it))
+                },
+                onTextClear = {
+                    onUiEvent(HomeEvent.OnSearchTextChanged(""))
+                },
+                onSearch = {
+                    onUiEvent(HomeEvent.OnSearchTextSearched)
                 },
                 onClickFilterButton = {
-
+                    onUiEvent(HomeEvent.OnSearchFiltered(
+                        filter = {
+                            //TODO -> fix it
+                        }
+                    ))
                 }
             )
 
@@ -428,7 +439,10 @@ private fun HomeBottomBar(
 @Composable
 private fun HomeScreenPrev() {
     HomeScreen(
-        state = HomeState("Natig"),
+        state = HomeState(
+            username = "Natig",
+            searchText = ""
+        ),
         onUiEvent = {}
     )
 }

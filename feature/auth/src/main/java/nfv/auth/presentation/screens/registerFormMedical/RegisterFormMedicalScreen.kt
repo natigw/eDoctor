@@ -56,11 +56,11 @@ fun RegisterFormMedicalScreen(
     ) { innerPadding ->
 
 
-        val isFormValid = state.bloodType &&
-                state.sex &&
-                state.weight &&
-                state.birthDate
-
+//        val isFormValid = state.bloodType &&
+//                state.sex &&
+//                state.weight &&
+//                state.birthDate
+        val isFormValid = true
         val registerButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
 
         Column(
@@ -126,13 +126,10 @@ fun RegisterFormMedicalSection(
             hintText = "Enter your blood type",
             text = state.bloodType.notation,
             onTextChange = {
-                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(it))
+//                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(it))
             },
             onTextClear = {
-                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(""))
-            },
-            onComplete = {
-                //TODO -> butun fieldleri yoxla ve signin ucun request at
+//                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(""))
             }
         )
         CustomTextField(
@@ -140,13 +137,10 @@ fun RegisterFormMedicalSection(
             hintText = "Enter your sex",
             text = state.sex.displayName,
             onTextChange = {
-                onUiEvent(RegisterFormMedicalEvent.OnSexChanged(it))
+//                onUiEvent(RegisterFormMedicalEvent.OnSexChanged(it))
             },
             onTextClear = {
-                onUiEvent(RegisterFormMedicalEvent.OnSexChanged(""))
-            },
-            onComplete = {
-                //TODO -> butun fieldleri yoxla ve signin ucun request at
+//                onUiEvent(RegisterFormMedicalEvent.OnSexChanged(""))
             }
         )
         CustomTextField(
@@ -154,13 +148,10 @@ fun RegisterFormMedicalSection(
             hintText = "Enter your weight",
             text = state.weight.toString(),
             onTextChange = {
-                onUiEvent(RegisterFormMedicalEvent.OnWeightChanged(it))
+//                onUiEvent(RegisterFormMedicalEvent.OnWeightChanged(it))
             },
             onTextClear = {
                 onUiEvent(RegisterFormMedicalEvent.OnWeightChanged(0.0))
-            },
-            onComplete = {
-
             }
         )
         CustomTextField(
@@ -168,13 +159,10 @@ fun RegisterFormMedicalSection(
             hintText = "Enter your birth date",
             text = state.birthDate.time.toString(),
             onTextChange = {
-                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(it))
+//                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(it))
             },
             onTextClear = {
-                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(""))
-            },
-            onComplete = {
-
+//                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(""))
             }
         )
     }

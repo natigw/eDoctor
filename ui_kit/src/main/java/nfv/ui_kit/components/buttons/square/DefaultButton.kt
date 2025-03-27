@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ripple
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,7 +44,6 @@ import nfv.ui_kit.theme.Gray300
 import nfv.ui_kit.theme.Gray50
 import nfv.ui_kit.theme.SquareButtonShape
 import nfv.ui_kit.theme.Typography300
-import nfv.ui_kit.theme.Typography900
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
@@ -80,7 +80,7 @@ fun DefaultButton(
     val contentColor by animateColorAsState(
         targetValue = when (state) {
             ButtonState.DISABLED -> Typography300
-            ButtonState.ENABLED, ButtonState.LOADING, ButtonState.COMPLETED -> Typography900
+            ButtonState.ENABLED, ButtonState.LOADING, ButtonState.COMPLETED -> MaterialTheme.colorScheme.outline
         }
     )
 

@@ -1,4 +1,4 @@
-package nfv.auth.presentation.screens.onboard
+package nfv.auth.presentation.screens.registerCompletion
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

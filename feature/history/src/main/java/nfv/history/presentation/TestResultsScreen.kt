@@ -1,4 +1,4 @@
-package nfv.history
+package nfv.history.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -57,12 +58,8 @@ import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun TestResultsScreen(
-    onGoToHome: () -> Unit,
-    onGotoHistory: () -> Unit,
-    onGoToProfile: () -> Unit,
-    isComingFromProfile: Boolean,
-    onClickBack: () -> Unit,
-    onClickDownloadDocument: (String) -> Unit
+    state: HistoryState,
+    onUiEvent: (HistoryEvent) -> Unit
 ) {
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
@@ -71,10 +68,12 @@ fun TestResultsScreen(
             Column {
                 TopBar(
                     headerText = stringResource(stringR.header_test_results),
-                    leadingIcon = if (isComingFromProfile)
+                    leadingIcon = if (false)//state.isComingFromProfile)
                         IconWithAction(
                             icon = drawableR.ic_arrow_left,
-                            action = onClickBack
+                            action = {
+                                onUiEvent(HistoryEvent.OnNavigateBack)
+                            }
                         )
                     else null,
                     trailingIcon = IconWithAction(
@@ -91,29 +90,42 @@ fun TestResultsScreen(
                     SearchBarWithFilterButton(
                         modifier = Modifier.padding(16.dp),
                         hintText = stringResource(stringR.search_for_result),
-                        onComplete = {
-
+                        text = state.searchText,
+                        onTextChange = {
+                            onUiEvent(HistoryEvent.OnSearchTextChanged(it))
+                        },
+                        onTextClear = {
+                            onUiEvent(HistoryEvent.OnSearchTextChanged(""))
+                        },
+                        onSearch = {
+                            onUiEvent(HistoryEvent.OnSearchTextSearched(state.searchText))
                         },
                         onClickFilterButton = {
-
+                            //TODO
                         }
                     )
                 }
             }
         },
         bottomBar = {
-            if (isComingFromProfile.not())
+            if (true)//isComingFromProfile.not())
                 HistoryBottomBar(
-                    onGoToHome = onGoToHome,
-                    onGoToHistory = onGotoHistory,
-                    onGoToProfile = onGoToProfile
+                    onGoToHome = {
+                        onUiEvent(HistoryEvent.GoToHome)
+                    },
+                    onGoToHistory = {
+                        onUiEvent(HistoryEvent.GoToHistory)
+                    },
+                    onGoToProfile = {
+                        onUiEvent(HistoryEvent.GoToProfile)
+                    }
                 )
         }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BaseWhite)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
             val data = mapOf(
@@ -205,7 +217,7 @@ fun TestResultsScreen(
             ResultListByMonth(
                 groupedResults = data,
                 onClickDownloadDocument = {
-                    onClickDownloadDocument(it)
+//                    onClickDownloadDocument(it)
                 }
             )
         }
@@ -435,11 +447,9 @@ data class TestResultItem(
 @Composable
 private fun TestResultsPrev() {
     TestResultsScreen(
-        isComingFromProfile = false,
-        onGoToHome = {},
-        onGotoHistory = {},
-        onGoToProfile = {},
-        onClickBack = { },
-        onClickDownloadDocument = { }
+        state = HistoryState(
+            searchText = ""
+        ),
+        onUiEvent = {}
     )
 }

@@ -26,10 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,8 +40,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.icon.FlexibleIconButton
+import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.InputFieldShape
 import nfv.ui_kit.R.drawable as drawableR
@@ -54,9 +51,12 @@ import nfv.ui_kit.R.string as stringR
 fun SearchBar(
     modifier: Modifier = Modifier,
     hintText: String? = null,
-    onComplete: (String) -> Unit
+    text: String,
+    onTextChange: (String) -> Unit,
+    onTextClear: () -> Unit,
+    onSearch: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
@@ -67,7 +67,11 @@ fun SearchBar(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(),
                 onClick = {
-
+                    if (text.isNotBlank()) {
+                        onSearch(text)
+                        keyboardController?.hide()
+                        focusManager.clearFocus()
+                    }
                 }
             )
             .border(
@@ -88,9 +92,7 @@ fun SearchBar(
         BasicTextField(
             modifier = Modifier.weight(1f),
             value = text,
-            onValueChange = {
-                text = it
-            },
+            onValueChange = onTextChange,
             textStyle = EDoctorTypography.bodyMedium,
             singleLine = true,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.surfaceContainerHigh),
@@ -99,7 +101,7 @@ fun SearchBar(
             ),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    onComplete(text)
+                    onSearch(text)
                     keyboardController?.hide()
                     focusManager.clearFocus()
                 }
@@ -131,9 +133,7 @@ fun SearchBar(
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(),
-                        onClick = {
-                            text = ""
-                        }
+                        onClick = onTextClear
                     ),
                 imageVector = ImageVector.vectorResource(drawableR.ic_clear),
                 contentDescription = stringResource(stringR.description_clear_button),
@@ -147,7 +147,10 @@ fun SearchBar(
 fun SearchBarWithFilterButton(
     modifier: Modifier = Modifier,
     hintText: String? = null,
-    onComplete: (String) -> Unit,
+    text: String,
+    onTextChange: (String) -> Unit,
+    onTextClear: () -> Unit,
+    onSearch: (String) -> Unit,
     onClickFilterButton: (ButtonState) -> Unit
 ) {
 
@@ -159,7 +162,10 @@ fun SearchBarWithFilterButton(
         SearchBar(
             modifier = Modifier.weight(1f),
             hintText = hintText,
-            onComplete = onComplete
+            text = text,
+            onTextChange = onTextChange,
+            onTextClear = onTextClear,
+            onSearch = onSearch
         )
         Spacer(Modifier.width(8.dp))
         FlexibleIconButton(
@@ -184,19 +190,26 @@ private fun SearchBarPrev() {
         SearchBar(
             modifier = Modifier.padding(16.dp),
             hintText = "Test search",
-            onComplete = {
-
-            }
+            text = "",
+            onTextChange = {},
+            onTextClear = {},
+            onSearch = {}
         )
         SearchBarWithFilterButton(
             modifier = Modifier.padding(16.dp),
-            onComplete = {},
+            text = "",
+            onTextChange = {},
+            onTextClear = {},
+            onSearch = {},
             onClickFilterButton = {}
         )
         SearchBarWithFilterButton(
             modifier = Modifier.padding(16.dp),
             hintText = "",
-            onComplete = {},
+            text = "",
+            onTextChange = {},
+            onTextClear = {},
+            onSearch = {},
             onClickFilterButton = {}
         )
     }

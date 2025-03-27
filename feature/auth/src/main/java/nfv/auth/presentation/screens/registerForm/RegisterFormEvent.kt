@@ -7,6 +7,6 @@ sealed interface RegisterFormEvent {
     class OnConfirmPasswordChanged(val newValue: String) : RegisterFormEvent
 
     data object OnNavigateBack : RegisterFormEvent
-    data object OnClickContinue : RegisterFormEvent
     data object GoToLoginScreen : RegisterFormEvent
+    data class OnClickContinue(val email: String, val password: String) : RegisterFormEvent
 }
