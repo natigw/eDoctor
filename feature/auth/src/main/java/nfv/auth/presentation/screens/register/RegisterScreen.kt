@@ -112,6 +112,12 @@ fun RegisterScreen(
                     ) {
                         append(stringResource(stringR.privacy_policy))
                     }
+                    withStyle(
+                        style = EDoctorTypography.labelMedium.copy(color = MaterialTheme.colorScheme.outlineVariant)
+                            .toSpanStyle()
+                    ) {
+                        append(stringResource(stringR.register_terms3))
+                    }
                 },
                 textAlign = TextAlign.Center
             )

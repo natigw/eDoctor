@@ -7,5 +7,7 @@ data class ProfileState(
     val userFullName: String,
     val profileLink: String,
     val currentLanguage: SupportedLanguages,
-    val currentTheme: SupportedThemes
+    val currentTheme: SupportedThemes,
+    val allowBiometrics: Boolean,
+    val allowScreenshots: Boolean
 )

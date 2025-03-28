@@ -64,62 +64,16 @@ fun TestResultsScreen(
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
-            var isSearchClicked by remember { mutableStateOf(false) }
-            Column {
-                TopBar(
-                    headerText = stringResource(stringR.header_test_results),
-                    leadingIcon = if (false)//state.isComingFromProfile)
-                        IconWithAction(
-                            icon = drawableR.ic_arrow_left,
-                            action = {
-                                onUiEvent(HistoryEvent.OnNavigateBack)
-                            }
-                        )
-                    else null,
-                    trailingIcon = IconWithAction(
-                        icon = drawableR.ic_search,
-                        action = {
-                            isSearchClicked = !isSearchClicked
-                        }
-                    )
-                )
-
-                AnimatedVisibility(
-                    visible = isSearchClicked
-                ) {
-                    SearchBarWithFilterButton(
-                        modifier = Modifier.padding(16.dp),
-                        hintText = stringResource(stringR.search_for_result),
-                        text = state.searchText,
-                        onTextChange = {
-                            onUiEvent(HistoryEvent.OnSearchTextChanged(it))
-                        },
-                        onTextClear = {
-                            onUiEvent(HistoryEvent.OnSearchTextChanged(""))
-                        },
-                        onSearch = {
-                            onUiEvent(HistoryEvent.OnSearchTextSearched(state.searchText))
-                        },
-                        onClickFilterButton = {
-                            //TODO
-                        }
-                    )
-                }
-            }
+            HistoryTopBar(
+                state = state,
+                onUiEvent = onUiEvent
+            )
         },
         bottomBar = {
-            if (true)//isComingFromProfile.not())
-                HistoryBottomBar(
-                    onGoToHome = {
-                        onUiEvent(HistoryEvent.GoToHome)
-                    },
-                    onGoToHistory = {
-                        onUiEvent(HistoryEvent.GoToHistory)
-                    },
-                    onGoToProfile = {
-                        onUiEvent(HistoryEvent.GoToProfile)
-                    }
-                )
+            HistoryBottomBar(
+                state = state,
+                onUiEvent = onUiEvent
+            )
         }
     ) { innerPadding ->
         Column(
@@ -128,96 +82,59 @@ fun TestResultsScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
-            val data = mapOf(
-                "Yanvar" to listOf(
-                    TestResultItem(
-                        0,
-                        "Qan analizi",
-                        "Referans Lab",
-                        "10 yanvar"
-                    ),
-                    TestResultItem(
-                        1,
-                        "Pregnancy test",
-                        "Merkezi klinika",
-                        "12 yanvar"
-                    ),
-                    TestResultItem(
-                        2,
-                        "Qlükoza",
-                        "Merkezi klinika",
-                        "15 yanvar"
-                    )
-                ),
-                "Mart" to listOf(
-                    TestResultItem(
-                        3,
-                        "Xolesterin",
-                        "Referans Lab",
-                        "5 fevral"
-                    )
-                ),
-                "Iyun" to listOf(
-                    TestResultItem(
-                        4,
-                        "D vitamini",
-                        "Referans Lab",
-                        "20 fevral"
-                    ),
-                    TestResultItem(
-                        5,
-                        "Kalsium",
-                        "Merkezi klinika",
-                        "28 fevral"
-                    )
-                ),
-                "Yanvar1" to listOf(
-                    TestResultItem(
-                        0,
-                        "Qan analizi",
-                        "Referans Lab",
-                        "10 yanvar"
-                    ),
-                    TestResultItem(
-                        1,
-                        "Pregnancy test",
-                        "Merkezi klinika",
-                        "12 yanvar"
-                    ),
-                    TestResultItem(
-                        2,
-                        "Qlükoza",
-                        "Merkezi klinika",
-                        "15 yanvar"
-                    )
-                ),
-                "Mart2" to listOf(
-                    TestResultItem(
-                        3,
-                        "Xolesterin",
-                        "Referans Lab",
-                        "5 fevral"
-                    )
-                ),
-                "Iyun3" to listOf(
-                    TestResultItem(
-                        4,
-                        "D vitamini",
-                        "Referans Lab",
-                        "20 fevral"
-                    ),
-                    TestResultItem(
-                        5,
-                        "Kalsium",
-                        "Merkezi klinika",
-                        "28 fevral"
-                    )
-                )
-            )
             ResultListByMonth(
-                groupedResults = data,
+                groupedResults = state.testResults,
                 onClickDownloadDocument = {
-//                    onClickDownloadDocument(it)
+                    onUiEvent(HistoryEvent.OnClickDownloadDocument(it))
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun HistoryTopBar(
+    state: HistoryState,
+    onUiEvent: (HistoryEvent) -> Unit
+) {
+    var isSearchClicked by remember { mutableStateOf(false) }
+    Column {
+        TopBar(
+            headerText = stringResource(stringR.header_test_results),
+            leadingIcon = if (false)//state.isComingFromProfile)
+                IconWithAction(
+                    icon = drawableR.ic_arrow_left,
+                    action = {
+                        onUiEvent(HistoryEvent.OnNavigateBack)
+                    }
+                )
+            else null,
+            trailingIcon = IconWithAction(
+                icon = drawableR.ic_search,
+                action = {
+                    isSearchClicked = !isSearchClicked
+                }
+            )
+        )
+
+        AnimatedVisibility(
+            visible = isSearchClicked
+        ) {
+            SearchBarWithFilterButton(
+                modifier = Modifier.padding(16.dp),
+                hintText = stringResource(stringR.search_for_result),
+                text = state.searchText,
+                onTextChange = {
+                    onUiEvent(HistoryEvent.OnSearchTextChanged(it))
+                },
+                onTextClear = {
+                    onUiEvent(HistoryEvent.OnSearchTextChanged(""))
+                },
+                onSearch = {
+                    onUiEvent(HistoryEvent.OnSearchTextSearched(state.searchText))
+                },
+                onClickFilterButton = {
+                    //TODO
                 }
             )
         }
@@ -226,42 +143,45 @@ fun TestResultsScreen(
 
 @Composable
 private fun HistoryBottomBar(
-    onGoToHome: () -> Unit,
-    onGoToHistory: () -> Unit,
-    onGoToProfile: () -> Unit
+    state: HistoryState,
+    onUiEvent: (HistoryEvent) -> Unit
 ) {
-    BottomBar(
-        items = listOf(
-            BottomBarItemData(
-                icon = drawableR.ic_home_outlined,
-                label = stringResource(stringR.home),
-                onClick = onGoToHome
+    if (true)//isComingFromProfile.not())
+        BottomBar(
+            items = listOf(
+                BottomBarItemData(
+                    icon = drawableR.ic_home_outlined,
+                    label = stringResource(stringR.home),
+                    onClick = {
+                        onUiEvent(HistoryEvent.GoToHome)
+                    }
+                ),
+                BottomBarItemData(
+                    icon = drawableR.ic_history_filled,
+                    label = stringResource(stringR.history),
+                    onClick = {
+                        onUiEvent(HistoryEvent.GoToHistory)
+                    }
+                ),
+                BottomBarItemData(
+                    icon = drawableR.ic_profile_outlined,
+                    label = stringResource(stringR.profile),
+                    onClick = {
+                        onUiEvent(HistoryEvent.GoToProfile)
+                    }
+                )
             ),
-            BottomBarItemData(
-                icon = drawableR.ic_history_filled,
-                label = stringResource(stringR.history),
-                onClick = onGoToHistory
-            ),
-            BottomBarItemData(
-                icon = drawableR.ic_profile_outlined,
-                label = stringResource(stringR.profile),
-                onClick = onGoToProfile
-            )
-        ),
-        selectedItemIndex = 1
-    )
+            selectedItemIndex = 1
+        )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ResultListByMonth(
-    modifier: Modifier = Modifier,
     groupedResults: Map<String, List<TestResultItem>>, //TODO stringi date etmek lazimdi??
     onClickDownloadDocument: (String) -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier
-    ) {
+    LazyColumn {
         groupedResults.forEach { (date, resultList) ->
 
             stickyHeader {
@@ -448,7 +368,8 @@ data class TestResultItem(
 private fun TestResultsPrev() {
     TestResultsScreen(
         state = HistoryState(
-            searchText = ""
+            searchText = "",
+            testResults = emptyMap()
         ),
         onUiEvent = {}
     )

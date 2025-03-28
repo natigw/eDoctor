@@ -11,12 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -68,53 +63,60 @@ fun ChangePasscodeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            var directionText by remember { mutableStateOf("Set a new passcode") }
-            var directionTextColor by rememberSaveable { mutableStateOf(Typography900) }
-            var pinList by remember { mutableStateOf(listOf<Int>()) }
-
-            var newPinCode by remember { mutableStateOf<List<Int>?>(null) }
-
             Text(
                 modifier = Modifier.padding(DefaultScreenPadding),
-                text = "The passcode is a numeric code for quick and easy access to the application.",
-                style = EDoctorTypography.bodyMedium
+                text = stringResource(stringR.passcode_description),
+                style = EDoctorTypography.bodyMedium,
+                color = MaterialTheme.colorScheme.outline
             )
             Spacer(Modifier.weight(1f))
             Text(
                 modifier = Modifier.padding(DefaultScreenPadding),
-                text = directionText,
+                text = state.directionText,
                 style = EDoctorTypography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    color = directionTextColor
+                    color = state.directionTextColor
                 ),
                 textAlign = TextAlign.Center
             )
+
             val scope = rememberCoroutineScope()
             PasscodeKeypadSection(
                 keypadAuxiliaryButton = KeypadAuxiliaryButton.CLEAR_ALL,
-                pinList = pinList,
+                pinList = state.pinList,
                 onPinChange = {
-                    pinList = it
+                    onUiEvent(ChangePasscodeEvent.OnPinListChanged(it))
                     if (it.size == 4) {
                         scope.launch {
                             delay(500)
-                            if (newPinCode == null) {
-                                newPinCode = it
-                                pinList = emptyList()
-                                directionText = "Re-enter the passcode"
+                            if (state.newPinCode == null) {
+                                onUiEvent(ChangePasscodeEvent.OnNewPinCodeUpdated(it))
+                                onUiEvent(ChangePasscodeEvent.OnPinListChanged(emptyList()))
+                                onUiEvent(ChangePasscodeEvent.OnDirectionTextUpdated("Re-enter the passcode"))   //TODO -> string resource et
                             } else {
-                                if (newPinCode != it) {
-                                    pinList = emptyList()
-                                    directionText = "Passcodes are not same!"
-                                    directionTextColor = Danger500
+                                if (state.newPinCode != it) {
+                                    onUiEvent(ChangePasscodeEvent.OnPinListChanged(emptyList()))
+                                    onUiEvent(ChangePasscodeEvent.OnDirectionTextUpdated("Passcodes are not same!"))   //TODO -> string resource et
+                                    onUiEvent(
+                                        ChangePasscodeEvent.OnDirectionTextColorUpdated(
+                                            Danger500
+                                        )
+                                    )   //TODO -> Material resource et
                                     delay(2000)
-                                    newPinCode = null
-                                    directionText = "Set a new passcode"
-                                    directionTextColor = Typography900
+                                    onUiEvent(ChangePasscodeEvent.OnNewPinCodeUpdated(null))
+                                    onUiEvent(ChangePasscodeEvent.OnDirectionTextUpdated("Set a new passcode"))   //TODO -> string resource et
+                                    onUiEvent(
+                                        ChangePasscodeEvent.OnDirectionTextColorUpdated(
+                                            Typography900
+                                        )
+                                    )   //TODO -> Material resource et
                                 } else {
-                                    directionText = "New passcode is set!"
-                                    directionTextColor = Success500
+                                    onUiEvent(ChangePasscodeEvent.OnDirectionTextUpdated("New passcode is set!"))   //TODO -> string resource et
+                                    onUiEvent(
+                                        ChangePasscodeEvent.OnDirectionTextColorUpdated(
+                                            Success500
+                                        )
+                                    )   //TODO -> Material resource et
                                     delay(1000)
                                 }
                             }
@@ -131,7 +133,10 @@ fun ChangePasscodeScreen(
 private fun ChangePasscodeScreenPrev() {
     ChangePasscodeScreen(
         state = ChangePasscodeState(
-
+            directionText = "Set a new passcode",
+            directionTextColor = Typography900,
+            pinList = emptyList(),
+            newPinCode = null
         ),
         onUiEvent = {}
     )

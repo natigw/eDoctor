@@ -71,8 +71,7 @@ fun TopBar(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(
-                        start = if (leadingIcon != null) 32.dp else 8.dp,
-                        end = if (trailingIcon != null) 32.dp else 8.dp
+                        horizontal = if (leadingIcon != null || trailingIcon != null) 32.dp else 8.dp
                     ),
                 text = headerText ?: "",
                 style = EDoctorTypography.titleLarge.copy(

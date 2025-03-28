@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">eDoctor</string>
+    <string name="app_name" translatable="false">eDoctor</string>
 
     <string name="home">Home</string>
     <string name="history">History</string>
@@ -20,6 +20,7 @@
     <string name="register_instruction_number">Please enter your number to continue your registration</string>
     <string name="register_terms1">By signing up or logging in, I accept the apps\n</string>
     <string name="register_terms2">\ and\ </string>
+    <string name="register_terms3"/>
     <string name="terms_of_service">Terms of Service</string>
     <string name="privacy_policy">Privacy Policy</string>
 
@@ -63,7 +64,10 @@
 
     <string name="header_test_results">Test Results</string>
     <string name="header_profile">Profile</string>
+    <string name="header_medical_info">Medical info</string>    <!-- TODO stringler her modulun ozunde olmalidi yoxsa bele olar?? -->
     <string name="header_change_passcode">Change passcode</string>
+    <string name="header_terms_conditions">Terms and Conditions</string>
+    <string name="header_our_team">Our team</string>
 
     <string name="top_bar_leading_icon">Top bar leading icon</string>
     <string name="top_bar_trailing_icon">Top bar trailing icon</string>
@@ -84,6 +88,28 @@
     <string name="option_terms_conditions">Terms and Conditions</string>
     <string name="option_about_us">About us</string>
 
+    <string name="personal_details">Personal details</string>
+    <string name="blood_type">Blood type</string>
+    <string name="sex">Sex</string>
+    <string name="weight">Weight</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="edit_details">Edit details</string>
+    <string name="records">records</string>
+    <string name="no_records">No records found</string>
+    <string name="allergies">Allergies</string>
+    <string name="diagnoses_conditions">Diagnoses/Conditions</string>
+    <string name="medications_supplements">Medications/Supplements</string>
+    <string name="lab_tests">Lab tests</string>
+    <string name="doctor_contacts">Doctor contacts</string>
+
+    <string name="passcode_description">The passcode is a numeric code for quick and easy access to the application.</string>
+    <string name="direction_reenter_passcode">Re-enter the passcode</string>
+
+    <string name="general_terms">General terms</string>
+    <string name="app_version">App version</string>
+    <string name="all_rights_reserved">&#x00A9; 2025 eDoctor. All rights reserved.</string>
+    <string name="developers">Developers</string>
+
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="system">System</string>
@@ -92,4 +118,5 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="logout">Logout</string>
+    <string name="more">More</string>
 </resources>

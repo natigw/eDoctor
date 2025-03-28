@@ -16,8 +16,8 @@ object EDoctorColorScheme {
         secondary = Warning500,
         secondaryContainer = Danger500,
         tertiary = Success500,
-        onSecondary = Gray50,
-        onTertiary = Gray50,
+        onSecondary = Primary50,
+        onTertiary = Typography50,
         background = BaseWhite,
         onBackground = BaseBlack,
         surface = BaseWhite,                //top bar, bottom bar

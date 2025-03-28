@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name="nfv.home.download.DownloadCompletedReceiver"
+            android:name="nfv.history.download.DownloadCompletedReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />

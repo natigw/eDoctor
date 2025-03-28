@@ -7,8 +7,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
+import nfv.navigation.routes.AboutUsRoute
+import nfv.navigation.routes.ChangePasscodeRoute
 import nfv.navigation.routes.HistoryRoute
 import nfv.navigation.routes.HomeRoute
+import nfv.navigation.routes.LoginRoute
+import nfv.navigation.routes.MedicalInfoRoute
+import nfv.navigation.routes.TermsConditionsRoute
 import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
 import nfv.profile.presentation.screens.changeTheme.model.SupportedThemes
 import javax.inject.Inject
@@ -24,6 +29,8 @@ class ProfileViewModel @Inject constructor(
             profileLink = "",
             currentLanguage = SupportedLanguages.ENGLISH, //shared prefden
             currentTheme = SupportedThemes.DARK, //shared prefden
+            allowBiometrics = true, //shared prefden
+            allowScreenshots = true //shared prefden
         )
     )
 
@@ -51,7 +58,7 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.GoToMedicalInfo -> {
                 viewModelScope.launch {
                     navigator.command {
-//                        navigate()
+                        navigate(route = MedicalInfoRoute)
                     }
                 }
             }
@@ -67,23 +74,31 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.OnOptionChangePasscodeClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-//                        navigate()
+                        navigate(route = ChangePasscodeRoute)
                     }
                 }
             }
 
             ProfileEvent.OnOptionBiometricsClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
-//                        navigate()
+                    //code
+
+                    uiState.update { old ->
+                        old.copy(
+                            allowBiometrics = uiState.value.allowBiometrics.not()
+                        )
                     }
                 }
             }
 
             ProfileEvent.OnOptionAllowScreenshotsClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
-//                        navigate()
+                    //code
+
+                    uiState.update { old ->
+                        old.copy(
+                            allowScreenshots = uiState.value.allowScreenshots.not()
+                        )
                     }
                 }
             }
@@ -91,7 +106,7 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.OnOptionTermsClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-//                        navigate()
+                        navigate(route = TermsConditionsRoute)
                     }
                 }
             }
@@ -99,7 +114,7 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.OnOptionAboutUsClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-//                        navigate()
+                        navigate(route = AboutUsRoute)
                     }
                 }
             }
@@ -107,7 +122,11 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.OnLogoutClicked -> {
                 viewModelScope.launch {
                     navigator.command {
-//                        navigate()
+                        navigate(LoginRoute) {
+                            popUpTo(0) {      //TODO -> bunu deyis nese duz islemir naviqasiya
+                                inclusive = true
+                            }
+                        }
                     }
                 }
             }

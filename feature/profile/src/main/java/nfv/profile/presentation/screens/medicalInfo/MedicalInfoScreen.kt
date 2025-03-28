@@ -22,6 +22,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -29,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,22 +50,16 @@ import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.components.buttons.square.OutlinedButton
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
-import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.DefaultScreenPadding
 import nfv.ui_kit.theme.EDoctorTypography
-import nfv.ui_kit.theme.Gray500
-import nfv.ui_kit.theme.Primary50
-import nfv.ui_kit.theme.Primary500
-import nfv.ui_kit.theme.Primary900
-import nfv.ui_kit.theme.Typography300
-import nfv.ui_kit.theme.Typography50
-import nfv.ui_kit.theme.Typography700
+import java.util.Date
 import nfv.ui_kit.R.drawable as drawableR
+import nfv.ui_kit.R.string as stringR
 
 @Composable
 fun MedicalInfoScreen(
-    onClickBack: () -> Unit,
-    onClickLabTests: () -> Unit
+    state: MedicalInfoState,
+    onUiEvent: (MedicalInfoEvent) -> Unit
 ) {
     Scaffold(
         modifier = Modifier
@@ -71,10 +67,12 @@ fun MedicalInfoScreen(
             .systemBarsPadding(),
         topBar = {
             TopBar(
-                headerText = "Medical info",
+                headerText = stringResource(stringR.header_medical_info),
                 leadingIcon = IconWithAction(
                     icon = drawableR.ic_arrow_left,
-                    action = onClickBack
+                    action = {
+                        onUiEvent(MedicalInfoEvent.OnNavigateBack)
+                    }
                 )
             )
         }
@@ -83,41 +81,51 @@ fun MedicalInfoScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(BaseWhite)
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
+                .padding(vertical = 16.dp)
         ) {
-            Spacer(Modifier.height(16.dp))
             PersonalDetailsSection(
-                modifier = Modifier.padding(DefaultScreenPadding)
+                modifier = Modifier.padding(DefaultScreenPadding),
+                state = state,
+                onUiEvent = onUiEvent
             )
             Spacer(Modifier.height(16.dp))
-            MedicalInfoSection(onClickLabTests = onClickLabTests)
+            MedicalInfoSection(
+                state = state,
+                onUiEvent = onUiEvent
+            )
         }
     }
 }
 
 @Composable
 fun PersonalDetailsSection(
-    modifier: Modifier = Modifier
+    modifier: Modifier,
+    state: MedicalInfoState,
+    onUiEvent: (MedicalInfoEvent) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Natig Mammadov",
+            text = state.userDetails.fullName,
             style = EDoctorTypography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
-                color = Primary900
+                color = MaterialTheme.colorScheme.inversePrimary
             )
         )
         Spacer(Modifier.height(12.dp))
         Text(
-            text = "Personal details",
-            style = EDoctorTypography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
+            text = stringResource(stringR.personal_details),
+            style = EDoctorTypography.bodyLarge.copy(
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.outline
+            )
         )
 
-        var isExpanded by remember { mutableStateOf(false) }
+        var isExpanded by rememberSaveable { mutableStateOf(false) }
         val rotationDegree by animateFloatAsState(
             targetValue = if (isExpanded) 0f else -180f,
             animationSpec = tween(durationMillis = 300)
@@ -127,28 +135,28 @@ fun PersonalDetailsSection(
                 Spacer(Modifier.height(8.dp))
                 PersonalDetailsItem(
                     detailItem = PersonalDetailsItemData(
-                        title = "Blood type",
+                        title = stringResource(stringR.blood_type),
                         details = "(OR)H+"
                     )
                 )
                 Spacer(Modifier.height(8.dp))
                 PersonalDetailsItem(
                     detailItem = PersonalDetailsItemData(
-                        title = "Sex",
+                        title = stringResource(stringR.sex),
                         details = "Male"
                     )
                 )
                 Spacer(Modifier.height(8.dp))
                 PersonalDetailsItem(
                     detailItem = PersonalDetailsItemData(
-                        title = "Weight",
+                        title = stringResource(stringR.weight),
                         details = "65.2 kg"
                     )
                 )
                 Spacer(Modifier.height(8.dp))
                 PersonalDetailsItem(
                     detailItem = PersonalDetailsItemData(
-                        title = "Date of Birth",
+                        title = stringResource(stringR.date_of_birth),
                         details = "18 Mar 2005"
                     )
                 )
@@ -157,9 +165,9 @@ fun PersonalDetailsSection(
                     buttonType = ButtonTypes.SMALL,
                     state = ButtonState.ENABLED,
                     startIconRes = drawableR.ic_edit_outlined,
-                    textEnabled = "Edit details",
+                    textEnabled = stringResource(stringR.edit_details),
                     onClick = {
-
+                        onUiEvent(MedicalInfoEvent.OnEditDetailsClicked)
                     }
                 )
             }
@@ -176,8 +184,8 @@ fun PersonalDetailsSection(
                 )
                 .animateContentSize(),
             imageVector = ImageVector.vectorResource(drawableR.ic_arrow_up),
-            contentDescription = "More",
-            tint = Gray500
+            contentDescription = stringResource(stringR.more),
+            tint = MaterialTheme.colorScheme.surfaceContainerHigh
         )
     }
 }
@@ -192,14 +200,17 @@ fun PersonalDetailsItem(
     ) {
         Text(
             text = "${detailItem.title}:",
-            style = EDoctorTypography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
+            style = EDoctorTypography.bodyLarge.copy(
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.outline
+            )
         )
         Spacer(Modifier.width(8.dp))
         Text(
             text = detailItem.details,
             style = EDoctorTypography.bodyLarge.copy(
                 fontStyle = FontStyle.Italic,
-                color = Typography700
+                color = MaterialTheme.colorScheme.outlineVariant
             )
         )
     }
@@ -212,54 +223,62 @@ data class PersonalDetailsItemData(
 
 @Composable
 fun MedicalInfoSection(
-    modifier: Modifier = Modifier,
-    onClickLabTests: () -> Unit
+    state: MedicalInfoState,
+    onUiEvent: (MedicalInfoEvent) -> Unit
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    Column {
         MedicalInfoItem(
             infoItem = MedicalItemData(
                 icon = drawableR.ic_allergy_filled,
-                title = "Allergies",
-                recordCount = 2,
-                onClick = {}
+                title = stringResource(stringR.allergies),
+                recordCount = state.allergies.size,
+                onClick = {
+                    onUiEvent(MedicalInfoEvent.GoToAllergies)
+                }
             )
         )
         Spacer(Modifier.height(10.dp))
         MedicalInfoItem(
             infoItem = MedicalItemData(
                 icon = drawableR.ic_diagnosis_filled,
-                title = "Diagnoses/Conditions",
-                recordCount = 4,
-                onClick = {}
+                title = stringResource(stringR.diagnoses_conditions),
+                recordCount = state.diagnoses.size,
+                onClick = {
+                    onUiEvent(MedicalInfoEvent.GoToAllergies)
+                }
             )
         )
         Spacer(Modifier.height(10.dp))
         MedicalInfoItem(
             infoItem = MedicalItemData(
                 icon = drawableR.ic_medication_filled,
-                title = "Medications/Supplements",
-                recordCount = 0,
-                onClick = {}
+                title = stringResource(stringR.medications_supplements),
+                recordCount = state.medications.size,
+                onClick = {
+                    onUiEvent(MedicalInfoEvent.GoToAllergies)
+                }
             )
         )
         Spacer(Modifier.height(10.dp))
         MedicalInfoItem(
             infoItem = MedicalItemData(
                 icon = drawableR.ic_tests_filled,
-                title = "Lab tests",
-                recordCount = 7,
-                onClick = onClickLabTests
+                title = stringResource(stringR.lab_tests),
+                recordCount = state.labTests.size,
+                onClick = {
+                    onUiEvent(MedicalInfoEvent.GoToAllergies)
+                }
             )
         )
         Spacer(Modifier.height(10.dp))
         MedicalInfoItem(
             infoItem = MedicalItemData(
                 icon = drawableR.ic_doctor_contact_filled,
-                title = "Doctor contacts",
-                recordCount = 7,
-                onClick = {}
+                title = stringResource(stringR.doctor_contacts),
+                recordCount = state.doctorContacts.size,
+                onClick = {
+                    onUiEvent(MedicalInfoEvent.GoToAllergies)
+                }
             )
         )
     }
@@ -282,7 +301,7 @@ fun MedicalInfoItem(
                     infoItem.onClick
                 }
             )
-            .background(Primary500)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(vertical = 16.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -292,7 +311,7 @@ fun MedicalInfoItem(
                 .size(32.dp),
             imageVector = ImageVector.vectorResource(infoItem.icon),
             contentDescription = infoItem.title,
-            tint = Primary50
+            tint = MaterialTheme.colorScheme.onSecondary
         )
 
         Column(
@@ -304,14 +323,18 @@ fun MedicalInfoItem(
                 text = infoItem.title,
                 style = EDoctorTypography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    color = Typography50
+                    color = MaterialTheme.colorScheme.onTertiary
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = if (infoItem.recordCount <= 0) "No records found" else "${infoItem.recordCount} records",
-                style = EDoctorTypography.labelMedium.copy(color = Typography300),
+                text = if (infoItem.recordCount <= 0) stringResource(stringR.no_records) else "${infoItem.recordCount} ${
+                    stringResource(
+                        stringR.records
+                    )
+                }",
+                style = EDoctorTypography.labelMedium.copy(color = MaterialTheme.colorScheme.surfaceContainer),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -323,7 +346,7 @@ fun MedicalInfoItem(
                 .size(24.dp),
             imageVector = ImageVector.vectorResource(drawableR.ic_arrow_right),
             contentDescription = stringResource(R.string.details_option),
-            tint = Primary50
+            tint = MaterialTheme.colorScheme.onSecondary
         )
     }
 }
@@ -339,7 +362,20 @@ data class MedicalItemData(
 @Composable
 private fun MedicalInfoScreenPrev() {
     MedicalInfoScreen(
-        onClickBack = {},
-        onClickLabTests = {}
+        state = MedicalInfoState(
+            userDetails = UserDetails(
+                fullName = "Cart",
+                bloodType = BloodType.FIRST_NEGATIVE,
+                sex = Sex.MALE,
+                weight = 65.0,
+                birthDate = Date()
+            ),
+            allergies = emptyList(),
+            diagnoses = emptyList(),
+            medications = emptyList(),
+            labTests = emptyList(),
+            doctorContacts = emptyList()
+        ),
+        onUiEvent = {}
     )
 }

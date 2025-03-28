@@ -26,11 +26,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,10 +47,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import kotlinx.coroutines.launch
 import nfv.profile.presentation.screens.changeLanguage.ChangeLanguageDialog
 import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
-import nfv.profile.presentation.screens.changeTheme.presentation.ChangeThemeDialog
 import nfv.profile.presentation.screens.changeTheme.model.SupportedThemes
+import nfv.profile.presentation.screens.changeTheme.presentation.ChangeThemeDialog
 import nfv.ui_kit.R
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
@@ -118,10 +121,14 @@ fun ProfileScreen(
 
             var isLanguageSheetOpen by remember { mutableStateOf(false) }
             var isThemeSheetOpen by remember { mutableStateOf(false) }
+            val languageBShState = rememberModalBottomSheetState()
+            val themeBShState = rememberModalBottomSheetState()
+            val scope = rememberCoroutineScope()
 
             if (isLanguageSheetOpen) {
                 ModalBottomSheet(
                     modifier = Modifier.statusBarsPadding(),
+                    sheetState = languageBShState,
                     onDismissRequest = {
                         isLanguageSheetOpen = false
                     },
@@ -132,6 +139,10 @@ fun ProfileScreen(
                         currentLanguage = state.currentLanguage,
                         onConfirm = {
                             onUiEvent(ProfileEvent.OnLanguageConfirmed(it))
+                            scope.launch {
+                                languageBShState.hide()
+                                isLanguageSheetOpen = false
+                            }
                         }
                     )
                 }
@@ -139,6 +150,7 @@ fun ProfileScreen(
             if (isThemeSheetOpen) {
                 ModalBottomSheet(
                     modifier = Modifier.statusBarsPadding(),
+                    sheetState = themeBShState,
                     onDismissRequest = {
                         isThemeSheetOpen = false
                     },
@@ -149,6 +161,10 @@ fun ProfileScreen(
                         currentTheme = state.currentTheme,
                         onConfirm = {
                             onUiEvent(ProfileEvent.OnThemeConfirmed(it))
+                            scope.launch {
+                                themeBShState.hide()
+                                isThemeSheetOpen = false
+                            }
                         }
                     )
                 }
@@ -197,21 +213,19 @@ fun ProfileScreen(
                             onUiEvent(ProfileEvent.OnOptionChangePasscodeClicked)
                         }
                     ),
-                    OptionItemData(
+                    SwitchOptionItemData(
                         icon = drawableR.ic_fingerprint,
                         title = stringResource(stringR.option_biometrics),
-                        currentOption = null,
-                        withSwitchButton = true,
-                        onClick = {
+                        isToggled = state.allowBiometrics,
+                        onToggle = {
                             onUiEvent(ProfileEvent.OnOptionBiometricsClicked)
                         }
                     ),
-                    OptionItemData(
+                    SwitchOptionItemData(
                         icon = drawableR.ic_screenshot_outlined,
                         title = stringResource(stringR.option_allow_screenshots),
-                        currentOption = null,
-                        withSwitchButton = true,
-                        onClick = {
+                        isToggled = state.allowScreenshots,
+                        onToggle = {
                             onUiEvent(ProfileEvent.OnOptionAllowScreenshotsClicked)
                         }
                     )
@@ -366,8 +380,14 @@ data class OptionItemData(
     @DrawableRes val icon: Int,
     val title: String,
     val currentOption: String?,
-    val withSwitchButton: Boolean = false,
     val onClick: () -> Unit
+)
+
+data class SwitchOptionItemData(
+    @DrawableRes val icon: Int,
+    val title: String,
+    val isToggled: Boolean,
+    val onToggle: (Boolean) -> Unit
 )
 
 @Composable
@@ -375,8 +395,6 @@ fun OptionItem(
     modifier: Modifier = Modifier,
     optionItem: OptionItemData
 ) {
-
-    var toggleState by remember { mutableStateOf(true) }
 
     Row(
         modifier = modifier
@@ -387,8 +405,6 @@ fun OptionItem(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(bounded = false),
                 onClick = {
-                    if (optionItem.withSwitchButton)
-                        toggleState = !toggleState
                     optionItem.onClick()
                 }
             )
@@ -420,24 +436,63 @@ fun OptionItem(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        if (optionItem.withSwitchButton)
-            ToggleButtonSmall(
-                modifier = Modifier
-                    .padding(horizontal = 4.dp),
-                isToggleOn = toggleState,
-                onToggle = {
-                    toggleState = !toggleState
+        Icon(
+            modifier = Modifier
+                .padding(start = 2.dp, end = 4.dp)
+                .size(24.dp),
+            imageVector = ImageVector.vectorResource(drawableR.ic_arrow_right),
+            contentDescription = stringResource(stringR.details_option),
+            tint = Gray500
+        )
+    }
+}
+
+@Composable
+fun OptionItemWithSwitch(
+    modifier: Modifier = Modifier,
+    optionItem: SwitchOptionItemData
+) {
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = ripple(bounded = false),
+                onClick = {
+                    optionItem.onToggle(optionItem.isToggled)
                 }
             )
-        else
-            Icon(
-                modifier = Modifier
-                    .padding(start = 2.dp, end = 4.dp)
-                    .size(24.dp),
-                imageVector = ImageVector.vectorResource(drawableR.ic_arrow_right),
-                contentDescription = stringResource(stringR.details_option),
-                tint = Gray500
-            )
+            .padding(vertical = 16.dp, horizontal = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .size(24.dp),
+            imageVector = ImageVector.vectorResource(optionItem.icon),
+            contentDescription = optionItem.title,
+            tint = Primary500
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 4.dp),
+            text = optionItem.title,
+            style = EDoctorTypography.bodyLarge,//.copy(fontWeight = FontWeight.Bold),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        ToggleButtonSmall(
+            modifier = Modifier
+                .padding(horizontal = 4.dp),
+            isToggleOn = optionItem.isToggled,
+            onToggle = {
+                optionItem.onToggle(optionItem.isToggled)
+            }
+        )
     }
 }
 
@@ -445,7 +500,7 @@ fun OptionItem(
 fun OptionGroup(
     modifier: Modifier = Modifier,
     titleGroup: String,
-    options: List<OptionItemData>
+    options: List<Any>
 ) {
     Column(
         modifier = modifier
@@ -459,7 +514,11 @@ fun OptionGroup(
             )
         )
         options.forEachIndexed { index, item ->
-            OptionItem(optionItem = item)
+            if (item is OptionItemData)
+                OptionItem(optionItem = item)
+            else if (item is SwitchOptionItemData)
+                OptionItemWithSwitch(optionItem = item)
+
             if (index != options.size - 1)
                 HorizontalDivider(Modifier.padding(horizontal = 20.dp), color = Gray200)
         }
@@ -475,6 +534,8 @@ private fun ProfileScreenPrev() {
             profileLink = "",
             currentLanguage = SupportedLanguages.ENGLISH,
             currentTheme = SupportedThemes.DARK,
+            allowBiometrics = true,
+            allowScreenshots = true
         ),
         onUiEvent = {}
     )

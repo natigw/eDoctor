@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Ana səhifə</string>
+    <string name="history">Tarixçə</string>
+    <string name="profile">Profil</string>
+
+    <string name="skip">Keç</string>
+    <string name="next">Növbəti</string>
+    <string name="continue_">Davam et</string>
+
+    <string name="welcome">Xoş gəldiniz!</string>
+    <string name="welcome_message">Həmişə sağlam olasınız</string>
+
+    <string name="onboard_title1">Xoş gəldiniz!</string>
+    <string name="onboard_description1">Sizə həkimlərlə görüşlərinizi səmərəli və asan şəkildə planlaşdırmaqda kömək edəcəyik.\nGəlin başlayaq!</string>
+
+    <string name="register">Qeydiyyat</string>
+    <string name="register_instruction_number">Qeydiyyatı davam etdirmək üçün nömrənizi daxil edin</string>
+    <string name="register_terms1">Qeydiyyatdan keçməklə və ya daxil olmaqla, mən tətbiqin\n</string>
+    <string name="register_terms2">\ və\ </string>
+    <string name="register_terms3">razılaşıram.</string>
+    <string name="terms_of_service">İstifadə şərtləri</string>
+    <string name="privacy_policy">Məxfilik siyasəti</string>
+
+    <string name="register_instruction_form">Qeydiyyatı davam etdirmək üçün formanı doldurun</string>
+    <string name="full_name">Tam ad</string>
+    <string name="full_name_description">Tam adınızı daxil edin</string>
+    <string name="email">Email</string>
+    <string name="email_description">Email ünvanınızı daxil edin</string>
+    <string name="password">Şifrə</string>
+    <string name="password_description">Şifrənizi daxil edin</string>
+    <string name="confirm_password">Şifrəni təsdiqləyin</string>
+    <string name="confirm_password_description">Şifrənizi yenidən daxil edin</string>
+    <string name="passwords_incompatible">*şifrələr uyğun deyil</string>
+    <string name="already_have_an_account">Hesabınız var?\ </string>
+
+    <string name="login_welcome_back">Xoş gəldiniz</string>
+    <string name="login_instruction">Daxil olmaq üçün məlumatlarınızı yazın</string>
+    <string name="dont_have_an_account">Hesabınız yoxdur?\ </string>
+
+    <string name="notifications">Bildirişlər</string>
+
+    <string name="search...">Axtar…</string>
+    <string name="search_symptoms_diseases">simptomlar, xəstəliklər…</string>
+    <string name="search_for_result">Nəticə axtar…</string>
+
+    <string name="description_search">Axtar</string>
+    <string name="description_filter_search">Axtarışı filtrlə</string>
+    <string name="description_clear_button">Mətni sil</string>
+
+    <string name="description_password_visibility">Şifrə görünüşü</string>
+
+    <string name="description_user_profile_picture">İstifadəçi profil şəkli</string>
+    <string name="description_edit_user_profile_picture">Profil şəklini redaktə et</string>
+
+    <string name="back_test_results">Geri</string>
+    <string name="details_test_result">Test nəticələri haqqında məlumat</string>
+
+    <string name="details_option">Seçim detalları</string>
+
+    <string name="header_test_results">Test Nəticələri</string>
+    <string name="header_profile">Profil</string>
+    <string name="header_medical_info">Tibbi məlumat</string>
+    <string name="header_change_passcode">Şifrəni dəyiş</string>
+    <string name="header_terms_conditions">Şərtlər və qaydalar</string>
+    <string name="header_our_team">Komandamız</string>
+
+    <string name="top_bar_leading_icon">Yuxarı panel əsas ikon</string>
+    <string name="top_bar_trailing_icon">Yuxarı panel son ikon</string>
+
+    <string name="test_date">Test tarixi:\ </string>
+    <string name="lab_name">Laboratoriya adı:\ </string>
+    <string name="download_pdf">Sənədi yüklə</string>
+
+    <string name="option_group_general">Ümumi</string>
+    <string name="option_group_security">Təhlükəsizlik</string>
+    <string name="option_group_about">Haqqında</string>
+    <string name="option_edit_profile">Profili redaktə et</string>
+    <string name="option_language">Dil</string>
+    <string name="option_theme">Tema</string>
+    <string name="option_change_passcode">Şifrəni dəyiş</string>
+    <string name="option_biometrics">Biometrik giriş</string>
+    <string name="option_allow_screenshots">Ekran görüntüsünə icazə ver</string>
+    <string name="option_terms_conditions">Şərtlər və qaydalar</string>
+    <string name="option_about_us">Haqqımızda</string>
+
+    <string name="personal_details">Şəxsi məlumatlar</string>
+    <string name="blood_type">Qan qrupu</string>
+    <string name="sex">Cins</string>
+    <string name="weight">Çəki</string>
+    <string name="date_of_birth">Doğum tarixi</string>
+    <string name="edit_details">Məlumatları redaktə et</string>
+    <string name="records">qeydlər</string>
+    <string name="no_records">Qeyd tapılmadı</string>
+    <string name="allergies">Allergiyalar</string>
+    <string name="diagnoses_conditions">Diaqnozlar/Vəziyyətlər</string>
+    <string name="medications_supplements">Dərmanlar/Qida əlavələri</string>
+    <string name="lab_tests">Laborator testləri</string>
+    <string name="doctor_contacts">Həkim əlaqələri</string>
+
+    <string name="passcode_description">Şifrə, tətbiqə tez və asan giriş üçün rəqəmsal koddur.</string>
+    <string name="direction_reenter_passcode">Şifrəni yenidən daxil edin</string>
+
+    <string name="general_terms">Ümumi şərtlər</string>
+    <string name="app_version">Tətbiq versiyası</string>
+    <string name="all_rights_reserved">&#x00A9; 2025 eDoctor. Bütün hüquqlar qorunur.</string>
+    <string name="developers">Tərtibatçılar</string>
+
+    <string name="light">İşıqlı</string>
+    <string name="dark">Tünd</string>
+    <string name="system">Sistem</string>
+
+    <string name="sign_in">Daxil ol</string>
+    <string name="sign_in_with_google">Google ilə daxil ol</string>
+    <string name="sign_in_with_facebook">Facebook ilə daxil ol</string>
+    <string name="logout">Çıxış</string>
+    <string name="more">Daha çox</string>
+</resources>

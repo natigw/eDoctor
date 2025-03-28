@@ -18,7 +18,93 @@ class HistoryViewModel @Inject constructor(
 
     val uiState = MutableStateFlow(
         HistoryState(
-            searchText = ""
+            searchText = "",
+            testResults = mapOf(
+                "Yanvar" to listOf(
+                    TestResultItem(
+                        0,
+                        "Qan analizi",
+                        "Referans Lab",
+                        "10 yanvar"
+                    ),
+                    TestResultItem(
+                        1,
+                        "Pregnancy test",
+                        "Merkezi klinika",
+                        "12 yanvar"
+                    ),
+                    TestResultItem(
+                        2,
+                        "Qlükoza",
+                        "Merkezi klinika",
+                        "15 yanvar"
+                    )
+                ),
+                "Mart" to listOf(
+                    TestResultItem(
+                        3,
+                        "Xolesterin",
+                        "Referans Lab",
+                        "5 fevral"
+                    )
+                ),
+                "Iyun" to listOf(
+                    TestResultItem(
+                        4,
+                        "D vitamini",
+                        "Referans Lab",
+                        "20 fevral"
+                    ),
+                    TestResultItem(
+                        5,
+                        "Kalsium",
+                        "Merkezi klinika",
+                        "28 fevral"
+                    )
+                ),
+                "Yanvar1" to listOf(
+                    TestResultItem(
+                        0,
+                        "Qan analizi",
+                        "Referans Lab",
+                        "10 yanvar"
+                    ),
+                    TestResultItem(
+                        1,
+                        "Pregnancy test",
+                        "Merkezi klinika",
+                        "12 yanvar"
+                    ),
+                    TestResultItem(
+                        2,
+                        "Qlükoza",
+                        "Merkezi klinika",
+                        "15 yanvar"
+                    )
+                ),
+                "Mart2" to listOf(
+                    TestResultItem(
+                        3,
+                        "Xolesterin",
+                        "Referans Lab",
+                        "5 fevral"
+                    )
+                ),
+                "Iyun3" to listOf(
+                    TestResultItem(
+                        4,
+                        "D vitamini",
+                        "Referans Lab",
+                        "20 fevral"
+                    ),
+                    TestResultItem(
+                        5,
+                        "Kalsium",
+                        "Merkezi klinika",
+                        "28 fevral"
+                    )
+                )
+            )
         )
     )
 
@@ -75,6 +161,10 @@ class HistoryViewModel @Inject constructor(
                         }
                     }
                 }
+            }
+
+            is HistoryEvent.OnClickDownloadDocument -> {
+                //download
             }
         }
     }

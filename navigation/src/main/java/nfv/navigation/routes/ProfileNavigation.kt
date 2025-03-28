@@ -9,3 +9,18 @@ data object ProfileNavigation {
 
 @Serializable
 data object ProfileRoute
+
+@Serializable
+data object MedicalInfoRoute
+
+@Serializable
+data object EditProfileRoute
+
+@Serializable
+data object ChangePasscodeRoute
+
+@Serializable
+data object TermsConditionsRoute
+
+@Serializable
+data object AboutUsRoute
