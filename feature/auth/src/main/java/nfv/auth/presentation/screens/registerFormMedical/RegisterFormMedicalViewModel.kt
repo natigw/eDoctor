@@ -72,7 +72,7 @@ class RegisterFormMedicalViewModel @Inject constructor(
 
             RegisterFormMedicalEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         popBackStack()
                     }
                 }
@@ -80,7 +80,7 @@ class RegisterFormMedicalViewModel @Inject constructor(
 
             RegisterFormMedicalEvent.OnRegisterClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
 //                        navigate()
                     }
                 }
@@ -88,7 +88,7 @@ class RegisterFormMedicalViewModel @Inject constructor(
 
             RegisterFormMedicalEvent.GoToLoginScreen -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
 //                        navigate()
                     }
                 }

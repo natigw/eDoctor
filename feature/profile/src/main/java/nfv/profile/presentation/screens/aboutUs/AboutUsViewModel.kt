@@ -18,7 +18,7 @@ class AboutUsViewModel @Inject constructor(
 
             AboutUsEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         popBackStack()
                     }
                 }

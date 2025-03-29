@@ -18,7 +18,7 @@ class TermsConditionsViewModel @Inject constructor(
 
             TermsConditionsEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         popBackStack()
                     }
                 }

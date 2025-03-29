@@ -54,6 +54,7 @@ import nfv.ui_kit.theme.Danger100
 import nfv.ui_kit.theme.Danger200
 import nfv.ui_kit.theme.Danger50
 import nfv.ui_kit.theme.Danger500
+import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Info500
 import nfv.ui_kit.theme.MainCardShape
@@ -438,11 +439,13 @@ private fun HomeBottomBar(
 @Preview(showSystemUi = false)
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen(
-        state = HomeState(
-            username = "Natig",
-            searchText = ""
-        ),
-        onUiEvent = {}
-    )
+    EDoctorTheme(darkTheme = false) {
+        HomeScreen(
+            state = HomeState(
+                username = "Natig",
+                searchText = ""
+            ),
+            onUiEvent = {}
+        )
+    }
 }

@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
 
             HomeEvent.GoToHistory -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = HistoryRoute) {
                             popUpTo(HistoryRoute) {
                                 inclusive = true
@@ -62,7 +62,7 @@ class HomeViewModel @Inject constructor(
 
             HomeEvent.GoToProfile -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = ProfileRoute) {
                             popUpTo(ProfileRoute) {
                                 inclusive = true

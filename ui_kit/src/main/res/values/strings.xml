@@ -39,6 +39,7 @@
 
     <string name="login_welcome_back">Welcome back</string>
     <string name="login_instruction">Please enter credentials to login</string>
+    <string name="forgot_password">Forgot Password</string>
     <string name="dont_have_an_account">Don’t have an account?\ </string>
 
 

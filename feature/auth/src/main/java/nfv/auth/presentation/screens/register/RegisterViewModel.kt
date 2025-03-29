@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import nfv.auth.presentation.screens.onboard.OnBoardEvent
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.RegisterFormRoute
 import javax.inject.Inject
@@ -26,7 +25,7 @@ class RegisterViewModel @Inject constructor(
 
             RegisterEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         popBackStack()
                     }
                 }
@@ -34,7 +33,7 @@ class RegisterViewModel @Inject constructor(
 
             RegisterEvent.OnContinueClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(RegisterFormRoute)
                     }
                 }

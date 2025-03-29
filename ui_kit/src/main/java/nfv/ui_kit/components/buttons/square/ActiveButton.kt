@@ -14,10 +14,10 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ripple
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -135,7 +135,7 @@ fun ActiveButton(
                     )
                 } else {
                     CircularProgressIndicator(
-                        modifier = Modifier.requiredSize(buttonType.iconSize),
+                        modifier = Modifier.requiredSize(buttonType.circularProgressSize),
                         strokeWidth = buttonType.circularProgressStrokeWidth,
                         strokeCap = StrokeCap.Round,
                         color = contentColor
@@ -222,52 +222,101 @@ private fun ActiveButtonPrev() {
     }
 
     Column {
-        ActiveButton(
-            buttonType = ButtonTypes.SMALL,
-            state = state,
-            textEnabled = "Button",
-            textLoading = "loading...",
-            startIconRes = drawableR.ic_notifications,
-            onClick = {
-                state = when (state) {
-                    ButtonState.DISABLED -> ButtonState.ENABLED
-                    ButtonState.ENABLED -> ButtonState.LOADING
-                    ButtonState.LOADING -> ButtonState.COMPLETED
-                    ButtonState.COMPLETED -> ButtonState.DISABLED
+        Row {
+            ActiveButton(
+                buttonType = ButtonTypes.SMALL,
+                state = state,
+                textEnabled = "Button",
+                textLoading = "loading...",
+                startIconRes = drawableR.ic_notifications,
+                onClick = {
+                    state = when (state) {
+                        ButtonState.DISABLED -> ButtonState.ENABLED
+                        ButtonState.ENABLED -> ButtonState.LOADING
+                        ButtonState.LOADING -> ButtonState.COMPLETED
+                        ButtonState.COMPLETED -> ButtonState.DISABLED
+                    }
                 }
-            }
-        )
-        ActiveButton(
-            buttonType = ButtonTypes.MEDIUM,
-            state = state,
-            textEnabled = "Button",
-            textLoading = "loading...",
-            endIconRes = drawableR.ic_search,
-            onClick = {
-                state = when (state) {
-                    ButtonState.DISABLED -> ButtonState.ENABLED
-                    ButtonState.ENABLED -> ButtonState.LOADING
-                    ButtonState.LOADING -> ButtonState.COMPLETED
-                    ButtonState.COMPLETED -> ButtonState.DISABLED
+            )
+            ActiveButton(
+                buttonType = ButtonTypes.SMALL,
+                state = state,
+                textEnabled = "Button",
+                startIconRes = drawableR.ic_notifications,
+                onClick = {
+                    state = when (state) {
+                        ButtonState.DISABLED -> ButtonState.ENABLED
+                        ButtonState.ENABLED -> ButtonState.LOADING
+                        ButtonState.LOADING -> ButtonState.COMPLETED
+                        ButtonState.COMPLETED -> ButtonState.DISABLED
+                    }
                 }
-            }
-        )
-        ActiveButton(
-            buttonType = ButtonTypes.LARGE,
-            state = state,
-            textEnabled = "Button",
-            textLoading = "loading...",
-            startIconRes = drawableR.ic_notifications,
-            endIconRes = drawableR.ic_search,
-            onClick = {
-                state = when (state) {
-                    ButtonState.DISABLED -> ButtonState.ENABLED
-                    ButtonState.ENABLED -> ButtonState.LOADING
-                    ButtonState.LOADING -> ButtonState.COMPLETED
-                    ButtonState.COMPLETED -> ButtonState.DISABLED
+            )
+        }
+        Row {
+            ActiveButton(
+                buttonType = ButtonTypes.MEDIUM,
+                state = state,
+                textEnabled = "Button",
+                textLoading = "loading...",
+                endIconRes = drawableR.ic_search,
+                onClick = {
+                    state = when (state) {
+                        ButtonState.DISABLED -> ButtonState.ENABLED
+                        ButtonState.ENABLED -> ButtonState.LOADING
+                        ButtonState.LOADING -> ButtonState.COMPLETED
+                        ButtonState.COMPLETED -> ButtonState.DISABLED
+                    }
                 }
-            }
-        )
+            )
+            ActiveButton(
+                buttonType = ButtonTypes.MEDIUM,
+                state = state,
+                textEnabled = "Button",
+                endIconRes = drawableR.ic_search,
+                onClick = {
+                    state = when (state) {
+                        ButtonState.DISABLED -> ButtonState.ENABLED
+                        ButtonState.ENABLED -> ButtonState.LOADING
+                        ButtonState.LOADING -> ButtonState.COMPLETED
+                        ButtonState.COMPLETED -> ButtonState.DISABLED
+                    }
+                }
+            )
+        }
+        Row {
+            ActiveButton(
+                buttonType = ButtonTypes.LARGE,
+                state = state,
+                textEnabled = "Button",
+                textLoading = "loading...",
+                startIconRes = drawableR.ic_notifications,
+                endIconRes = drawableR.ic_search,
+                onClick = {
+                    state = when (state) {
+                        ButtonState.DISABLED -> ButtonState.ENABLED
+                        ButtonState.ENABLED -> ButtonState.LOADING
+                        ButtonState.LOADING -> ButtonState.COMPLETED
+                        ButtonState.COMPLETED -> ButtonState.DISABLED
+                    }
+                }
+            )
+            ActiveButton(
+                buttonType = ButtonTypes.LARGE,
+                state = state,
+                textEnabled = "Button",
+                startIconRes = drawableR.ic_notifications,
+                endIconRes = drawableR.ic_search,
+                onClick = {
+                    state = when (state) {
+                        ButtonState.DISABLED -> ButtonState.ENABLED
+                        ButtonState.ENABLED -> ButtonState.LOADING
+                        ButtonState.LOADING -> ButtonState.COMPLETED
+                        ButtonState.COMPLETED -> ButtonState.DISABLED
+                    }
+                }
+            )
+        }
         ActiveButton(
             buttonType = ButtonTypes.SMALL,
             state = state,

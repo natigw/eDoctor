@@ -57,7 +57,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.GoToMedicalInfo -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = MedicalInfoRoute)
                     }
                 }
@@ -65,7 +65,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.OnOptionEditProfileClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
 //                        navigate()
                     }
                 }
@@ -73,7 +73,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.OnOptionChangePasscodeClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = ChangePasscodeRoute)
                     }
                 }
@@ -105,7 +105,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.OnOptionTermsClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = TermsConditionsRoute)
                     }
                 }
@@ -113,7 +113,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.OnOptionAboutUsClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = AboutUsRoute)
                     }
                 }
@@ -121,7 +121,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.OnLogoutClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(LoginRoute) {
                             popUpTo(0) {      //TODO -> bunu deyis nese duz islemir naviqasiya
                                 inclusive = true
@@ -134,7 +134,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.GoToHome -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(HomeRoute) {
                             popUpTo(HomeRoute) {
                                 inclusive = true
@@ -146,7 +146,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.GoToHistory -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
 //                        navigate(HistoryNavigation) {        //TODO -> navigation olmalidi yoxsa route?
 //                            popUpTo(HistoryNavigation) {
 //                                inclusive = true

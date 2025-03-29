@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nfv.auth.domain.repository.AuthRepository
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.RegisterRoute
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val repository: AuthRepository
 ): ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -50,7 +52,10 @@ class LoginViewModel @Inject constructor(
 
             LoginEvent.OnForgotPasswordClicked -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
+
+//                        repository.registerWithEmail()
+
 //                        navigate(route = )   //TODO -> bu ekrana getsin
                     }
                 }
@@ -59,8 +64,9 @@ class LoginViewModel @Inject constructor(
             is LoginEvent.OnLoginButtonClicked -> {
                 viewModelScope.launch {
                     //request
+
                     //navigate
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = HomeRoute)
                     }
                 }
@@ -82,7 +88,7 @@ class LoginViewModel @Inject constructor(
 
             LoginEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         this.popBackStack()
                     }
                 }
@@ -90,7 +96,7 @@ class LoginViewModel @Inject constructor(
 
             LoginEvent.GoToRegister -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = RegisterRoute)
                     }
                 }

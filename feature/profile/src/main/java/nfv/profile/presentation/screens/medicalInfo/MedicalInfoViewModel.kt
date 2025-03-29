@@ -37,7 +37,7 @@ class MedicalInfoViewModel @Inject constructor(
 
             MedicalInfoEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         popBackStack()
                     }
                 }
@@ -45,7 +45,7 @@ class MedicalInfoViewModel @Inject constructor(
 
             MedicalInfoEvent.GoToAllergies -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
 //                        navigate(route = )
                     }
                 }

@@ -14,6 +14,7 @@ enum class ButtonTypes(
     val iconSize: Dp,
     val itemSpacing: Dp,
     val textTypography: TextStyle,
+    val circularProgressSize: Dp,
     val circularProgressStrokeWidth: Dp
 ) {
     LARGE(
@@ -21,6 +22,7 @@ enum class ButtonTypes(
         iconSize = 24.dp,
         itemSpacing = 16.dp,
         textTypography = EDoctorTypography.titleSmall,
+        circularProgressSize = 28.5.dp,
         circularProgressStrokeWidth = 3.dp
     ),
     MEDIUM(
@@ -28,6 +30,7 @@ enum class ButtonTypes(
         iconSize = 20.dp,
         itemSpacing = 12.dp,
         textTypography = EDoctorTypography.bodyMedium,
+        circularProgressSize = 21.8.dp,
         circularProgressStrokeWidth = 2.5.dp
     ),
     SMALL(
@@ -35,6 +38,7 @@ enum class ButtonTypes(
         iconSize = 18.dp,
         itemSpacing = 12.dp,
         textTypography = EDoctorTypography.labelMedium,
+        circularProgressSize = 18.dp,
         circularProgressStrokeWidth = 2.dp
     )
 }

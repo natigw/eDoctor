@@ -131,7 +131,7 @@ class HistoryViewModel @Inject constructor(
 
             HistoryEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         this.popBackStack()
                     }
                 }
@@ -141,7 +141,7 @@ class HistoryViewModel @Inject constructor(
 
             HistoryEvent.GoToHome -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = HomeRoute) {
                             popUpTo(HomeRoute) {
                                 inclusive = true
@@ -153,7 +153,7 @@ class HistoryViewModel @Inject constructor(
 
             HistoryEvent.GoToProfile -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = ProfileRoute) {
                             popUpTo(ProfileRoute) {
                                 inclusive = true

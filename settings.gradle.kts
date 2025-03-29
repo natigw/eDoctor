@@ -21,10 +21,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "eDoctor"
 include(":app")
-include(":ui_kit")
 include(":feature:home")
-include(":data")
 include(":feature:auth")
-include(":navigation")
 include(":feature:profile")
 include(":feature:history")
+include(":navigation")
+include(":ui_kit")
+include(":network")

@@ -1,4 +1,4 @@
-package nfv.auth.navigation
+package nfv.auth.presentation.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel

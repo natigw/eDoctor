@@ -2,7 +2,7 @@
 <resources>
     <string name="home">Ana səhifə</string>
     <string name="history">Tarixçə</string>
-    <string name="profile">Profil</string>
+    <string name="profile">Hesab</string>
 
     <string name="skip">Keç</string>
     <string name="next">Növbəti</string>
@@ -18,12 +18,12 @@
     <string name="register_instruction_number">Qeydiyyatı davam etdirmək üçün nömrənizi daxil edin</string>
     <string name="register_terms1">Qeydiyyatdan keçməklə və ya daxil olmaqla, mən tətbiqin\n</string>
     <string name="register_terms2">\ və\ </string>
-    <string name="register_terms3">razılaşıram.</string>
+    <string name="register_terms3">\ razılaşıram.</string>
     <string name="terms_of_service">İstifadə şərtləri</string>
     <string name="privacy_policy">Məxfilik siyasəti</string>
 
     <string name="register_instruction_form">Qeydiyyatı davam etdirmək üçün formanı doldurun</string>
-    <string name="full_name">Tam ad</string>
+    <string name="full_name">Tam adınız</string>
     <string name="full_name_description">Tam adınızı daxil edin</string>
     <string name="email">Email</string>
     <string name="email_description">Email ünvanınızı daxil edin</string>
@@ -36,6 +36,7 @@
 
     <string name="login_welcome_back">Xoş gəldiniz</string>
     <string name="login_instruction">Daxil olmaq üçün məlumatlarınızı yazın</string>
+    <string name="forgot_password">Şifrəni unutdum</string>
     <string name="dont_have_an_account">Hesabınız yoxdur?\ </string>
 
     <string name="notifications">Bildirişlər</string>
@@ -106,7 +107,7 @@
     <string name="all_rights_reserved">&#x00A9; 2025 eDoctor. Bütün hüquqlar qorunur.</string>
     <string name="developers">Tərtibatçılar</string>
 
-    <string name="light">İşıqlı</string>
+    <string name="light">Açıq</string>
     <string name="dark">Tünd</string>
     <string name="system">Sistem</string>
 

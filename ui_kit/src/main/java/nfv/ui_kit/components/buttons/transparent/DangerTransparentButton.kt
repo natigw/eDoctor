@@ -122,7 +122,7 @@ fun DangerTransparentButton(
                     )
                 } else {
                     CircularProgressIndicator(
-                        modifier = Modifier.requiredSize(buttonType.iconSize),
+                        modifier = Modifier.requiredSize(buttonType.circularProgressSize),
                         strokeWidth = buttonType.circularProgressStrokeWidth,
                         strokeCap = StrokeCap.Round,
                         color = contentColor

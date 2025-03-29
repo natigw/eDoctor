@@ -7,19 +7,19 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nfv.auth.domain.repository.AuthRepository
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.LoginRoute
 import nfv.navigation.routes.OnBoardRoute
-import nfv.navigation.routes.RegisterFormMedicalRoute
-import nfv.navigation.routes.RegisterFormRoute
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.inputFields.PasswordStrength
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterFormViewModel @Inject constructor(
-    private val navigator: Navigator
-): ViewModel() {
+    private val navigator: Navigator,
+    private val repository: AuthRepository
+) : ViewModel() {
 
     val uiState = MutableStateFlow(
         RegisterFormState(
@@ -29,12 +29,12 @@ class RegisterFormViewModel @Inject constructor(
             confirmPasswordText = "",
             passwordStrength = PasswordStrength.NONE,
             arePasswordsIncompatible = false,
-            continueButtonState = ButtonState.DISABLED
+            continueButtonState = ButtonState.ENABLED
         )
     )
 
     fun handleEvent(event: RegisterFormEvent) {
-        when(event) {
+        when (event) {
             is RegisterFormEvent.OnFullNameChanged -> {
                 uiState.update { old ->
                     old.copy(
@@ -71,30 +71,37 @@ class RegisterFormViewModel @Inject constructor(
 
             is RegisterFormEvent.OnClickContinue -> {
                 viewModelScope.launch {
-                    //api request
-                    //event.email + event.password
 
-//                    uiState.update {
-//                        it.copy(
-//                            continueButtonState = ButtonState.LOADING
-//                        )
-//                    }
-//                    delay(3000)                                 //TODO -> emit en axirdadi deye button loading state kecdiyini gormuruk nece fix etmeli?
-//                    uiState.update {
-//                        it.copy(
-//                            continueButtonState = ButtonState.ENABLED
-//                        )
-//                    }
-
-                    navigator.command {
-                        navigate(route = OnBoardRoute)
+                    uiState.update { old ->
+                        old.copy(
+                            continueButtonState = ButtonState.LOADING
+                        )
                     }
+
+                    //TODO -> fieldlerin bos olub olmadigini, passwordlerin eyni oldugunu burda yoxlamaq lazimdi? -> tasklar bunun ucundu???
+
+                    delay(4000)
+                    val response = repository.registerWithEmail(
+                        email = uiState.value.emailText,
+                        password = uiState.value.passwordText
+                    )
+
+//                    uiState.update { old ->
+//                        old.copy(
+//                            continueButtonState = ButtonState.ENABLED   //TODO -> button niye loading state kecmedi
+//                        )
+//                    }
+
+                    if (response != null)
+                        navigator.sendCommand {
+                            navigate(route = OnBoardRoute)
+                        }
                 }
             }
 
             RegisterFormEvent.GoToLoginScreen -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         navigate(route = LoginRoute)
                     }
                 }
@@ -102,7 +109,7 @@ class RegisterFormViewModel @Inject constructor(
 
             RegisterFormEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         this.popBackStack()
                     }
                 }

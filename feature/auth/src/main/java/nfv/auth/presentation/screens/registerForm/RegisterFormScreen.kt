@@ -70,7 +70,7 @@ fun RegisterFormScreen(
 //                state.passwordStrength != PasswordStrength.NONE &&   //TODO -> burani duz etmisem yoxsa remember olmalidi??
 //                state.passwordStrength != PasswordStrength.WEAK
 
-        val continueButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
+//        val continueButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
 
         val passwordStrength = checkPasswordStrength(state.passwordText)
 
@@ -88,7 +88,7 @@ fun RegisterFormScreen(
             RegisterFormSection(
                 state = state.copy(
                     passwordStrength = passwordStrength,
-                    continueButtonState = continueButtonState
+//                    continueButtonState = continueButtonState
                 ),
                 onUiEvent = onUiEvent
             )
@@ -98,7 +98,7 @@ fun RegisterFormScreen(
             ButtonSection(
                 state = state.copy(
                     passwordStrength = passwordStrength,
-                    continueButtonState = continueButtonState
+//                    continueButtonState = continueButtonState
                 ),
                 onUiEvent = onUiEvent
             )
@@ -226,10 +226,7 @@ fun ButtonSection(
             state = state.continueButtonState,
             textEnabled = stringResource(stringR.continue_),
             onClick = {
-                onUiEvent(RegisterFormEvent.OnClickContinue(
-                    email = state.emailText,
-                    password = state.passwordText
-                ))
+                onUiEvent(RegisterFormEvent.OnClickContinue)
             }
         )
         ActiveTransparentButton(

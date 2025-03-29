@@ -130,7 +130,7 @@ fun LoginScreen(
                                 .copy(color = MaterialTheme.colorScheme.outlineVariant)
                                 .toSpanStyle()
                         ) {
-                            append("Forgot Password")
+                            append(stringResource(stringR.forgot_password))
                         }
                     },
                     onClick = {
@@ -148,10 +148,7 @@ fun LoginScreen(
                 textEnabled = stringResource(stringR.sign_in),
                 onClick = {
                     onUiEvent(
-                        LoginEvent.OnLoginButtonClicked(
-                            email = state.emailText,
-                            password = state.passwordText
-                        )
+                        LoginEvent.OnLoginButtonClicked
                     )
                 }
             )

@@ -1,10 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    // Serialization
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.hiltPlugin)
+    kotlin("kapt")
 }
 
 android {
-    namespace = "nfv.data"
+    namespace = "nfv.network"
     compileSdk = 35
 
     defaultConfig {
@@ -33,6 +37,22 @@ android {
 }
 
 dependencies {
+
+    // Ktor
+    api(libs.ktor.client.android)
+    api(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.json)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    api(libs.ktor.client.serialization)
+
+    // Serialization
+    api(libs.kotlinx.serialization.json)
+    api(libs.gson.v2121)
+
+    // Hilt
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

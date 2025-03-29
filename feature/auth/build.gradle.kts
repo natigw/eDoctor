@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hiltPlugin)
     kotlin("kapt")
@@ -41,6 +42,7 @@ android {
 
 dependencies {
 
+    implementation(project(":network"))
     implementation(project(":navigation"))
     implementation(project(":ui_kit"))
 

@@ -8,5 +8,5 @@ sealed interface RegisterFormEvent {
 
     data object OnNavigateBack : RegisterFormEvent
     data object GoToLoginScreen : RegisterFormEvent
-    data class OnClickContinue(val email: String, val password: String) : RegisterFormEvent
+    data object OnClickContinue: RegisterFormEvent
 }

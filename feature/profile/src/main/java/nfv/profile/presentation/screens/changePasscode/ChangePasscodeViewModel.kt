@@ -70,7 +70,7 @@ class ChangePasscodeViewModel @Inject constructor(
 
             ChangePasscodeEvent.OnNavigateBack -> {
                 viewModelScope.launch {
-                    navigator.command {
+                    navigator.sendCommand {
                         popBackStack()
                     }
                 }
