@@ -22,10 +22,12 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import kotlinx.coroutines.launch
 import nfv.auth.presentation.navigation.authNavigation
-import nfv.history.navigation.historyNavigation
+import nfv.history.presentation.navigation.historyNavigation
 import nfv.home.navigation.homeNavigation
+import nfv.map.presentation.navigation.mapNavigation
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.AuthNavigation
+import nfv.navigation.routes.HomeNavigation
 import nfv.profile.navigation.profileNavigation
 import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.Primary500
@@ -43,20 +45,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            ktorClient.get(
-                "http://192.168.2.6:8080/location/pharmacy",
-            ) {
-                header(
-                    "Authorization",
-                    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlxQGdtYWlsLmNvIiwiZXhwIjoxNzQzMjIyNDEwfQ.Q44sdwFgpC3srTL9ukl67rSj9C3SunaNJKyKeEHB7N_atHT6DPxuIAF5Q0HsZ110_qdyirSvYRYEW2KOHrqAzw"
-                )
-                header(
-                    "Accept-Language",
-                    "ru"
-                )
-            }
-        }
+//        lifecycleScope.launch {
+//            ktorClient.get(
+//                "http://192.168.2.6:8080/location/pharmacy",
+//            ) {
+//                header(
+//                    "Authorization",
+//                    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlxQGdtYWlsLmNvIiwiZXhwIjoxNzQzMjIyNDEwfQ.Q44sdwFgpC3srTL9ukl67rSj9C3SunaNJKyKeEHB7N_atHT6DPxuIAF5Q0HsZ110_qdyirSvYRYEW2KOHrqAzw"
+//                )
+//                header(
+//                    "Accept-Language",
+//                    "ru"
+//                )
+//            }
+//        }
 
         enableEdgeToEdge()
         setContent {
@@ -92,10 +94,11 @@ class MainActivity : ComponentActivity() {
                             }
                         ),
                     navController = navController,
-                    startDestination = AuthNavigation
+                    startDestination = HomeNavigation//AuthNavigation
                 ) {
                     authNavigation()
                     homeNavigation()
+                    mapNavigation()
                     historyNavigation()
                     profileNavigation()
                 }

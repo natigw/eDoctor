@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name" translatable="false">eDoctor</string>
 
+    <string name="google_maps_key" translatable="false">AIzaSyBvLffJbQxSh15JzTXaUrRVlTMupd9nTnY</string>
+
     <string name="home">Home</string>
     <string name="history">History</string>
     <string name="profile">Profile</string>
@@ -20,7 +22,7 @@
     <string name="register_instruction_number">Please enter your number to continue your registration</string>
     <string name="register_terms1">By signing up or logging in, I accept the apps\n</string>
     <string name="register_terms2">\ and\ </string>
-    <string name="register_terms3"/>
+    <string name="register_terms3" />
     <string name="terms_of_service">Terms of Service</string>
     <string name="privacy_policy">Privacy Policy</string>
 
@@ -65,6 +67,7 @@
 
     <string name="header_test_results">Test Results</string>
     <string name="header_profile">Profile</string>
+    <string name="header_maps">Near Pharmacies</string>
     <string name="header_medical_info">Medical info</string>    <!-- TODO stringler her modulun ozunde olmalidi yoxsa bele olar?? -->
     <string name="header_change_passcode">Change passcode</string>
     <string name="header_terms_conditions">Terms and Conditions</string>

@@ -11,7 +11,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -40,6 +40,8 @@ android {
 
 dependencies {
 
+    implementation(project(":network"))
+    implementation(project(":storage"))
     implementation(project(":navigation"))
     implementation(project(":ui_kit"))
 

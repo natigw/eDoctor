@@ -17,7 +17,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val navigator: Navigator,
     private val repository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
     val uiState = MutableStateFlow(
         LoginState(
@@ -28,7 +28,7 @@ class LoginViewModel @Inject constructor(
     )
 
     fun handleEvent(event: LoginEvent) {
-        when(event) {
+        when (event) {
 
             is LoginEvent.OnEmailTextChanged -> {
                 viewModelScope.launch {
@@ -63,12 +63,28 @@ class LoginViewModel @Inject constructor(
 
             is LoginEvent.OnLoginButtonClicked -> {
                 viewModelScope.launch {
-                    //request
 
-                    //navigate
-                    navigator.sendCommand {
-                        navigate(route = HomeRoute)
+                    uiState.update { old ->
+                        old.copy(
+                            loginButtonState = ButtonState.LOADING
+                        )
                     }
+
+                    val response = repository.loginWithEmail(
+                        email = uiState.value.emailText,
+                        password = uiState.value.passwordText
+                    )
+
+                    uiState.update { old ->
+                        old.copy(
+                            loginButtonState = ButtonState.ENABLED
+                        )
+                    }
+
+                    if (response != null)
+                        navigator.sendCommand {
+                            navigate(route = HomeRoute)
+                        }
                 }
             }
 

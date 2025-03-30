@@ -6,22 +6,57 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nfv.home.NewsRepository
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HistoryRoute
+import nfv.navigation.routes.MapRoute
+import nfv.navigation.routes.MedicalInfoRoute
 import nfv.navigation.routes.ProfileRoute
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val newsRepository: NewsRepository
+//    private val localPreferences: LocalRepository
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
         HomeState(
-            username = "", //request
-            searchText = ""
+            username = "",
+            searchText = "",
+            news = emptyList()
         )
     )
+
+    init {
+        fetchNews() // Automatically loads news when ViewModel is created
+    }
+
+    private fun fetchNews() {
+        viewModelScope.launch {
+            val newsList = newsRepository.getNews() // Assume this fetches news
+            if (newsList != null)
+                uiState.update { old ->
+                    old.copy(
+                        news = newsList
+                    )
+                }
+        }
+    }
+
+//    init {
+//        viewModelScope.launch {
+//            localPreferences.getUsername.collectLatest {
+//                if (it != null)
+//                    uiState.update { old ->
+//                        old.copy(
+//                            username = it
+//                        )
+//                    }
+//            }
+//        }
+//    }
 
     fun handleEvent(event: HomeEvent) {
 
@@ -72,6 +107,29 @@ class HomeViewModel @Inject constructor(
                 }
             }
 
+            HomeEvent.GoToMedicalInfo -> {
+                viewModelScope.launch {
+                    navigator.sendCommand {
+                        navigate(route = MedicalInfoRoute)
+                    }
+                }
+            }
+
+            is HomeEvent.OnNewsClicked -> {
+                viewModelScope.launch {
+                    navigator.sendCommand {
+//                        navigate(route = )
+                    }
+                }
+            }
+
+            is HomeEvent.OnMapClicked -> {
+                viewModelScope.launch {
+                    navigator.sendCommand {
+                        navigate(route = MapRoute)
+                    }
+                }
+            }
         }
     }
 }

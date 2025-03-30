@@ -4,7 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nfv.auth.data.repository.AuthRepositoryImpl
+import nfv.auth.data.remote.repository.AuthRepositoryImpl
 import nfv.auth.domain.repository.AuthRepository
 
 //@Module

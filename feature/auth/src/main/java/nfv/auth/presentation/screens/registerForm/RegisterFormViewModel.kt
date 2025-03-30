@@ -3,8 +3,8 @@ package nfv.auth.presentation.screens.registerForm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.auth.domain.repository.AuthRepository
@@ -29,11 +29,32 @@ class RegisterFormViewModel @Inject constructor(
             confirmPasswordText = "",
             passwordStrength = PasswordStrength.NONE,
             arePasswordsIncompatible = false,
-            continueButtonState = ButtonState.ENABLED
+            continueButtonState = ButtonState.DISABLED
         )
     )
 
     fun handleEvent(event: RegisterFormEvent) {
+
+        var isFormValid = false
+
+        viewModelScope.launch {
+            uiState.collectLatest {
+                isFormValid = it.fullNameText.isNotBlank() &&
+                        it.emailText.isNotBlank() &&
+                        it.passwordText.isNotBlank() &&
+                        it.confirmPasswordText.isNotBlank() &&
+                        it.arePasswordsIncompatible.not() //&&
+//                        it.passwordStrength != PasswordStrength.NONE &&
+//                        it.passwordStrength != PasswordStrength.WEAK
+            }
+
+            uiState.update { old ->
+                old.copy(
+                    continueButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
+                )
+            }
+        }
+
         when (event) {
             is RegisterFormEvent.OnFullNameChanged -> {
                 uiState.update { old ->
@@ -72,25 +93,32 @@ class RegisterFormViewModel @Inject constructor(
             is RegisterFormEvent.OnClickContinue -> {
                 viewModelScope.launch {
 
+                    //TODO -> fieldlerin bos olub olmadigini, passwordlerin eyni oldugunu burda yoxlamaq lazimdi? -> tasklar bunun ucundu???
+
+//                    val isFormValid = uiState.value.fullNameText.isNotBlank() &&
+//                            uiState.value.emailText.isNotBlank() &&
+//                            uiState.value.passwordText.isNotBlank() &&
+//                            uiState.value.confirmPasswordText.isNotBlank() &&
+//                            uiState.value.arePasswordsIncompatible.not() &&
+//                            uiState.value.passwordStrength != PasswordStrength.NONE &&
+//                            uiState.value.passwordStrength != PasswordStrength.WEAK
+
                     uiState.update { old ->
                         old.copy(
                             continueButtonState = ButtonState.LOADING
                         )
                     }
 
-                    //TODO -> fieldlerin bos olub olmadigini, passwordlerin eyni oldugunu burda yoxlamaq lazimdi? -> tasklar bunun ucundu???
-
-                    delay(4000)
                     val response = repository.registerWithEmail(
                         email = uiState.value.emailText,
                         password = uiState.value.passwordText
                     )
 
-//                    uiState.update { old ->
-//                        old.copy(
-//                            continueButtonState = ButtonState.ENABLED   //TODO -> button niye loading state kecmedi
-//                        )
-//                    }
+                    uiState.update { old ->
+                        old.copy(
+                            continueButtonState = ButtonState.ENABLED
+                        )
+                    }
 
                     if (response != null)
                         navigator.sendCommand {

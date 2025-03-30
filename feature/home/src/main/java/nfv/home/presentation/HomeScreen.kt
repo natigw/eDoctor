@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,6 +48,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import nfv.ui_kit.R
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
 import nfv.ui_kit.components.systemBars.BottomBar
@@ -145,10 +148,10 @@ fun HomeScreen(
                         iconStrokeColor = Primary200,
                         iconBackgroundColor = Primary100,
                         cardBackgroundColor = Primary50,
-                        textHeading = "Book an Appointment",
-                        textDescription = "Find a doctor or a specialist",
+                        textHeading = "Test results history",
+                        textDescription = "Display and download a test result",
                         onClick = {
-
+                            onUiEvent(HomeEvent.GoToHistory)
                         }
                     ),
                     MainCardDto(
@@ -157,10 +160,10 @@ fun HomeScreen(
                         iconStrokeColor = Success200,
                         iconBackgroundColor = Success100,
                         cardBackgroundColor = Success50,
-                        textHeading = "Appointment with QR",
-                        textDescription = "Queuing without the hustle",
+                        textHeading = "Medical info",
+                        textDescription = "Access your medical details",
                         onClick = {
-
+                            onUiEvent(HomeEvent.GoToMedicalInfo)
                         }
                     ),
                     MainCardDto(
@@ -170,9 +173,9 @@ fun HomeScreen(
                         iconBackgroundColor = Warning100,
                         cardBackgroundColor = Warning50,
                         textHeading = "Request consultation",
-                        textDescription = "Talk to Specialist",
+                        textDescription = "Talk to AI bot",
                         onClick = {
-
+//                            onUiEvent(HomeEvent.)  //TODO
                         }
                     ),
                     MainCardDto(
@@ -182,9 +185,9 @@ fun HomeScreen(
                         iconBackgroundColor = Danger100,
                         cardBackgroundColor = Danger50,
                         textHeading = "Locate a pharmacy",
-                        textDescription = "Purchase medicines",
+                        textDescription = "Find on the map",
                         onClick = {
-
+                            onUiEvent(HomeEvent.OnMapClicked)
                         }
                     )
                 ).chunked(2)
@@ -224,10 +227,17 @@ fun HomeScreen(
                 state = lazyListState,
                 flingBehavior = snapBehavior
             ) {
-                items(count = 5) {
+                itemsIndexed(state.news) { index, item ->
                     PromotionCard(
-                        textHeading = "Prevent the spread of COVID-19 Virus",
-                        backgroundColor = promotionCardColors[it]
+                        promotionItem = PromotionCardItem(
+                            backgroundColor = promotionCardColors[index.rem(promotionCardColors.size)],
+                            textHeading = item.title,
+                            textDetails = item.shortDescription,
+                            imageLink = item.imageLink,
+                            onClick = {
+                                onUiEvent(HomeEvent.OnNewsClicked(item.id))
+                            }
+                        )
                     )
                 }
             }
@@ -289,11 +299,18 @@ fun HomeCard(
     }
 }
 
+data class PromotionCardItem(
+    val backgroundColor: Color,
+    val textHeading: String,
+    val textDetails: String,
+    val imageLink: String,
+    val onClick: () -> Unit
+)
+
 @Composable
 fun PromotionCard(
     modifier: Modifier = Modifier,
-    backgroundColor: Color,
-    textHeading: String
+    promotionItem: PromotionCardItem
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val cardWidth = screenWidth - 64.dp
@@ -305,13 +322,11 @@ fun PromotionCard(
 //            .height(max(cardWidth / 3, IntrinsicSize.Max))
             .height(cardWidth / 3)
             .clip(PromotionCardShape)
-            .background(backgroundColor)
+            .background(promotionItem.backgroundColor)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(),
-                onClick = {
-
-                }
+                onClick = promotionItem.onClick
             )
     ) {
         Column(
@@ -322,7 +337,7 @@ fun PromotionCard(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = textHeading,
+                text = promotionItem.textHeading,
                 style = EDoctorTypography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = Typography50
@@ -330,7 +345,7 @@ fun PromotionCard(
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "Find out now →",
+                text = promotionItem.textDetails,
                 style = EDoctorTypography.labelMedium.copy(color = Typography50)
             )
         }
@@ -342,11 +357,13 @@ fun PromotionCard(
 //                .background(Color.Red)
 //                .absoluteOffset(x = 120.dp, y = 16.dp)
 //        )
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .fillMaxHeight(),
-            painter = painterResource(drawableR.img),
+            model = promotionItem.imageLink,
+            placeholder = painterResource(drawableR.img),
+            error = painterResource(drawableR.img_temp),
             contentDescription = "Promotion card image",
             contentScale = ContentScale.Crop
         )
@@ -443,7 +460,8 @@ private fun HomeScreenPrev() {
         HomeScreen(
             state = HomeState(
                 username = "Natig",
-                searchText = ""
+                searchText = "",
+                news = emptyList()
             ),
             onUiEvent = {}
         )

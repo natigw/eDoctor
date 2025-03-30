@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "nfv.edoctor"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -64,6 +64,7 @@ dependencies {
 
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:map"))
     implementation(project(":feature:history"))
     implementation(project(":feature:profile"))
     implementation(project(":navigation"))

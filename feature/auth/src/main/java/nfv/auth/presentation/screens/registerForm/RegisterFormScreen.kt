@@ -62,17 +62,17 @@ fun RegisterFormScreen(
         }
     ) { innerPadding ->
 
-        val isFormValid = state.fullNameText.isNotBlank() &&
-                state.emailText.isNotBlank() &&
-                state.passwordText.isNotBlank() &&
-                state.confirmPasswordText.isNotBlank() &&
-                state.arePasswordsIncompatible.not() //&&
+//        val isFormValid = state.fullNameText.isNotBlank() &&
+//                state.emailText.isNotBlank() &&
+//                state.passwordText.isNotBlank() &&
+//                state.confirmPasswordText.isNotBlank() &&
+//                state.arePasswordsIncompatible.not() //&&
 //                state.passwordStrength != PasswordStrength.NONE &&   //TODO -> burani duz etmisem yoxsa remember olmalidi??
 //                state.passwordStrength != PasswordStrength.WEAK
 
 //        val continueButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
 
-        val passwordStrength = checkPasswordStrength(state.passwordText)
+//        val passwordStrength = checkPasswordStrength(state.passwordText)
 
         Column(
             modifier = Modifier
@@ -87,7 +87,7 @@ fun RegisterFormScreen(
 
             RegisterFormSection(
                 state = state.copy(
-                    passwordStrength = passwordStrength,
+//                    passwordStrength = passwordStrength,
 //                    continueButtonState = continueButtonState
                 ),
                 onUiEvent = onUiEvent
@@ -97,7 +97,7 @@ fun RegisterFormScreen(
 
             ButtonSection(
                 state = state.copy(
-                    passwordStrength = passwordStrength,
+//                    passwordStrength = passwordStrength,
 //                    continueButtonState = continueButtonState
                 ),
                 onUiEvent = onUiEvent

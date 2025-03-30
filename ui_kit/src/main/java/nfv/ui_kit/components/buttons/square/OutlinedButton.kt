@@ -53,7 +53,7 @@ fun OutlinedButton(
     modifier: Modifier = Modifier,
     buttonType: ButtonTypes = ButtonTypes.MEDIUM,
     state: ButtonState,
-    onClick: (ButtonState) -> Unit,
+    onClick: () -> Unit,
     textEnabled: String,
     textLoading: String? = null,
     textCompleted: String? = null,
@@ -124,9 +124,7 @@ fun OutlinedButton(
                 enabled = state != ButtonState.DISABLED && state != ButtonState.LOADING,
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = {
-                    onClick(state)
-                }
+                onClick = onClick
             )
             .padding(buttonType.buttonPadding),
         contentAlignment = Alignment.Center
