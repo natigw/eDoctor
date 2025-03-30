@@ -26,10 +26,10 @@ fun NavGraphBuilder.authNavigation() {
 
         composable<OnBoardRoute> {
             val viewModel = hiltViewModel<OnBoardViewModel>()
-//            val state by viewModel.uiState.collectAsStateWithLifecycle()
+            val state by viewModel.uiState.collectAsStateWithLifecycle()
 
             OnBoardScreen(
-//                state = state,
+                state = state,
                 onUiEvent = viewModel::handleEvent
             )
 

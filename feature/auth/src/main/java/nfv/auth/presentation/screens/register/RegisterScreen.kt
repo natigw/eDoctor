@@ -1,6 +1,7 @@
 package nfv.auth.presentation.screens.register
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,11 +23,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.auth.presentation.screens.registerForm.RegisterFormEvent
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
+import nfv.ui_kit.components.buttons.transparent.ActiveTransparentButton
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
+import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
@@ -58,7 +62,7 @@ fun RegisterScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = stringResource(stringR.register),
+                text = "Welcome to eDoctor!",
                 style = EDoctorTypography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.outline
@@ -66,24 +70,57 @@ fun RegisterScreen(
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                text = stringResource(stringR.register_instruction_number),
+                text = "Sign in to the account if you already have one, or sign up for a new account",
                 style = EDoctorTypography.bodyMedium.copy(color = MaterialTheme.colorScheme.outlineVariant)
             )
 
             Spacer(Modifier.weight(1f))
 
-            ActiveButton(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                buttonType = ButtonTypes.LARGE,
-                state = ButtonState.DISABLED,
-                textEnabled = stringResource(stringR.continue_),
-                onClick = {
-                    onUiEvent(RegisterEvent.OnContinueClicked)
-                }
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
-            Spacer(Modifier.height(32.dp))
+                ActiveButton(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    buttonType = ButtonTypes.LARGE,
+                    state = ButtonState.DISABLED,
+                    textEnabled = stringResource(stringR.continue_),
+                    onClick = {
+                        onUiEvent(RegisterEvent.OnContinueClicked)
+                    }
+                )
+
+                ActiveTransparentButton(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    buttonType = ButtonTypes.LARGE,
+                    state = ButtonState.ENABLED,
+                    textEnabled = "",
+                    textEnabledAnnotated = buildAnnotatedString {
+                        withStyle(
+                            style = EDoctorTypography.bodyMedium.copy(color = MaterialTheme.colorScheme.outlineVariant)
+                                .toSpanStyle()
+                        ) {
+                            append(stringResource(stringR.already_have_an_account))
+                        }
+                        withStyle(
+                            style = EDoctorTypography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                                .toSpanStyle()
+                        ) {
+                            append(stringResource(stringR.sign_in))
+                        }
+                    },
+                    onClick = {
+                        onUiEvent(RegisterEvent.OnContinueClicked)
+                    }
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -128,9 +165,11 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 @Composable
 private fun RegisterScreenPrev() {
-    RegisterScreen(
-        state = RegisterState(
-        ),
-        onUiEvent = {}
-    )
+    EDoctorTheme {
+        RegisterScreen(
+            state = RegisterState(
+            ),
+            onUiEvent = {}
+        )
+    }
 }

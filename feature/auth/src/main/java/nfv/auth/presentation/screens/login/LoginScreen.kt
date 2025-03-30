@@ -37,6 +37,7 @@ import nfv.ui_kit.components.inputFields.CustomTextFieldPassword
 import nfv.ui_kit.components.inputFields.PasswordStrength
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
+import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
@@ -217,12 +218,14 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPrev() {
-    LoginScreen(
-        state = LoginState(
-            emailText = "",
-            passwordText = "",
-            loginButtonState = ButtonState.ENABLED
-        ),
-        onUiEvent = {}
-    )
+    EDoctorTheme {
+        LoginScreen(
+            state = LoginState(
+                emailText = "",
+                passwordText = "",
+                loginButtonState = ButtonState.ENABLED
+            ),
+            onUiEvent = {}
+        )
+    }
 }

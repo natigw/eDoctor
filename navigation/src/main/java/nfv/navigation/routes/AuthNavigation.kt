@@ -14,13 +14,13 @@ data object OnBoardRoute
 data object RegisterRoute
 
 @Serializable
-data object RegisterOTPRoute
-
-@Serializable
 data object RegisterFormRoute
 
 @Serializable
 data object RegisterFormMedicalRoute
+
+@Serializable
+data object RegisterOTPRoute
 
 @Serializable
 data object RegisterCompletionRoute

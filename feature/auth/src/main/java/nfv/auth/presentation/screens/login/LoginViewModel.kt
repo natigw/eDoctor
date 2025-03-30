@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import nfv.auth.domain.repository.AuthRepository
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HomeRoute
+import nfv.navigation.routes.RegisterFormRoute
 import nfv.navigation.routes.RegisterRoute
 import nfv.ui_kit.components.buttons.model.ButtonState
 import javax.inject.Inject
@@ -113,7 +114,7 @@ class LoginViewModel @Inject constructor(
             LoginEvent.GoToRegister -> {
                 viewModelScope.launch {
                     navigator.sendCommand {
-                        navigate(route = RegisterRoute)
+                        navigate(route = RegisterFormRoute)
                     }
                 }
             }
