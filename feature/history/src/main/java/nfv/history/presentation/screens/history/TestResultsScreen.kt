@@ -41,7 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.history.model.Data
+import nfv.history.model.HistoryResultUiItem
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
 import nfv.ui_kit.components.systemBars.BottomBar
 import nfv.ui_kit.components.systemBars.BottomBarItemData
@@ -85,8 +85,13 @@ fun TestResultsScreen(
         ) {
             ResultListByMonth(
                 groupedResults = state.testResults,
-                onClickDownloadDocument = {
-                    onUiEvent(HistoryEvent.OnClickDownloadDocument(it))
+                onClickDownloadDocument = { url, title ->
+                    onUiEvent(
+                        HistoryEvent.OnClickDownloadDocument(
+                            link = url,
+                            title = title
+                        )
+                    )
                 }
             )
         }
@@ -179,8 +184,8 @@ private fun HistoryBottomBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ResultListByMonth(
-    groupedResults: Map<String, List<Data>>, //TODO stringi date etmek lazimdi??
-    onClickDownloadDocument: (String) -> Unit
+    groupedResults: Map<String, List<HistoryResultUiItem>>, //TODO stringi date etmek lazimdi??
+    onClickDownloadDocument: (String, String) -> Unit
 ) {
     LazyColumn {
         groupedResults.forEach { (date, resultList) ->
@@ -245,7 +250,7 @@ fun ResultListByMonth(
                             Spacer(Modifier.height(4.dp))
                             if (isExpanded) {
                                 Text(
-                                    text = "description",
+                                    text = resultList[testResult].testDescription,
                                     style = EDoctorTypography.labelMedium.copy(color = Typography500)
                                 )
                                 Spacer(Modifier.height(12.dp))
@@ -257,7 +262,7 @@ fun ResultListByMonth(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = stringResource(stringR.test_date) + resultList[testResult].testDateMillis,
+                                    text = stringResource(stringR.test_date) + resultList[testResult].testDate,
                                     style = EDoctorTypography.labelMedium.copy(color = Typography500),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
@@ -270,6 +275,7 @@ fun ResultListByMonth(
                                             indication = ripple(),
                                             onClick = {
                                                 onClickDownloadDocument(
+                                                    resultList[testResult].testFileUrl,
                                                     resultList[testResult].testTitle
                                                 )
                                             }
@@ -291,7 +297,7 @@ fun ResultListByMonth(
                                 }
                             } else {
                                 Text(
-                                    text = "${resultList[testResult].testDateMillis} • ${resultList[testResult].labName}",
+                                    text = "${resultList[testResult].testDate} • ${resultList[testResult].labName}",
                                     style = EDoctorTypography.labelMedium.copy(color = Typography500),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis

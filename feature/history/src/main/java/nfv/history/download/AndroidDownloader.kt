@@ -3,24 +3,30 @@ package nfv.history.download
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
+import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 
 class AndroidDownloader(
     context: Context
-): Downloader {
+) : Downloader {
 
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
 
     override fun downloadFile(url: String, titleAppendix: String): Long {
-        val request = DownloadManager.Request(url.toUri())
-//            .setMimeType("application/pdf")
-            .setMimeType("image/jpeg")
-            .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
-//            .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE)
+        val uri = url.toUri()
+
+        val fileName = uri.lastPathSegment ?: "downloaded_file"
+        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(url)
+        val mimeType =
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.lowercase()) ?: "*/*"
+
+        val request = DownloadManager.Request(uri)
+            .setMimeType(mimeType)
+            .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setTitle("eDoctor - test result - $titleAppendix")
             .setDescription("Downloading test result...")
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "eDoctor.jpg")//"eDoctor.pdf")
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
 
         return downloadManager.enqueue(request)
     }

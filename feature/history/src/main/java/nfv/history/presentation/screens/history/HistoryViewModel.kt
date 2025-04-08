@@ -8,32 +8,63 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.history.data.HistoryRepository
-import nfv.history.model.Data
+import nfv.history.download.Downloader
+import nfv.history.model.HistoryResultUiItem
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.ProfileRoute
 import java.time.Instant
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val navigator: Navigator,
-    private val repository: HistoryRepository
+    private val repository: HistoryRepository,
+    private val downloader: Downloader
 ) : ViewModel() {
 
-    private var resultGrouped: Map<String, List<Data>> = emptyMap()
+    private var resultGrouped: Map<String, List<HistoryResultUiItem>> = emptyMap()
 
     init {
         viewModelScope.launch {
             val results = repository.getTestResults()
 
+            Log.d("results", results.toString())
+
             if (results != null) {
-                resultGrouped = results.groupBy { test ->
-                    Instant.ofEpochMilli(test.testDateMillis)
-                        .atZone(ZoneId.systemDefault())
-                        .month.name.lowercase().replaceFirstChar { it.uppercaseChar() }
+                val zoneId = ZoneId.systemDefault()
+                val currentYear = Instant.now().atZone(zoneId).year
+                val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")
+                    .withLocale(Locale.getDefault())
+                    .withZone(zoneId)
+
+                val uiItems = results.sortedByDescending { it.testDateMillis }.map { data ->
+                    val testDate = formatter.format(Instant.ofEpochMilli(data.testDateMillis))
+                    HistoryResultUiItem(
+                        id = data.id,
+                        testTitle = data.testTitle,
+                        labName = data.labName,
+                        testDate = testDate,
+                        testDescription = data.testDescription,
+                        testFileUrl = data.testFileUrl,
+                        isRead = data.isRead
+                    )
                 }
+                resultGrouped = uiItems.groupBy { test ->
+                    val testDate =
+                        Instant.from(formatter.parse(test.testDate)).atZone(zoneId)
+                    val monthName =
+                        testDate.month.name.lowercase().replaceFirstChar { it.uppercaseChar() }
+                    if (testDate.year != currentYear) {
+                        "$monthName ${testDate.year}"
+                    } else {
+                        monthName
+                    }
+                }
+
                 uiState.update {
                     it.copy(
                         testResults = resultGrouped
@@ -45,8 +76,7 @@ class HistoryViewModel @Inject constructor(
 
     val uiState = MutableStateFlow(
         HistoryState(
-            searchText = "",
-            testResults = resultGrouped
+            searchText = "", testResults = resultGrouped
 //            mapOf(
 //                "Yanvar" to listOf(
 //                    TestResultItem(
@@ -192,7 +222,9 @@ class HistoryViewModel @Inject constructor(
             }
 
             is HistoryEvent.OnClickDownloadDocument -> {
-                //download
+                viewModelScope.launch {
+                    downloader.downloadFile(event.link, event.title)
+                }
             }
         }
     }
