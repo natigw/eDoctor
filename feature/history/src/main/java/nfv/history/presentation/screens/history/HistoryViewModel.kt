@@ -14,7 +14,6 @@ import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.ProfileRoute
 import java.time.Instant
 import java.time.ZoneId
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,24 +27,20 @@ class HistoryViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val results = repository.getTestResults()
-            Log.e("salam", results.toString())
 
-            if (results != null)
-                resultGrouped = results.groupBy { dateMillis ->
-                    Instant
-                        .ofEpochMilli(dateMillis.testDateMillis)
-                        .atZone(ZoneId.of("Asia/Azerbaijan"))
-                        .toLocalDate()
-                        .month.name.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.ROOT
-                            ) else it.toString()
-                        }
+            if (results != null) {
+                resultGrouped = results.groupBy { test ->
+                    Instant.ofEpochMilli(test.testDateMillis)
+                        .atZone(ZoneId.systemDefault())
+                        .month.name.lowercase().replaceFirstChar { it.uppercaseChar() }
                 }
+                uiState.update {
+                    it.copy(
+                        testResults = resultGrouped
+                    )
+                }
+            }
         }
-
-        Log.e("salam", resultGrouped.toString())
-
     }
 
     val uiState = MutableStateFlow(

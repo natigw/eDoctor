@@ -23,7 +23,11 @@ class HistoryRepository @Inject constructor(
                 contentType(ContentType.Application.Json)
                 header(
                     key = "Authorization",
-                    value = "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0MzM4MDU0M30.1M18s5GH61zVzA1aHHH4hMgcH878aqVrf9ymau0PwApKmKWdKWMrlhLueudG3VeexZ2xNC3p7Xma-Ch2UejHeA"
+                    value = "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0NDE2ODY1NX0.pMQfi0JqaK-NOidfjkxi7520XjP_xi52qi2IN2d7fC53pMHWAEV3tzte51LY3M-qd7D3xlwazpG3xZy0UKR3Xg"
+                )
+                header(
+                    key = "Language",
+                    value = "en"
                 )
             }.body<HistoryResponse>()
 
