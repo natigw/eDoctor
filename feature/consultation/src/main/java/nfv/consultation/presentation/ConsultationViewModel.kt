@@ -1,5 +1,6 @@
 package nfv.consultation.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,13 +17,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConsultationViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val navigator: Navigator,
     private val repository: ConsultationRepository
 ) : ViewModel() {
 
+    private val initialQuestionText = savedStateHandle.get<String>("initialQuestion") ?: ""
+
     val uiState = MutableStateFlow(
         ConsultationState(
-            questionText = "Ask something...",
+            questionText = initialQuestionText,
             conversation = listOf(
                 MessageData(
                     fromAi = true,

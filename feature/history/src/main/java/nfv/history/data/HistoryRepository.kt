@@ -21,14 +21,6 @@ class HistoryRepository @Inject constructor(
             val response = client.get {
                 url(HttpRoutes.TEST_RESULTS)
                 contentType(ContentType.Application.Json)
-                header(
-                    key = "Authorization",
-                    value = "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0NDE2ODY1NX0.pMQfi0JqaK-NOidfjkxi7520XjP_xi52qi2IN2d7fC53pMHWAEV3tzte51LY3M-qd7D3xlwazpG3xZy0UKR3Xg"
-                )
-                header(
-                    key = "Language",
-                    value = "en"
-                )
             }.body<HistoryResponse>()
 
             response.data

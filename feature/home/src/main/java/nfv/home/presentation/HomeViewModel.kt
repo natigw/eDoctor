@@ -75,7 +75,12 @@ class HomeViewModel @Inject constructor(
 
             HomeEvent.OnSearchTextSearched -> {
                 viewModelScope.launch {
-                    //searchRequest(uiState.value.searchText)
+
+                    if (uiState.value.searchText.isBlank()) return@launch
+
+                    navigator.sendCommand {
+                        navigate(ConsultationRoute(uiState.value.searchText))
+                    }
                 }
             }
 
@@ -125,7 +130,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.OnConsultationClicked -> {
                 viewModelScope.launch {
                     navigator.sendCommand {
-                        navigate(route = ConsultationRoute)
+                        navigate(route = ConsultationRoute(""))
                     }
                 }
             }
