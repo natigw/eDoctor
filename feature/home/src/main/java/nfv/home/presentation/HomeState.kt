@@ -1,9 +1,9 @@
 package nfv.home.presentation
 
-import nfv.home.NewsResponse
+import nfv.home.domain.NewsResponseData
 
 data class HomeState(
     val username: String,
     val searchText: String,
-    val news: List<NewsResponse>
+    val news: List<NewsResponseData>
 )

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.hiltPlugin)
     kotlin("kapt")
 }
@@ -47,7 +48,10 @@ dependencies {
     // Maps
     implementation(libs.maps.compose)
 
-    //Lottie
+    // Clustering
+    implementation(libs.maps.compose.utils)
+
+    // Lottie
     implementation(libs.lottie.compose)
 
     // Navigation

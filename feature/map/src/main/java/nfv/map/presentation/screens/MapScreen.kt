@@ -1,30 +1,21 @@
 package nfv.map.presentation.screens
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -35,19 +26,24 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.MarkerComposable
+import com.google.maps.android.compose.clustering.Clustering
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
+import nfv.map.domain.MapModel
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
-import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
+@OptIn(MapsComposeExperimentalApi::class)
 @Composable
 fun MapScreen(
     state: MapState,
@@ -90,62 +86,83 @@ fun MapScreen(
                 )
             }
 
-            val selectedMarker = rememberSaveable { mutableStateOf<LatLng?>(null) }
-
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState,
                 uiSettings = uiSettings,
                 onMapLoaded = {
                     isMapLoaded = true
-                },
-                onMapClick = {
-                    selectedMarker.value = null // Close info window when clicking outside
                 }
             ) {
-                state.pharmacyLocations.forEach { location ->
 
-                    CustomMapMarker(
-                        fullName = location.toString(),
-                        location = location,
+                Clustering(
+                    items = listOf(
+                        MarkerData(
+                            MapModel(
+                                location = LatLng(40.3847279, 49.8056599),
+                                name = "Baku",
+                                description = "Paytaxt"
+                            )
+                        ),
+                        MarkerData(
+                            MapModel(
+                                location = LatLng(40.3791, 49.8468),
+                                name = "Baku",
+                                description = "Paytaxt"
+                            )
+                        ),
+                        MarkerData(
+                            MapModel(
+                                location = LatLng(41.0847279, 49.8056599),
+                                name = "Baku",
+                                description = "Paytaxt"
+                            )
+                        ),
+                        MarkerData(
+                            MapModel(
+                                location = LatLng(40.2847279, 49.8056599),
+                                name = "Baku",
+                                description = "Paytaxt"
+                            )
+                        ),
+                        MarkerData(
+                            MapModel(
+                                location = LatLng(40.31791, 49.8468),
+                                name = "Baku",
+                                description = "Paytaxt"
+                            )
+                        )
+                    ),
+                    onClusterClick = { cluster ->
+                        cameraPositionState.move(
+                            update = CameraUpdateFactory.zoomIn()
+                        )
+                        false
+                    },
+                    onClusterItemClick = { clusterItem ->
+                        false
+                    }
+                )
+
+                state.pharmacies.forEach { location ->
+                    MarkerComposable(
+                        state = rememberMarkerState(position = location.location),
+                        title = location.name,
+                        snippet = location.description,
                         onClick = {
-
+                            cameraPositionState.move(
+                                update = CameraUpdateFactory.zoomBy(1.8f)
+                            )
+                            false
                         }
-                    )
-
-//                var isMarkerExpanded by rememberSaveable { mutableStateOf(false) }
-//
-//                val location = rememberMarkerState(position = state.currentLocation)
-//
-//                MarkerComposable(
-//                    state = location,
-//                    onClick = {
-//                        isMarkerExpanded = !isMarkerExpanded
-//                        true
-//                    }
-//                ) {
-//                    Column(
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-//                        if (isMarkerExpanded) {
-//                            Card(
-//                                modifier = Modifier.padding(bottom = 4.dp),
-//                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
-//                            ) {
-//                                Text(
-//                                    modifier = Modifier.padding(8.dp),
-//                                    text = "Pharmacy",
-//                                    color = BaseWhite
-//                                )
-//                            }
-//                        }
-//                        Icon(
-//                            modifier = Modifier.size(40.dp),
-//                            imageVector = ImageVector.vectorResource(drawableR.ic_map_pin_filled),
-//                            contentDescription = "Pharmacy location",
-//                            tint = MaterialTheme.colorScheme.primary
-//                        )
-//                    }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(40.dp),
+                            imageVector = ImageVector.vectorResource(drawableR.ic_map_pin_filled),
+                            contentDescription = "Pharmacy location",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
 
@@ -178,59 +195,18 @@ fun MapScreen(
     }
 }
 
+data class MarkerData(
+    val item: MapModel
+) : ClusterItem {
 
-@Composable
-fun CustomMapMarker(
-    fullName: String,
-    location: LatLng,
-    onClick: () -> Unit
-) {
-    val markerState = rememberMarkerState(position = location)
-    val shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 0.dp)
-    var expandMarker by remember {
-        mutableStateOf(false)
-    }
+    override fun getPosition(): LatLng = item.location
 
-    MarkerComposable(
-        keys = arrayOf(fullName, expandMarker),
-        state = markerState,
-        title = fullName,
-        anchor = Offset(0.5f, 1f),
-        onClick = {
-            onClick()
-            expandMarker = !expandMarker
-            true
-        }
-    ) {
-        Box(
-            modifier = Modifier
-                .size(if (expandMarker) 100.dp else 48.dp)
-                .clip(shape)
-                .background(BaseWhite)
-                .padding(4.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            AnimatedVisibility(expandMarker) {
-                Card(
-                    modifier = Modifier.padding(bottom = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
-                ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        text = "Pharmacy",
-                        color = BaseWhite
-                    )
-                }
-            }
-            Icon(
-                modifier = Modifier.size(40.dp),
-                imageVector = ImageVector.vectorResource(drawableR.ic_map_pin_filled),
-                contentDescription = "Pharmacy location",
-                tint = MaterialTheme.colorScheme.primary
-            )
+    override fun getTitle(): String = item.name
 
-        }
-    }
+    override fun getSnippet(): String? = item.description
+
+    override fun getZIndex(): Float = 1f
+
 }
 
 @Preview
@@ -239,7 +215,7 @@ private fun MapScreenPrev() {
     MapScreen(
         state = MapState(
             currentLocation = LatLng(40.3791, 49.8468),
-            pharmacyLocations = emptyList()
+            pharmacies = emptyList()
         ),
         onUiEvent = {}
     )

@@ -6,8 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nfv.home.NewsRepository
+import nfv.home.domain.NewsRepository
 import nfv.navigation.di.Navigator
+import nfv.navigation.routes.ConsultationRoute
 import nfv.navigation.routes.HistoryRoute
 import nfv.navigation.routes.MapRoute
 import nfv.navigation.routes.MedicalInfoRoute
@@ -30,16 +31,16 @@ class HomeViewModel @Inject constructor(
     )
 
     init {
-        fetchNews() // Automatically loads news when ViewModel is created
+        fetchNews()
     }
 
     private fun fetchNews() {
         viewModelScope.launch {
-            val newsList = newsRepository.getNews() // Assume this fetches news
+            val newsList = newsRepository.getNews()
             if (newsList != null)
                 uiState.update { old ->
                     old.copy(
-                        news = newsList
+                        news = newsList.data
                     )
                 }
         }
@@ -117,8 +118,14 @@ class HomeViewModel @Inject constructor(
 
             is HomeEvent.OnNewsClicked -> {
                 viewModelScope.launch {
+                    //
+                }
+            }
+
+            is HomeEvent.OnConsultationClicked -> {
+                viewModelScope.launch {
                     navigator.sendCommand {
-//                        navigate(route = )
+                        navigate(route = ConsultationRoute)
                     }
                 }
             }

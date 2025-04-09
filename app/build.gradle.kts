@@ -65,6 +65,7 @@ dependencies {
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
     implementation(project(":feature:map"))
+    implementation(project(":feature:consultation"))
     implementation(project(":feature:history"))
     implementation(project(":feature:profile"))
     implementation(project(":navigation"))

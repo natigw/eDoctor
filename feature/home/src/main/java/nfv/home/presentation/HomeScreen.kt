@@ -1,7 +1,8 @@
 package nfv.home.presentation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +24,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -49,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import nfv.home.domain.NewsResponseData
 import nfv.ui_kit.R
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
 import nfv.ui_kit.components.systemBars.BottomBar
@@ -87,7 +90,6 @@ fun HomeScreen(
 ) {
     Scaffold(
         modifier = Modifier
-            .background(Color.Green)
             .systemBarsPadding(),
         topBar = {
             HomeTopBar(username = state.username)
@@ -113,6 +115,8 @@ fun HomeScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
         ) {
+
+            val context = LocalContext.current
 
             Spacer(Modifier.height(8.dp))
             SearchBarWithFilterButton(
@@ -175,7 +179,7 @@ fun HomeScreen(
                         textHeading = "Request consultation",
                         textDescription = "Talk to AI bot",
                         onClick = {
-//                            onUiEvent(HomeEvent.)  //TODO
+                            onUiEvent(HomeEvent.OnConsultationClicked)
                         }
                     ),
                     MainCardDto(
@@ -235,7 +239,11 @@ fun HomeScreen(
                             textDetails = item.shortDescription,
                             imageLink = item.imageLink,
                             onClick = {
-                                onUiEvent(HomeEvent.OnNewsClicked(item.id))
+//                                onUiEvent(HomeEvent.OnNewsClicked(item.id))
+
+                                val intent =
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(item.readMoreLink))
+                                context.startActivity(intent)
                             }
                         )
                     )
@@ -360,6 +368,7 @@ fun PromotionCard(
         AsyncImage(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
+                .aspectRatio(1f)
                 .fillMaxHeight(),
             model = promotionItem.imageLink,
             placeholder = painterResource(drawableR.img),
@@ -461,7 +470,26 @@ private fun HomeScreenPrev() {
             state = HomeState(
                 username = "Natig",
                 searchText = "",
-                news = emptyList()
+                news = listOf(
+                    NewsResponseData(
+                        id = "1",
+                        title = "Breaking news",
+                        shortDescription = "Blah Blah",
+                        longDescription = "Blah blah",
+                        extras = "",
+                        readMoreLink = "",
+                        imageLink = ""
+                    ),
+                    NewsResponseData(
+                        id = "2",
+                        title = "Breaking news2",
+                        shortDescription = "Blah Blah2",
+                        longDescription = "Blah blah2",
+                        extras = "",
+                        readMoreLink = "",
+                        imageLink = ""
+                    )
+                )
             ),
             onUiEvent = {}
         )

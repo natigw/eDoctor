@@ -8,6 +8,7 @@ sealed interface HomeEvent {
 
     data class OnNewsClicked(val newsId: String) : HomeEvent
     data object OnMapClicked : HomeEvent
+    data object OnConsultationClicked : HomeEvent
 
     data object GoToHome : HomeEvent
     data object GoToHistory : HomeEvent

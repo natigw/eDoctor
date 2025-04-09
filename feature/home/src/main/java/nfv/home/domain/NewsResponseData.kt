@@ -1,10 +1,10 @@
-package nfv.home
+package nfv.home.domain
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NewsResponse(
+data class NewsResponseData(
     @SerializedName("extras")
     val extras: String,
     @SerializedName("id")

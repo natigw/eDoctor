@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray300
-import nfv.ui_kit.theme.Gray500
 import nfv.ui_kit.theme.InputFieldShape
 import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.R.drawable as drawableR
@@ -44,7 +43,7 @@ import nfv.ui_kit.R.string as stringR
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
-    titleText: String,
+    titleText: String?,
     hintText: String? = null,
     text: String,
     bottomHelperText: String? = null,
@@ -57,15 +56,16 @@ fun CustomTextField(
     Column(
         modifier = modifier
     ) {
-        Text(
-            modifier = Modifier.padding(start = 4.dp),
-            text = titleText,
-            style = EDoctorTypography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        Spacer(Modifier.height(8.dp))
+        titleText?.let {
+            Text(
+                modifier = Modifier.padding(start = 4.dp),
+                text = titleText,
+                style = EDoctorTypography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(Modifier.height(8.dp))
+        }
 
         Row(
             modifier = Modifier

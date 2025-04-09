@@ -1,4 +1,4 @@
-package nfv.home
+package nfv.home.domain
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -14,16 +14,16 @@ class NewsRepository @Inject constructor(
     private val client: HttpClient
 ) {
 
-    suspend fun getNews(): List<NewsResponse>? {
+    suspend fun getNews(): NewsResponse? {
 
         return try {
             client.get {
                 url(HttpRoutes.NEWS)
                 contentType(ContentType.Application.Json)
                 header(
-                    "Authorization", "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0NDE2OTU4NX0.kGLBRjwoIZWASBi9fNY9Z2BRhkFvjzr9_gc3wwKgabxZJkVHM9G3mYStO6INgs3Wq4MKkT7tKt3fXfhcmnCj0g"
+                    "Authorization", "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0NDE3NzM2NH0.ZqdGWpU4pNHzcDB1oQ4Ic9vtYObXbXN10rj14Av468UyS4vs15vVFAabD_zgKmlQ_GYrI8soV7c9UNdPLwIkSQ"
                 )
-            }.body<List<NewsResponse>>()
+            }.body<NewsResponse>()
 
         } catch (e: Exception) {
             e.printStackTrace()

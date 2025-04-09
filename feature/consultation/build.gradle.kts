@@ -1,14 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    // Serialization
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.hiltPlugin)
     kotlin("kapt")
 }
 
 android {
-    namespace = "nfv.network"
+    namespace = "nfv.consultation"
     compileSdk = 35
 
     defaultConfig {
@@ -38,19 +38,14 @@ android {
 
 dependencies {
 
-    // Ktor
-    api(libs.ktor.client.android)
-    api(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.json)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.client.content.negotiation)
-    api(libs.ktor.client.serialization)
-    implementation(libs.logging.interceptor)
+    implementation(project(":network"))
+    implementation(project(":storage"))
+    implementation(project(":navigation"))
+    implementation(project(":ui_kit"))
 
-    // Serialization
-    api(libs.kotlinx.serialization.json)
-    api(libs.gson)
-
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     // Hilt
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
@@ -61,4 +56,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // Compose
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    debugImplementation(libs.androidx.ui.tooling)
 }
