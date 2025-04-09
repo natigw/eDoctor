@@ -1,5 +1,6 @@
 package nfv.auth.presentation.screens.registerFormMedical
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,16 +14,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterFormMedicalViewModel @Inject constructor(
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val fullName = savedStateHandle.get<String>("fullName") ?: ""
 
     val uiState = MutableStateFlow(
         RegisterFormMedicalState(
-            fullNameText = "",
-            bloodType = BloodType.FIRST_NEGATIVE, //buna bir care
-            sex = Sex.MALE,  //buna da
-            weight = 0.0,
-            birthDate = Date(),
+            fullNameText = fullName,
+            bloodType = null,
+            gender = null,
+            weight = null,
+            birthDate = null,
             registerButtonState = ButtonState.DISABLED
         )
     )
@@ -40,11 +44,11 @@ class RegisterFormMedicalViewModel @Inject constructor(
                 }
             }
 
-            is RegisterFormMedicalEvent.OnSexChanged -> {
+            is RegisterFormMedicalEvent.OnGenderChanged -> {
                 viewModelScope.launch {
                     uiState.update { old ->
                         old.copy(
-                            sex = event.newValue
+                            gender = event.newValue
                         )
                     }
                 }

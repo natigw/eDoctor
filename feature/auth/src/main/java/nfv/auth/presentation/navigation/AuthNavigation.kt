@@ -14,9 +14,12 @@ import nfv.auth.presentation.screens.register.RegisterScreen
 import nfv.auth.presentation.screens.register.RegisterViewModel
 import nfv.auth.presentation.screens.registerForm.RegisterFormScreen
 import nfv.auth.presentation.screens.registerForm.RegisterFormViewModel
+import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalScreen
+import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalViewModel
 import nfv.navigation.routes.AuthNavigation
 import nfv.navigation.routes.LoginRoute
 import nfv.navigation.routes.OnBoardRoute
+import nfv.navigation.routes.RegisterFormMedicalRoute
 import nfv.navigation.routes.RegisterFormRoute
 import nfv.navigation.routes.RegisterRoute
 
@@ -50,6 +53,16 @@ fun NavGraphBuilder.authNavigation() {
             val state by viewModel.uiState.collectAsStateWithLifecycle()
 
             RegisterFormScreen(
+                state = state,
+                onUiEvent = viewModel::handleEvent
+            )
+        }
+
+        composable<RegisterFormMedicalRoute> {
+            val viewModel = hiltViewModel<RegisterFormMedicalViewModel>()
+            val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+            RegisterFormMedicalScreen (
                 state = state,
                 onUiEvent = viewModel::handleEvent
             )

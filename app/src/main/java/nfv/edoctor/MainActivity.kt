@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
                             }
                         ),
                     navController = navController,
-                    startDestination = HomeNavigation//AuthNavigation
+                    startDestination = AuthNavigation
                 ) {
                     authNavigation()
                     homeNavigation()

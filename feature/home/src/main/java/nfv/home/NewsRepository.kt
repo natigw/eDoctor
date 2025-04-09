@@ -21,7 +21,7 @@ class NewsRepository @Inject constructor(
                 url(HttpRoutes.NEWS)
                 contentType(ContentType.Application.Json)
                 header(
-                    "Authorization", "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0MzMxOTE4MH0.PjbfiwCaDWlju186Jg-9g7Qgo29jjDbeaynJebhNpa7vP_cuCfsRswf-Iou10LQdDKMu_cMrlbGBNu4Wxawr9w"
+                    "Authorization", "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0NDE2OTU4NX0.kGLBRjwoIZWASBi9fNY9Z2BRhkFvjzr9_gc3wwKgabxZJkVHM9G3mYStO6INgs3Wq4MKkT7tKt3fXfhcmnCj0g"
                 )
             }.body<List<NewsResponse>>()
 

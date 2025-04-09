@@ -17,7 +17,9 @@ data object RegisterRoute
 data object RegisterFormRoute
 
 @Serializable
-data object RegisterFormMedicalRoute
+data class RegisterFormMedicalRoute(
+    val userFullName: String
+)
 
 @Serializable
 data object RegisterOTPRoute

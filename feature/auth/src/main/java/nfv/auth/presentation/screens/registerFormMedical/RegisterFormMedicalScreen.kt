@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,14 +29,21 @@ import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.transparent.ActiveTransparentButton
+import nfv.ui_kit.components.inputFields.CustomDatePickerField
+import nfv.ui_kit.components.inputFields.CustomDropdownFieldBlood
+import nfv.ui_kit.components.inputFields.CustomDropdownFieldGender
 import nfv.ui_kit.components.inputFields.CustomTextField
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
+import nfv.ui_kit.model.BloodType
+import nfv.ui_kit.model.Gender
 import nfv.ui_kit.theme.DefaultScreenPadding
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Primary500
 import nfv.ui_kit.theme.Typography700
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
@@ -121,48 +132,56 @@ fun RegisterFormMedicalSection(
         modifier = Modifier.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        CustomTextField(
+        CustomDropdownFieldBlood(
             titleText = "Blood type",
             hintText = "Enter your blood type",
-            text = state.bloodType.notation,
-            onTextChange = {
-//                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(it))
+            selectedOption = state.bloodType?.notation,
+            onOptionSelected = {
+                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(it))
             },
-            onTextClear = {
-//                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(""))
+            onClearSelection = {
+                onUiEvent(RegisterFormMedicalEvent.OnBloodTypeChanged(null))
             }
         )
-        CustomTextField(
-            titleText = "Sex",
-            hintText = "Enter your sex",
-            text = state.sex.displayName,
-            onTextChange = {
-//                onUiEvent(RegisterFormMedicalEvent.OnSexChanged(it))
+
+        CustomDropdownFieldGender(
+            titleText = "Gender",
+            hintText = "Enter your gender",
+            selectedOption = state.gender?.notation,
+            onOptionSelected = {
+                onUiEvent(RegisterFormMedicalEvent.OnGenderChanged(it))
             },
-            onTextClear = {
-//                onUiEvent(RegisterFormMedicalEvent.OnSexChanged(""))
+            onClearSelection = {
+                onUiEvent(RegisterFormMedicalEvent.OnGenderChanged(null))
             }
         )
         CustomTextField(
             titleText = "Weight",
             hintText = "Enter your weight",
             text = state.weight.toString(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.NumberPassword,
+                imeAction = ImeAction.Done
+            ),
             onTextChange = {
-//                onUiEvent(RegisterFormMedicalEvent.OnWeightChanged(it))
+                onUiEvent(RegisterFormMedicalEvent.OnWeightChanged(it.toDouble()))
             },
             onTextClear = {
-                onUiEvent(RegisterFormMedicalEvent.OnWeightChanged(0.0))
+                onUiEvent(RegisterFormMedicalEvent.OnWeightChanged(null))
             }
         )
-        CustomTextField(
+        CustomDatePickerField(
             titleText = "Birth date",
             hintText = "Enter your birth date",
-            text = state.birthDate.time.toString(),
+            text = state.birthDate?.let {
+                SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(it)
+            } ?: "",
             onTextChange = {
-//                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(it))
+                val date = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).parse(it)
+                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(date))
             },
             onTextClear = {
-//                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(""))
+                onUiEvent(RegisterFormMedicalEvent.OnBirthDateChanged(null))
             }
         )
     }
@@ -224,7 +243,7 @@ private fun RegisterFormMedicalScreenPrev() {
         state = RegisterFormMedicalState(
             fullNameText = "",
             bloodType = BloodType.FIRST_NEGATIVE,
-            sex = Sex.MALE,
+            gender = Gender.MALE,
             weight = 0.0,
             birthDate = Date(),
             registerButtonState = ButtonState.DISABLED

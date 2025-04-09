@@ -148,7 +148,7 @@ fun HomeScreen(
                         iconStrokeColor = Primary200,
                         iconBackgroundColor = Primary100,
                         cardBackgroundColor = Primary50,
-                        textHeading = "Test results history",
+                        textHeading = "Test results",
                         textDescription = "Display and download a test result",
                         onClick = {
                             onUiEvent(HomeEvent.GoToHistory)

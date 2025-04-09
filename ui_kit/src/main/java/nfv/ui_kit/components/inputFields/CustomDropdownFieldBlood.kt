@@ -12,51 +12,50 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.ui_kit.model.BloodType
+import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Gray300
-import nfv.ui_kit.theme.Gray500
 import nfv.ui_kit.theme.InputFieldShape
 import nfv.ui_kit.theme.Typography500
 import nfv.ui_kit.R.drawable as drawableR
 import nfv.ui_kit.R.string as stringR
 
 @Composable
-fun CustomTextField(
+fun CustomDropdownFieldBlood(
     modifier: Modifier = Modifier,
     titleText: String,
     hintText: String? = null,
-    text: String,
-    bottomHelperText: String? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    onTextChange: (String) -> Unit,
-    onTextClear: () -> Unit
+    selectedOption: String?,
+    onOptionSelected: (BloodType) -> Unit,
+    onClearSelection: () -> Unit
 ) {
+    var expanded by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = modifier
-    ) {
+    val options = BloodType.entries
+
+    Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(start = 4.dp),
             text = titleText,
@@ -71,38 +70,24 @@ fun CustomTextField(
             modifier = Modifier
                 .clip(InputFieldShape)
                 .border(width = 1.dp, color = Gray300, shape = InputFieldShape)
-                .padding(12.dp),
+                .clickable { expanded = !expanded }
+                .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BasicTextField(
+            Text(
                 modifier = Modifier.weight(1f),
-                value = if (text != "null") text else "",
-                onValueChange = onTextChange,
-                textStyle = EDoctorTypography.bodyMedium,
-                singleLine = true,
-                cursorBrush = SolidColor(Typography500),
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                decorationBox = { innerTextField ->
-                    if (text.isEmpty() || text == "null") {
-                        Text(
-                            text = hintText ?: "",
-                            style = EDoctorTypography.bodyMedium,
-                            color = Typography500,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    innerTextField()
-                }
+                text = selectedOption ?: hintText ?: "",
+                style = EDoctorTypography.bodyMedium,
+                color = if (selectedOption != null) MaterialTheme.colorScheme.outline else Typography500,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             AnimatedVisibility(
-                text.isNotBlank() && text != "null",
+                visible = selectedOption != null,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-                Spacer(Modifier.width(8.dp))  //TODO -> bu niye cixmadiki
                 Icon(
                     modifier = Modifier
                         .size(20.dp)
@@ -110,7 +95,10 @@ fun CustomTextField(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(),
-                            onClick = onTextClear
+                            onClick = {
+                                onClearSelection()
+                                expanded = false
+                            }
                         ),
                     imageVector = ImageVector.vectorResource(drawableR.ic_clear),
                     contentDescription = stringResource(stringR.description_clear_button),
@@ -119,32 +107,42 @@ fun CustomTextField(
             }
         }
 
-        AnimatedVisibility(bottomHelperText != null) {
-            Spacer(Modifier.height(8.dp))
-            Text(
-                modifier = Modifier.padding(start = 4.dp),
-                text = bottomHelperText ?: "",
-                style = EDoctorTypography.labelMedium,
-                color = MaterialTheme.colorScheme.secondaryContainer,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = option.notation,
+                            style = EDoctorTypography.bodyMedium,
+                            color = MaterialTheme.colorScheme.outline,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                    onClick = {
+                        onOptionSelected(option)
+                        expanded = false
+                    }
+                )
+            }
         }
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
-private fun CustomTextFieldPrev() {
-    Column {
-        CustomTextField(
+private fun TextFieldWithDropdownPrev() {
+    EDoctorTheme {
+        CustomDropdownFieldBlood(
             modifier = Modifier.padding(16.dp),
             titleText = "Full name",
             hintText = "Enter your full name",
-            text = "sample text",
-            bottomHelperText = "*error",
-            onTextChange = {},
-            onTextClear = {}
+            selectedOption = "sample text",
+            onOptionSelected = {},
+            onClearSelection = {}
         )
     }
 }
