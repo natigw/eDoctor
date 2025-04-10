@@ -11,6 +11,9 @@ data object AuthNavigation {
 data object OnBoardRoute
 
 @Serializable
+data object LoginRoute
+
+@Serializable
 data object RegisterRoute
 
 @Serializable
@@ -18,17 +21,16 @@ data object RegisterFormRoute
 
 @Serializable
 data class RegisterFormMedicalRoute(
-    val userFullName: String
+    val email: String
 )
 
 @Serializable
-data object RegisterOTPRoute
+data class RegisterOTPRoute(
+    val email: String
+)
 
 @Serializable
 data object RegisterCompletionRoute
-
-@Serializable
-data object LoginRoute
 
 @Serializable
 data object LockRoute

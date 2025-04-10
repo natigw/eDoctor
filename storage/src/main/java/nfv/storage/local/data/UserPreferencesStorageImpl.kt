@@ -74,7 +74,7 @@ class UserPreferencesStorageImpl @Inject constructor(
     }
     override fun getScreenshotsAllowedStatus(): Flow<Boolean> {
         return context.dataStore.data.map { prefs ->
-            prefs[ALLOW_SCREENSHOTS] ?: false
+            prefs[ALLOW_SCREENSHOTS] ?: true
         }
     }
 }
