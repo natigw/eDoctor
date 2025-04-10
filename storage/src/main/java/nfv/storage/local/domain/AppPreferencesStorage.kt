@@ -10,7 +10,7 @@ interface AppPreferencesStorage {
     suspend fun setUserFullName(fullName: String)
     fun getUserFullName(): Flow<String?>
 
-    suspend fun setUsername(fullName: String)
+    suspend fun setUsername(username: String)
     fun getUsername(): Flow<String?>
 
     suspend fun updateLoggedInStatus(isLoggedIn: Boolean)
