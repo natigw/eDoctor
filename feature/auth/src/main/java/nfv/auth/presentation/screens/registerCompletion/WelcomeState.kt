@@ -1,5 +1,5 @@
 package nfv.auth.presentation.screens.registerCompletion
 
-data class WelcomeScreenState(
+data class WelcomeState(
     val username: String,
 )

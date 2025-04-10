@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,18 +9,38 @@ plugins {
     kotlin("kapt")
 }
 
+//val localProperties = Properties()
+//localProperties.load(FileInputStream(rootDir.resolve("local.properties")))
+//val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
+
 android {
     namespace = "nfv.edoctor"
     compileSdk = 35
 
     defaultConfig {
         applicationId = "nfv.edoctor"
-        minSdk = 26
+        minSdk = 29
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
+        val keystoreFile = project.rootProject.file("apikeys.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+
+        val apiKey = properties.getProperty("GOOGLE_MAPS_API_KEY") ?: ""
+
+//        buildConfigField(
+//            type = "String",
+//            name = "GOOGLE_MAPS_API_KEY",
+//            value = apiKey
+//        )
+
+        manifestPlaceholders["MAPS_API_KEY"] = apiKey
+
     }
 
     buildTypes {
@@ -38,6 +61,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

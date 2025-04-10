@@ -50,11 +50,12 @@ class OTPViewModel @Inject constructor(
             }
 
             is OTPEvent.OnContinueClicked -> {
-                viewModelScope.launch {
-                    navigator.sendCommand {
-                        navigate(route = RegisterCompletionRoute)
+                if (uiState.value.continueButtonState == ButtonState.ENABLED)
+                    viewModelScope.launch {
+                        navigator.sendCommand {
+                            navigate(route = RegisterCompletionRoute)
+                        }
                     }
-                }
             }
 
             is OTPEvent.OnResendClicked -> {

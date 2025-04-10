@@ -35,8 +35,8 @@ import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
 fun WelcomeScreen(
-    state: WelcomeScreenState,
-    onUiEvent: (WelcomeScreenEvent) -> Unit
+    state: WelcomeState,
+    onUiEvent: (WelcomeEvent) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -86,7 +86,7 @@ fun WelcomeScreen(
             state = ButtonState.ENABLED,
             textEnabled = "Continue",
             onClick = {
-                onUiEvent(WelcomeScreenEvent.OnContinueClicked)
+                onUiEvent(WelcomeEvent.OnContinueClicked)
             }
         )
     }
@@ -96,7 +96,7 @@ fun WelcomeScreen(
 @Composable
 private fun WelcomeScreenPrev() {
     WelcomeScreen(
-        state = WelcomeScreenState(
+        state = WelcomeState(
             username = "Vusat Orujov"
         ),
         onUiEvent = {}

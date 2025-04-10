@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -42,15 +43,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalEvent
-import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalState
-import nfv.ui_kit.components.systemBars.IconWithAction
-import nfv.ui_kit.components.inputFields.OtpInputField
-import nfv.ui_kit.components.systemBars.TopBar
-import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
+import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.buttons.transparent.ActiveTransparentButton
+import nfv.ui_kit.components.inputFields.OtpInputField
+import nfv.ui_kit.components.systemBars.IconWithAction
+import nfv.ui_kit.components.systemBars.TopBar
 import nfv.ui_kit.theme.BaseWhite
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.theme.Primary500
@@ -128,6 +127,11 @@ fun OTPScreen(
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.NumberPassword,
                                 imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    onUiEvent(OTPEvent.OnContinueClicked)
+                                }
                             ),
                             colors = OutlinedTextFieldDefaults.colors(
                                 cursorColor = Color.Transparent,

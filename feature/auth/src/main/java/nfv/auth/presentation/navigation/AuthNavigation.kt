@@ -15,7 +15,7 @@ import nfv.auth.presentation.screens.otp.OTPViewModel
 import nfv.auth.presentation.screens.register.RegisterScreen
 import nfv.auth.presentation.screens.register.RegisterViewModel
 import nfv.auth.presentation.screens.registerCompletion.WelcomeScreen
-import nfv.auth.presentation.screens.registerCompletion.WelcomeScreenViewModel
+import nfv.auth.presentation.screens.registerCompletion.WelcomeViewModel
 import nfv.auth.presentation.screens.registerForm.RegisterFormScreen
 import nfv.auth.presentation.screens.registerForm.RegisterFormViewModel
 import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalScreen
@@ -85,7 +85,7 @@ fun NavGraphBuilder.authNavigation() {
         }
 
         composable<RegisterCompletionRoute> {
-            val viewModel = hiltViewModel<WelcomeScreenViewModel>()
+            val viewModel = hiltViewModel<WelcomeViewModel>()
             val state by viewModel.uiState.collectAsStateWithLifecycle()
 
             WelcomeScreen(

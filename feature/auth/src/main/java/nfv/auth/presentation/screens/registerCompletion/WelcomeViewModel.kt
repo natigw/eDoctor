@@ -12,13 +12,13 @@ import nfv.storage.local.domain.AppPreferencesStorage
 import javax.inject.Inject
 
 @HiltViewModel
-class WelcomeScreenViewModel @Inject constructor(
+class WelcomeViewModel @Inject constructor(
     private val appPreferencesStorage: AppPreferencesStorage,
     private val navigator: Navigator,
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
-        WelcomeScreenState(
+        WelcomeState(
             username = ""
         )
     )
@@ -36,9 +36,9 @@ class WelcomeScreenViewModel @Inject constructor(
     }
 
 
-    fun handleEvent(event: WelcomeScreenEvent) {
+    fun handleEvent(event: WelcomeEvent) {
         when (event) {
-            is WelcomeScreenEvent.OnContinueClicked -> {
+            is WelcomeEvent.OnContinueClicked -> {
                 viewModelScope.launch {
                     navigator.sendCommand {
                         navigate(route = HomeRoute)
