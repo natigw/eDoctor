@@ -46,7 +46,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//    init {
+//    init { //TODO
 //        viewModelScope.launch {
 //            localPreferences.getUsername.collectLatest {
 //                if (it != null)
@@ -76,16 +76,45 @@ class HomeViewModel @Inject constructor(
             HomeEvent.OnSearchTextSearched -> {
                 viewModelScope.launch {
 
-                    if (uiState.value.searchText.isBlank()) return@launch
+                    val searchText = uiState.value.searchText
+
+                    if (searchText.isBlank()) return@launch
 
                     navigator.sendCommand {
-                        navigate(ConsultationRoute(uiState.value.searchText))
+                        navigate(ConsultationRoute(searchText))
+                    }
+
+                    uiState.update { old ->
+                        old.copy(
+                            searchText = ""
+                        )
                     }
                 }
             }
 
-            is HomeEvent.OnSearchFiltered -> {}
+            is HomeEvent.OnSearchFiltered -> {
+                //
+            }
 
+            is HomeEvent.OnNewsClicked -> {
+                //
+            }
+
+            is HomeEvent.OnConsultationClicked -> {
+                viewModelScope.launch {
+                    navigator.sendCommand {
+                        navigate(route = ConsultationRoute(""))
+                    }
+                }
+            }
+
+            is HomeEvent.OnMapClicked -> {
+                viewModelScope.launch {
+                    navigator.sendCommand {
+                        navigate(route = MapRoute)
+                    }
+                }
+            }
 
             HomeEvent.GoToHome -> {}
 
@@ -117,28 +146,6 @@ class HomeViewModel @Inject constructor(
                 viewModelScope.launch {
                     navigator.sendCommand {
                         navigate(route = MedicalInfoRoute)
-                    }
-                }
-            }
-
-            is HomeEvent.OnNewsClicked -> {
-                viewModelScope.launch {
-                    //
-                }
-            }
-
-            is HomeEvent.OnConsultationClicked -> {
-                viewModelScope.launch {
-                    navigator.sendCommand {
-                        navigate(route = ConsultationRoute(""))
-                    }
-                }
-            }
-
-            is HomeEvent.OnMapClicked -> {
-                viewModelScope.launch {
-                    navigator.sendCommand {
-                        navigate(route = MapRoute)
                     }
                 }
             }

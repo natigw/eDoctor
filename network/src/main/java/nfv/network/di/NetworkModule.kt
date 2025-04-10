@@ -13,7 +13,9 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import nfv.storage.local.domain.TokenProvider
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
@@ -23,14 +25,16 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideKtorClient(): HttpClient {
+    fun provideKtorClient(
+        tokenProvider: TokenProvider
+    ): HttpClient {
 
         val client = HttpClient(OkHttp) {
 
             engine {
                 addInterceptor { chain ->
 
-                    val token : String? = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0NDI1OTQ3MH0.o0HVi9jBkdC5rts39qYWIdwDSsJtUwRXV9NfUun3T4ZFG0hlZDr1kB9521DVvbBivZz8nS2Zg4HbIraK4Y2eSg"
+                    val token : String? = runBlocking { tokenProvider.getToken() }
                     val requestBuilder = chain.request().newBuilder()
 
                     token?.let {

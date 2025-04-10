@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import nfv.consultation.presentation.model.MessageData
 import nfv.ui_kit.components.buttons.icon.ActiveIconButton
 import nfv.ui_kit.components.buttons.icon.model.IconButtonTypes
@@ -71,6 +72,13 @@ fun ConsultationScreen(
         LaunchedEffect(state.conversation.size) {
             if (state.conversation.isNotEmpty()) {
                 listState.animateScrollToItem(state.conversation.lastIndex)
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            if (state.questionText.isNotBlank()) {
+                delay(500)
+                onUiEvent(ConsultationEvent.OnQuestionAsked)
             }
         }
 

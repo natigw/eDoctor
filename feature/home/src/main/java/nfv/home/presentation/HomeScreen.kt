@@ -133,11 +133,12 @@ fun HomeScreen(
                     onUiEvent(HomeEvent.OnSearchTextSearched)
                 },
                 onClickFilterButton = {
-                    onUiEvent(HomeEvent.OnSearchFiltered(
-                        filter = {
-                            //TODO -> fix it
-                        }
-                    ))
+                    onUiEvent(HomeEvent.OnSearchTextSearched)
+//                    onUiEvent(HomeEvent.OnSearchFiltered(
+//                        filter = {
+//                            //
+//                        }
+//                    ))
                 }
             )
 
