@@ -16,8 +16,8 @@ import nfv.navigation.routes.LoginRoute
 import nfv.navigation.routes.MedicalInfoRoute
 import nfv.navigation.routes.TermsConditionsRoute
 import nfv.storage.local.domain.AppPreferencesStorage
-import nfv.storage.local.domain.UserPreferencesStorage
 import nfv.storage.local.domain.TokenStorage
+import nfv.storage.local.domain.UserPreferencesStorage
 import nfv.storage.local.model.SupportedLanguages
 import nfv.storage.local.model.SupportedThemes
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class ProfileViewModel @Inject constructor(
     val uiState = MutableStateFlow(
         ProfileState(
             userFullName = "",
-            profileLink = "",
+            userProfilePicture = null,
             currentLanguage = SupportedLanguages.ENGLISH, //TODO -> better way??
             currentTheme = SupportedThemes.LIGHT,
             allowBiometrics = true,
@@ -78,6 +78,15 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }
+        viewModelScope.launch {
+            appPreferencesStorage.getProfilePicture().collectLatest {
+                uiState.update { old ->
+                    old.copy(
+                        userProfilePicture = it
+                    )
+                }
+            }
+        }
     }
 
     fun handleEvent(event: ProfileEvent) {
@@ -96,6 +105,12 @@ class ProfileViewModel @Inject constructor(
                 }
             }
 
+            is ProfileEvent.OnProfilePictureSelected -> {
+                viewModelScope.launch {
+                    if (event.image != null)
+                        appPreferencesStorage.updateProfilePicture(event.image)
+                }
+            }
 
             ProfileEvent.GoToMedicalInfo -> {
                 viewModelScope.launch {

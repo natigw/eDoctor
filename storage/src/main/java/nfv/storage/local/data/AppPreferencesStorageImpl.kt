@@ -1,6 +1,7 @@
 package nfv.storage.local.data
 
 import android.content.Context
+import android.net.Uri
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -25,6 +26,8 @@ class AppPreferencesStorageImpl @Inject constructor(
         val LOGGED_IN = booleanPreferencesKey("user_logged_in")
         val USER_FULLNAME = stringPreferencesKey("user_full_name")
         val USERNAME = stringPreferencesKey("username")
+        val USER_PROFILE_PICTURE = stringPreferencesKey("user_profile_picture")
+        val PASSCODE = stringPreferencesKey("passcode")
     }
 
 
@@ -33,6 +36,7 @@ class AppPreferencesStorageImpl @Inject constructor(
             prefs[ONBOARD_COMPLETED] = completed
         }
     }
+
     override fun isOnBoardCompleted(): Flow<Boolean> {
         return context.dataStore.data.map { prefs ->
             prefs[ONBOARD_COMPLETED] ?: false
@@ -45,6 +49,7 @@ class AppPreferencesStorageImpl @Inject constructor(
             prefs[LOGGED_IN] = isLoggedIn
         }
     }
+
     override fun isLoggedIn(): Flow<Boolean> {
         return context.dataStore.data.map { prefs ->
             prefs[LOGGED_IN] ?: false
@@ -57,6 +62,7 @@ class AppPreferencesStorageImpl @Inject constructor(
             prefs[USER_FULLNAME] = fullName
         }
     }
+
     override fun getUserFullName(): Flow<String?> {
         return context.dataStore.data.map { prefs ->
             prefs[USER_FULLNAME]
@@ -69,9 +75,37 @@ class AppPreferencesStorageImpl @Inject constructor(
             prefs[USERNAME] = username
         }
     }
+
     override fun getUsername(): Flow<String?> {
         return context.dataStore.data.map { prefs ->
             prefs[USERNAME]
+        }
+    }
+
+
+    override suspend fun updateProfilePicture(image: Uri) {
+        context.dataStore.edit { prefs ->
+            prefs[USER_PROFILE_PICTURE] = image.toString()
+        }
+    }
+
+    override fun getProfilePicture(): Flow<Uri?> {
+        return context.dataStore.data.map { prefs ->
+            prefs[USER_PROFILE_PICTURE]?.let { Uri.parse(it) }
+        }
+    }
+
+
+    override suspend fun updatePasscode(passcode: List<Int>) {
+        val serialized = passcode.joinToString("")
+        context.dataStore.edit { prefs ->
+            prefs[PASSCODE] = serialized
+        }
+    }
+
+    override fun getPasscode(): Flow<List<Int>?> {
+        return context.dataStore.data.map { prefs ->
+            prefs[PASSCODE]?.split("")?.mapNotNull { it.toIntOrNull() }
         }
     }
 }

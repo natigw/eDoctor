@@ -1,5 +1,9 @@
 package nfv.profile.presentation.screens.profile
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -110,11 +114,8 @@ fun ProfileScreen(
         ) {
 
             ProfileUserInfoSection(
-                profileImageLink = state.profileLink,
-                userFullName = state.userFullName,
-                onClickMedicalInfo = {
-                    onUiEvent(ProfileEvent.GoToMedicalInfo)
-                }
+                state = state,
+                onUiEvent = onUiEvent
             )
 
             Spacer(Modifier.height(24.dp))
@@ -277,10 +278,24 @@ fun ProfileScreen(
 @Composable
 fun ProfileUserInfoSection(
     modifier: Modifier = Modifier,
-    profileImageLink: String,
-    userFullName: String,
-    onClickMedicalInfo: () -> Unit
+    state: ProfileState,
+    onUiEvent: (ProfileEvent) -> Unit
 ) {
+
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+            onUiEvent(ProfileEvent.OnProfilePictureSelected(it))
+        }
+    )
+
+    fun launchPhotoPicker() {
+        singlePhotoPickerLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -296,7 +311,7 @@ fun ProfileUserInfoSection(
                     .padding(6.dp)
                     .size(100.dp)
                     .clip(CircleShape),
-                model = profileImageLink,
+                model = state.userProfilePicture,
                 placeholder = painterResource(R.drawable.img_user_profile),
                 error = painterResource(R.drawable.img_user_profile),
                 contentDescription = stringResource(stringR.description_user_profile_picture),
@@ -312,7 +327,7 @@ fun ProfileUserInfoSection(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(),
                         onClick = {
-
+                            launchPhotoPicker()
                         }
                     )
                     .background(color = Gray200, shape = RoundedCornerShape(6.dp))
@@ -326,7 +341,7 @@ fun ProfileUserInfoSection(
 
         Spacer(Modifier.height(12.dp))
         Text(
-            text = userFullName,
+            text = state.userFullName,
             style = EDoctorTypography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
                 color = Primary800
@@ -339,7 +354,7 @@ fun ProfileUserInfoSection(
             state = ButtonState.ENABLED,
             textEnabled = "Medical info",
             onClick = {
-                onClickMedicalInfo()
+                onUiEvent(ProfileEvent.GoToMedicalInfo)
             }
         )
 
@@ -531,7 +546,7 @@ private fun ProfileScreenPrev() {
     ProfileScreen(
         state = ProfileState(
             userFullName = "",
-            profileLink = "",
+            userProfilePicture = null,
             currentLanguage = SupportedLanguages.ENGLISH,
             currentTheme = SupportedThemes.LIGHT,
             allowBiometrics = true,

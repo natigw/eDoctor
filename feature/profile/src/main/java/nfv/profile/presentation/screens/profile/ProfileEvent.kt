@@ -1,5 +1,6 @@
 package nfv.profile.presentation.screens.profile
 
+import android.net.Uri
 import nfv.storage.local.model.SupportedLanguages
 import nfv.storage.local.model.SupportedThemes
 
@@ -8,6 +9,7 @@ sealed interface ProfileEvent {
     data object GoToHistory : ProfileEvent
     data object GoToProfile : ProfileEvent
 
+    data class OnProfilePictureSelected(val image: Uri?) : ProfileEvent
     data object GoToMedicalInfo : ProfileEvent
 
     data object OnOptionEditProfileClicked : ProfileEvent

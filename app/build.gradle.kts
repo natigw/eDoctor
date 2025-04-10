@@ -1,4 +1,3 @@
-import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
@@ -8,10 +7,6 @@ plugins {
     alias(libs.plugins.hiltPlugin)
     kotlin("kapt")
 }
-
-//val localProperties = Properties()
-//localProperties.load(FileInputStream(rootDir.resolve("local.properties")))
-//val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
 
 android {
     namespace = "nfv.edoctor"
