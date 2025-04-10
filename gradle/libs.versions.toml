@@ -6,6 +6,7 @@ coilCompose = "3.1.0"
 coreSplashscreen = "1.0.1"
 coreTesting = "2.2.0"
 datastorePreferences = "1.1.4"
+firebaseAuthKtx = "23.2.0"
 gson = "2.12.1"
 kotlin = "2.1.10"
 coreKtx = "1.15.0"
@@ -31,7 +32,11 @@ navigationCompose = "2.8.9"
 hilt-navigation-compose = "1.2.0"
 hilt-android = "2.56.1"
 hilt-android-compiler = "2.56.1"
+playServicesAuth = "21.3.0"
 playServicesMaps = "19.1.0"
+rules = "1.6.1"
+runner = "1.6.2"
+junitJupiter = "5.8.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -41,9 +46,12 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coilCompose" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -79,7 +87,9 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

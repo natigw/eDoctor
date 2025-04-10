@@ -79,6 +79,16 @@ class ProfileViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
+            appPreferencesStorage.getUserFullName().collectLatest {
+                if (it != null)
+                    uiState.update { old ->
+                        old.copy(
+                            userFullName = it
+                        )
+                    }
+            }
+        }
+        viewModelScope.launch {
             appPreferencesStorage.getProfilePicture().collectLatest {
                 uiState.update { old ->
                     old.copy(

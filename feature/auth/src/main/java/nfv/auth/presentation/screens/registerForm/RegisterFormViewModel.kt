@@ -1,7 +1,5 @@
 package nfv.auth.presentation.screens.registerForm
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,12 +8,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.auth.domain.repository.AuthRepository
+import nfv.auth.domain.usecase.EmailValidatorUseCase
+import nfv.auth.domain.usecase.PasswordStrengthCheckerUseCase
 import nfv.navigation.di.Navigator
-import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.LoginRoute
-import nfv.navigation.routes.OnBoardRoute
 import nfv.navigation.routes.RegisterFormMedicalRoute
-import nfv.storage.local.data.AppPreferencesStorageImpl
 import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.inputFields.PasswordStrength
@@ -23,6 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterFormViewModel @Inject constructor(
+    private val emailValidatorUseCase: EmailValidatorUseCase,
+    private val passwordCheckerUseCase: PasswordStrengthCheckerUseCase,
     private val appPreferencesStorage: AppPreferencesStorage,
     private val navigator: Navigator,
     private val repository: AuthRepository
@@ -32,6 +31,7 @@ class RegisterFormViewModel @Inject constructor(
         RegisterFormState(
             fullNameText = "",
             emailText = "",
+            emailHelperText = null,
             passwordText = "",
             confirmPasswordText = "",
             passwordStrength = PasswordStrength.NONE,
@@ -40,7 +40,6 @@ class RegisterFormViewModel @Inject constructor(
         )
     )
 
-    @SuppressLint("SuspiciousIndentation")
     fun handleEvent(event: RegisterFormEvent) {
 
         var isFormValid: Boolean
@@ -49,6 +48,7 @@ class RegisterFormViewModel @Inject constructor(
             uiState.collectLatest {
                 isFormValid = it.fullNameText.isNotBlank() &&
                         it.emailText.isNotBlank() &&
+                        emailValidatorUseCase.execute(it.emailText).not() &&
                         it.passwordText.isNotBlank() &&
                         it.confirmPasswordText.isNotBlank() &&
                         it.arePasswordsIncompatible.not() &&
@@ -83,7 +83,7 @@ class RegisterFormViewModel @Inject constructor(
                 uiState.update { old ->
                     old.copy(
                         passwordText = event.newValue,
-                        passwordStrength = checkPasswordStrength(event.newValue),
+                        passwordStrength = passwordCheckerUseCase.execute(event.newValue),
                         arePasswordsIncompatible = if (old.confirmPasswordText.isNotBlank() && event.newValue.isNotBlank()) old.confirmPasswordText != event.newValue else false  //TODO -> bunu daha yaxsi usul ele, debouncing qoy
                     )
                 }
@@ -99,6 +99,20 @@ class RegisterFormViewModel @Inject constructor(
             }
 
             is RegisterFormEvent.OnClickContinue -> {
+
+                if (emailValidatorUseCase.execute(uiState.value.emailText).not()) {
+                    uiState.update {
+                        it.copy(
+                            emailHelperText = "*invalid email"
+                        )
+                    }
+                } else
+                    uiState.update {
+                        it.copy(
+                            emailHelperText = null
+                        )
+                    }
+
                 viewModelScope.launch {
                     uiState.update { old ->
                         old.copy(
@@ -110,8 +124,6 @@ class RegisterFormViewModel @Inject constructor(
                         email = uiState.value.emailText,
                         password = uiState.value.passwordText
                     )
-
-                    Log.d("salam", response.toString())
 
                     uiState.update { old ->
                         old.copy(
@@ -149,21 +161,5 @@ class RegisterFormViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    private fun checkPasswordStrength(password: String): PasswordStrength {
-        val passwordLength = password.length
-        val hasLowerCase = password.any { it.isLowerCase() }
-        val hasUpperCase = password.any { it.isUpperCase() }
-        val hasDigit = password.any { it.isDigit() }
-        val hasSpecialChar = password.any { !it.isLetterOrDigit() }
-
-        return if (password.isBlank() || passwordLength < 4)
-            PasswordStrength.NONE
-        else if (passwordLength < 6 || !hasLowerCase || !hasUpperCase || !hasDigit) {
-            PasswordStrength.WEAK
-        } else if (!hasSpecialChar) {
-            PasswordStrength.MEDIUM
-        } else PasswordStrength.STRONG
     }
 }

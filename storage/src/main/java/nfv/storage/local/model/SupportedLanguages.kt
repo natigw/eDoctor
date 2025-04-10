@@ -1,7 +1,7 @@
 package nfv.storage.local.model
 
-enum class SupportedLanguages(val inNative: String) {
-    AZERBAIJANI("Azərbaycanca"), //0
-    ENGLISH("English"),          //1
-    RUSSIAN("Русский")           //2
+enum class SupportedLanguages(val inNative: String, val locale: String) {
+    AZERBAIJANI("Azərbaycanca", "az"), //0
+    ENGLISH("English", "en"),          //1
+    RUSSIAN("Русский", "ru")           //2
 }

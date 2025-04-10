@@ -27,6 +27,7 @@ import nfv.navigation.di.Navigator
 import nfv.navigation.routes.AuthNavigation
 import nfv.profile.navigation.profileNavigation
 import nfv.storage.local.domain.UserPreferencesStorage
+import nfv.storage.local.model.SupportedLanguages
 import nfv.storage.local.model.SupportedThemes
 import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.Primary500
@@ -49,6 +50,11 @@ class MainActivity : ComponentActivity() {
 
             val allowScreenShots = userPreferencesStorage.getScreenshotsAllowedStatus().collectAsState(initial = false)
             val currentTheme = userPreferencesStorage.getCurrentTheme().collectAsState(initial = SupportedThemes.DARK)
+            val currentLanguage = userPreferencesStorage.getCurrentLanguage().collectAsState(initial = SupportedLanguages.ENGLISH)
+
+            LaunchedEffect(currentLanguage.value) {
+                LocaleHelper.setLocale(applicationContext, currentLanguage.value.locale)
+            }
 
             val navController = rememberNavController()
             val systemUiController = rememberSystemUiController()

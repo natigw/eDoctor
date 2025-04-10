@@ -140,6 +140,7 @@ fun RegisterFormSection(
         CustomTextField(
             titleText = stringResource(stringR.email),
             hintText = stringResource(stringR.email_description),
+            bottomHelperText = state.emailHelperText,
             text = state.emailText,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
@@ -252,6 +253,7 @@ private fun RegisterFormScreenPrev() {
             emailText = "",
             passwordText = "",
             confirmPasswordText = "",
+            emailHelperText = null,
             passwordStrength = PasswordStrength.NONE,
             arePasswordsIncompatible = false,
             continueButtonState = ButtonState.DISABLED

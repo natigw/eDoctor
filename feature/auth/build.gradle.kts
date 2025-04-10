@@ -46,6 +46,18 @@ dependencies {
     implementation(project(":navigation"))
     implementation(project(":ui_kit"))
 
+    // Junit test
+    testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
+
+    // Instrumented test
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.rules)
+
+    // Google Auth
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.auth.ktx)
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
