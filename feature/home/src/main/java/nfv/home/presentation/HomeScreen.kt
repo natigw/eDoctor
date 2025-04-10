@@ -133,11 +133,12 @@ fun HomeScreen(
                     onUiEvent(HomeEvent.OnSearchTextSearched)
                 },
                 onClickFilterButton = {
-                    onUiEvent(HomeEvent.OnSearchFiltered(
-                        filter = {
-                            //TODO -> fix it
-                        }
-                    ))
+                    onUiEvent(HomeEvent.OnSearchTextSearched)
+//                    onUiEvent(HomeEvent.OnSearchFiltered(
+//                        filter = {
+//                            //
+//                        }
+//                    ))
                 }
             )
 
@@ -413,7 +414,7 @@ fun HomeTopBar(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = RoundedCornerShape(8.dp)
-                ) //TODO -> bu shadow olmalidi
+                )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(),

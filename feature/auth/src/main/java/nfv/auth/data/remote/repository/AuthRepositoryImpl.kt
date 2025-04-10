@@ -19,10 +19,12 @@ import nfv.auth.domain.model.LoginMailModel
 import nfv.auth.domain.model.RegisterMailModel
 import nfv.auth.domain.repository.AuthRepository
 import nfv.network.endpoints.HttpRoutes
+import nfv.storage.local.domain.TokenStorage
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val client: HttpClient
+    private val client: HttpClient,
+    private val tokenStorage: TokenStorage
 ) : AuthRepository {
 
     override suspend fun registerWithEmail(email: String, password: String): RegisterMailModel? {
@@ -38,6 +40,9 @@ class AuthRepositoryImpl @Inject constructor(
                     )
                 )
             }.body<RegisterMailResponse>()  // Deserialize response automatically
+
+            // Save token to DataStore
+            tokenStorage.saveToken(response.data)
 
             // Convert RegisterMailResponse to RegisterMailModel and return
             RegisterMailModel(response.data)
@@ -76,6 +81,8 @@ class AuthRepositoryImpl @Inject constructor(
                     )
                 )
             }.body<LoginMailResponse>()
+
+            tokenStorage.saveToken(response.data)
 
             LoginMailModel(response.data)
 

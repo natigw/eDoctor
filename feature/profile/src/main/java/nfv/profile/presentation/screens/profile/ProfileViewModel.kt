@@ -16,11 +16,13 @@ import nfv.navigation.routes.MedicalInfoRoute
 import nfv.navigation.routes.TermsConditionsRoute
 import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
 import nfv.profile.presentation.screens.changeTheme.model.SupportedThemes
+import nfv.storage.local.domain.TokenStorage
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val tokenStorage: TokenStorage
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -121,6 +123,9 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.OnLogoutClicked -> {
                 viewModelScope.launch {
+
+                    tokenStorage.clearToken()
+
                     navigator.sendCommand {
                         navigate(LoginRoute) {
                             popUpTo(0) {      //TODO -> bunu deyis nese duz islemir naviqasiya

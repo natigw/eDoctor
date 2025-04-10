@@ -13,7 +13,9 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import nfv.storage.local.domain.TokenProvider
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
@@ -23,21 +25,33 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideKtorClient(): HttpClient {
+    fun provideKtorClient(
+        tokenProvider: TokenProvider
+    ): HttpClient {
 
         val client = HttpClient(OkHttp) {
 
             engine {
-//                addInterceptor { chain ->
-//                    val request = chain.request().newBuilder()
-//                        .addHeader(HttpHeaders.Authorization, "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0MzI3OTUxNX0.2HbD-z-lR9lIE6HC3phywFwcxgnt3xaqjBmy-MVJuOF6xUZStC9GHRQwc66OiffSQXupe8gEHVp5CiiJkR3F6Q")
-//                        .addHeader(HttpHeaders.AcceptLanguage, "ru")
-//                        .build()
-//                    chain.proceed(request)
-//                }
-//                addInterceptor(HttpLoggingInterceptor().apply {
-//                    level = HttpLoggingInterceptor.Level.BODY
-//                })
+                addInterceptor { chain ->
+
+                    val token : String? = runBlocking { tokenProvider.getToken() }
+                    val requestBuilder = chain.request().newBuilder()
+
+                    token?.let {
+                        requestBuilder.addHeader(
+                            name = HttpHeaders.Authorization,
+                            value = "Bearer $it"
+                        )
+                    }
+
+                    requestBuilder
+                        .addHeader(name = HttpHeaders.AcceptLanguage, value = "en")
+                        .build()
+                        .let(chain::proceed)
+                }
+                addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
             }
 
             install(ContentNegotiation) {

@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,11 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -33,10 +28,8 @@ import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MapsComposeExperimentalApi
-import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.clustering.Clustering
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.google.maps.android.compose.rememberMarkerState
 import nfv.map.domain.MapModel
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
@@ -96,74 +89,63 @@ fun MapScreen(
             ) {
 
                 Clustering(
-                    items = listOf(
-                        MarkerData(
-                            MapModel(
-                                location = LatLng(40.3847279, 49.8056599),
-                                name = "Baku",
-                                description = "Paytaxt"
-                            )
-                        ),
-                        MarkerData(
-                            MapModel(
-                                location = LatLng(40.3791, 49.8468),
-                                name = "Baku",
-                                description = "Paytaxt"
-                            )
-                        ),
-                        MarkerData(
-                            MapModel(
-                                location = LatLng(41.0847279, 49.8056599),
-                                name = "Baku",
-                                description = "Paytaxt"
-                            )
-                        ),
-                        MarkerData(
-                            MapModel(
-                                location = LatLng(40.2847279, 49.8056599),
-                                name = "Baku",
-                                description = "Paytaxt"
-                            )
-                        ),
-                        MarkerData(
-                            MapModel(
-                                location = LatLng(40.31791, 49.8468),
-                                name = "Baku",
-                                description = "Paytaxt"
-                            )
-                        )
-                    ),
-                    onClusterClick = { cluster ->
+                    items = state.pharmacies.map {
+                        MarkerData(item = it)
+                    },
+                    onClusterClick = {
                         cameraPositionState.move(
                             update = CameraUpdateFactory.zoomIn()
                         )
                         false
                     },
-                    onClusterItemClick = { clusterItem ->
+                    onClusterItemClick = {
+                        cameraPositionState.move(
+                            update = CameraUpdateFactory.zoomBy(1.8f)
+                        )
                         false
-                    }
+                    },
+//                    clusterItemContent = @Composable { markerData ->
+//                        MarkerComposable(
+//                            state = rememberMarkerState(position = markerData.position),
+//                            title = markerData.title,
+//                            snippet = markerData.snippet,
+//                            onClick = {
+//                                cameraPositionState.move(
+//                                    update = CameraUpdateFactory.zoomBy(1.8f)
+//                                )
+//                                false
+//                            }
+//                        ) {
+//                            Icon(
+//                                modifier = Modifier.size(40.dp),
+//                                imageVector = ImageVector.vectorResource(drawableR.ic_map_pin_filled),
+//                                contentDescription = "Pharmacy location",
+//                                tint = MaterialTheme.colorScheme.primary
+//                            )
+//                        }
+//                    }
                 )
 
-                state.pharmacies.forEach { location ->
-                    MarkerComposable(
-                        state = rememberMarkerState(position = location.location),
-                        title = location.name,
-                        snippet = location.description,
-                        onClick = {
-                            cameraPositionState.move(
-                                update = CameraUpdateFactory.zoomBy(1.8f)
-                            )
-                            false
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(40.dp),
-                            imageVector = ImageVector.vectorResource(drawableR.ic_map_pin_filled),
-                            contentDescription = "Pharmacy location",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
+//                state.pharmacies.forEach { location ->
+//                    MarkerComposable(
+//                        state = rememberMarkerState(position = location.location),
+//                        title = location.name,
+//                        snippet = location.description,
+//                        onClick = {
+//                            cameraPositionState.move(
+//                                update = CameraUpdateFactory.zoomBy(1.8f)
+//                            )
+//                            false
+//                        }
+//                    ) {
+//                        Icon(
+//                            modifier = Modifier.size(40.dp),
+//                            imageVector = ImageVector.vectorResource(drawableR.ic_map_pin_filled),
+//                            contentDescription = "Pharmacy location",
+//                            tint = MaterialTheme.colorScheme.primary
+//                        )
+//                    }
+//                }
             }
 
 

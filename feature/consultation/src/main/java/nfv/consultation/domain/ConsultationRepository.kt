@@ -22,12 +22,6 @@ class ConsultationRepository @Inject constructor(
                 url(HttpRoutes.CONSULTATION)
                 contentType(ContentType.Text.Plain)
                 setBody(questionBody)
-                header(
-                    "Authorization", "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkVEb2N0b3IiLCJlbWFpbCI6Im5hdGlnQGdtYWlsLmNvbSIsImV4cCI6MTc0NDIzODgwMH0.hgWQ9vS1uheV6XhK79tHCHheXxhHUJVqmu_TyECylMJsSf3d09njMCMFzjFe_IRqigqDJ8vgMwnUfxlmBIQ_Kw"
-                )
-                header(
-                    "Accept-Language", "en"
-                )
             }.body<ConsultationResponse>()
 
         } catch (e: Exception) {

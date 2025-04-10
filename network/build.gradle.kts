@@ -38,6 +38,8 @@ android {
 
 dependencies {
 
+    implementation(project(":storage"))
+
     // Ktor
     api(libs.ktor.client.android)
     api(libs.ktor.client.okhttp)

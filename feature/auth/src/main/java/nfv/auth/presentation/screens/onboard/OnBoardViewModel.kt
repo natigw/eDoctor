@@ -21,18 +21,18 @@ class OnBoardViewModel @Inject constructor(
             pages = listOf(
                 OnBoardPage(
                     image = R.drawable.img_onboard_illustration_1,
-                    title = "Welcome",
-                    description = "desc1"
+                    title = "Welcome!",
+                    description = "Get instant medical advice anytime with our intelligent AI-powered consultation system.\nLet's get started!"
                 ),
                 OnBoardPage(
                     image = R.drawable.img_onboard_illustration_2,
-                    title = "2",
-                    description = "desc2"
+                    title = "Interactive map",
+                    description = "Whether it's an emergency or a routine check-up, help is just around the corner."
                 ),
                 OnBoardPage(
                     image = R.drawable.img_onboard_illustration_3,
-                    title = "3",
-                    description = "desc3"
+                    title = "Keep medical records",
+                    description = "Access and manage your past medical tests, prescriptions, and doctor visits all in one secure place."
                 ),
             ),
             currentPage = 0

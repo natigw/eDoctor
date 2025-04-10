@@ -1,6 +1,6 @@
 package nfv.auth.presentation.screens.onboard
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -68,13 +69,17 @@ fun OnBoardScreen(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                repeat(state.pages.size) {
+                repeat(state.pages.size) { index ->
+                    val indicatorWidth by animateDpAsState(
+                        targetValue = if (index == state.currentPage) 50.dp else 32.dp,
+                        animationSpec = tween(durationMillis = 300)
+                    )
                     Box(
                         modifier = Modifier
-                            .height(4.dp)
-                            .width(42.dp)
+                            .height(5.dp)
+                            .width(indicatorWidth)
                             .clip(CircleShape)
-                            .background(if (it == state.currentPage) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainer)
+                            .background(if (index == state.currentPage) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainer)
                     )
                 }
             }
