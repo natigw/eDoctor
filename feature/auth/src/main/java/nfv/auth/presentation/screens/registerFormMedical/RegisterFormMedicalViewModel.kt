@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
 import nfv.ui_kit.components.buttons.model.ButtonState
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,20 +18,35 @@ class RegisterFormMedicalViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val fullName = savedStateHandle.get<String>("fullName") ?: ""
+    private val userFullName = savedStateHandle.get<String>("userFullName") ?: ""
 
     val uiState = MutableStateFlow(
         RegisterFormMedicalState(
-            fullNameText = fullName,
+            fullNameText = userFullName,
             bloodType = null,
             gender = null,
             weight = null,
             birthDate = null,
-            registerButtonState = ButtonState.DISABLED
+            continueButtonState = ButtonState.DISABLED
         )
     )
 
     fun handleEvent(event: RegisterFormMedicalEvent) {
+
+        var isFormValid: Boolean
+
+        viewModelScope.launch {
+            uiState.collectLatest {
+                isFormValid =
+                    it.bloodType != null && it.gender != null && it.weight != null && it.birthDate != null
+                uiState.update { old ->
+                    old.copy(
+                        continueButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
+                    )
+                }
+            }
+        }
+
         when (event) {
 
             is RegisterFormMedicalEvent.OnBloodTypeChanged -> {

@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +42,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nfv.history.model.HistoryResultUiItem
 import nfv.ui_kit.components.inputFields.SearchBarWithFilterButton
 import nfv.ui_kit.components.systemBars.BottomBar
 import nfv.ui_kit.components.systemBars.BottomBarItemData
@@ -84,7 +84,10 @@ fun TestResultsScreen(
                 .padding(innerPadding)
         ) {
             ResultListByMonth(
-                groupedResults = state.testResults,
+                state = state,
+                onReadStatusChanged = {
+                    onUiEvent(HistoryEvent.OnReadStatusChanged(it))
+                },
                 onClickDownloadDocument = { url, title ->
                     onUiEvent(
                         HistoryEvent.OnClickDownloadDocument(
@@ -135,6 +138,7 @@ fun HistoryTopBar(
                 },
                 onTextClear = {
                     onUiEvent(HistoryEvent.OnSearchTextChanged(""))
+                    onUiEvent(HistoryEvent.OnSearchTextSearched(""))
                 },
                 onSearch = {
                     onUiEvent(HistoryEvent.OnSearchTextSearched(state.searchText))
@@ -184,12 +188,12 @@ private fun HistoryBottomBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ResultListByMonth(
-    groupedResults: Map<String, List<HistoryResultUiItem>>, //TODO stringi date etmek lazimdi??
+    state: HistoryState,
+    onReadStatusChanged: (String) -> Unit,
     onClickDownloadDocument: (String, String) -> Unit
 ) {
     LazyColumn {
-        groupedResults.forEach { (date, resultList) ->
-
+        state.filteredTestResults.forEach { (date, resultList) ->
             stickyHeader {
                 Text(
                     modifier = Modifier
@@ -220,18 +224,16 @@ fun ResultListByMonth(
                     animationSpec = tween(durationMillis = 300)
                 )
 
-                var isRead by remember { mutableStateOf(false) }
-
                 Column {
                     Row(
                         modifier = Modifier
-                            .background(if (isRead) BaseTransparent else Info50)
+                            .background(if (resultList[testResult].isRead) BaseTransparent else Info50)
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(),
                                 onClick = {
                                     isExpanded = !isExpanded
-                                    isRead = true
+                                    onReadStatusChanged(resultList[testResult].id)
                                 }
                             )
                             .padding(vertical = 12.dp, horizontal = 16.dp)
@@ -369,7 +371,8 @@ private fun TestResultsPrev() {
     TestResultsScreen(
         state = HistoryState(
             searchText = "",
-            testResults = emptyMap()
+            testResults = emptyMap(),
+            filteredTestResults = emptyMap()
         ),
         onUiEvent = {}
     )

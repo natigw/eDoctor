@@ -87,7 +87,7 @@
 
     <string name="personal_details">Şəxsi məlumatlar</string>
     <string name="blood_type">Qan qrupu</string>
-    <string name="sex">Cins</string>
+    <string name="gender">Cins</string>
     <string name="weight">Çəki</string>
     <string name="date_of_birth">Doğum tarixi</string>
     <string name="edit_details">Məlumatları redaktə et</string>

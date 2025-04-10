@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -49,7 +50,8 @@ fun RegisterFormScreen(
 ) {
     Scaffold(
         modifier = Modifier
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .imePadding(),
         topBar = {
             TopBar(
                 leadingIcon = IconWithAction(
@@ -61,18 +63,6 @@ fun RegisterFormScreen(
             )
         }
     ) { innerPadding ->
-
-//        val isFormValid = state.fullNameText.isNotBlank() &&
-//                state.emailText.isNotBlank() &&
-//                state.passwordText.isNotBlank() &&
-//                state.confirmPasswordText.isNotBlank() &&
-//                state.arePasswordsIncompatible.not() //&&
-//                state.passwordStrength != PasswordStrength.NONE &&   //TODO -> burani duz etmisem yoxsa remember olmalidi??
-//                state.passwordStrength != PasswordStrength.WEAK
-
-//        val continueButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
-
-//        val passwordStrength = checkPasswordStrength(state.passwordText)
 
         Column(
             modifier = Modifier
@@ -86,20 +76,14 @@ fun RegisterFormScreen(
             RegisterInfoSection()
 
             RegisterFormSection(
-                state = state.copy(
-//                    passwordStrength = passwordStrength,
-//                    continueButtonState = continueButtonState
-                ),
+                state = state,
                 onUiEvent = onUiEvent
             )
 
             Spacer(Modifier.weight(1f))
 
             ButtonSection(
-                state = state.copy(
-//                    passwordStrength = passwordStrength,
-//                    continueButtonState = continueButtonState
-                ),
+                state = state,
                 onUiEvent = onUiEvent
             )
         }

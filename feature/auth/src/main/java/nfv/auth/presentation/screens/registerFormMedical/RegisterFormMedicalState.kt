@@ -11,5 +11,5 @@ data class RegisterFormMedicalState(
     val gender: Gender?,
     val weight: Double?,
     val birthDate: Date?,
-    val registerButtonState: ButtonState
+    val continueButtonState: ButtonState
 )

@@ -23,6 +23,7 @@ import nfv.home.navigation.homeNavigation
 import nfv.map.presentation.navigation.mapNavigation
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.AuthNavigation
+import nfv.navigation.routes.HomeNavigation
 import nfv.profile.navigation.profileNavigation
 import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.Primary500
@@ -71,7 +72,7 @@ class MainActivity : ComponentActivity() {
                             }
                         ),
                     navController = navController,
-                    startDestination = AuthNavigation//HomeNavigation
+                    startDestination = HomeNavigation
                 ) {
                     authNavigation()
                     homeNavigation()

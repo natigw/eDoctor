@@ -2,7 +2,7 @@ package nfv.network.endpoints
 
 object HttpRoutes {
 
-    private const val BASE_URL = "http://192.168.0.101:8080"
+    private const val BASE_URL = "http://10.33.122.217:8080"
 
     const val REGISTER_MAIL = "$BASE_URL/register/mail"
     const val LOGIN_MAIL = "$BASE_URL/login/mail"

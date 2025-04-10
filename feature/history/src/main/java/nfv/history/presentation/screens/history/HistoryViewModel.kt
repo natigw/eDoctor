@@ -67,7 +67,8 @@ class HistoryViewModel @Inject constructor(
 
                 uiState.update {
                     it.copy(
-                        testResults = resultGrouped
+                        testResults = resultGrouped,
+                        filteredTestResults = resultGrouped
                     )
                 }
             }
@@ -76,93 +77,9 @@ class HistoryViewModel @Inject constructor(
 
     val uiState = MutableStateFlow(
         HistoryState(
-            searchText = "", testResults = resultGrouped
-//            mapOf(
-//                "Yanvar" to listOf(
-//                    TestResultItem(
-//                        0,
-//                        "Qan analizi",
-//                        "Referans Lab",
-//                        "10 yanvar"
-//                    ),
-//                    TestResultItem(
-//                        1,
-//                        "Pregnancy test",
-//                        "Merkezi klinika",
-//                        "12 yanvar"
-//                    ),
-//                    TestResultItem(
-//                        2,
-//                        "Qlükoza",
-//                        "Merkezi klinika",
-//                        "15 yanvar"
-//                    )
-//                ),
-//                "Mart" to listOf(
-//                    TestResultItem(
-//                        3,
-//                        "Xolesterin",
-//                        "Referans Lab",
-//                        "5 fevral"
-//                    )
-//                ),
-//                "Iyun" to listOf(
-//                    TestResultItem(
-//                        4,
-//                        "D vitamini",
-//                        "Referans Lab",
-//                        "20 fevral"
-//                    ),
-//                    TestResultItem(
-//                        5,
-//                        "Kalsium",
-//                        "Merkezi klinika",
-//                        "28 fevral"
-//                    )
-//                ),
-//                "Yanvar1" to listOf(
-//                    TestResultItem(
-//                        0,
-//                        "Qan analizi",
-//                        "Referans Lab",
-//                        "10 yanvar"
-//                    ),
-//                    TestResultItem(
-//                        1,
-//                        "Pregnancy test",
-//                        "Merkezi klinika",
-//                        "12 yanvar"
-//                    ),
-//                    TestResultItem(
-//                        2,
-//                        "Qlükoza",
-//                        "Merkezi klinika",
-//                        "15 yanvar"
-//                    )
-//                ),
-//                "Mart2" to listOf(
-//                    TestResultItem(
-//                        3,
-//                        "Xolesterin",
-//                        "Referans Lab",
-//                        "5 fevral"
-//                    )
-//                ),
-//                "Iyun3" to listOf(
-//                    TestResultItem(
-//                        4,
-//                        "D vitamini",
-//                        "Referans Lab",
-//                        "20 fevral"
-//                    ),
-//                    TestResultItem(
-//                        5,
-//                        "Kalsium",
-//                        "Merkezi klinika",
-//                        "28 fevral"
-//                    )
-//                )
-//            )
+            searchText = "",
+            testResults = resultGrouped,
+            filteredTestResults = resultGrouped
         )
     )
 
@@ -182,7 +99,21 @@ class HistoryViewModel @Inject constructor(
 
             is HistoryEvent.OnSearchTextSearched -> {
                 viewModelScope.launch {
-                    //search
+                    val searchText = event.newValue.lowercase()
+
+                    val filteredResults = resultGrouped.mapValues { (_, items) ->
+                        items.filter { item ->
+                            item.testTitle.lowercase().contains(searchText) ||
+                                    item.labName.lowercase().contains(searchText) ||
+                                    item.testDescription.lowercase().contains(searchText)
+                        }
+                    }.filterValues { it.isNotEmpty() }
+
+                    uiState.update { old ->
+                        old.copy(
+                            filteredTestResults = filteredResults
+                        )
+                    }
                 }
             }
 
@@ -224,6 +155,37 @@ class HistoryViewModel @Inject constructor(
             is HistoryEvent.OnClickDownloadDocument -> {
                 viewModelScope.launch {
                     downloader.downloadFile(event.link, event.title)
+                }
+            }
+
+            is HistoryEvent.OnReadStatusChanged -> {
+                viewModelScope.launch {
+                    val updatedFilteredResults = uiState.value.filteredTestResults.mapValues { (_, items) ->
+                        items.map { item ->
+                            if (item.id == event.id) {
+                                item.copy(isRead = true)
+                            } else {
+                                item
+                            }
+                        }
+                    }
+
+                    val updatedResults = uiState.value.testResults.mapValues {
+                        it.value.map { item ->
+                            if (item.id == event.id) {
+                                item.copy(isRead = true)
+                            } else {
+                                item
+                            }
+                        }
+                    }
+
+                    uiState.update { old ->
+                        old.copy(
+                            testResults = updatedResults,
+                            filteredTestResults = updatedFilteredResults
+                        )
+                    }
                 }
             }
         }

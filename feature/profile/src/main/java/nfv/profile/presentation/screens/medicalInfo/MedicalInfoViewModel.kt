@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
+import nfv.ui_kit.model.BloodType
+import nfv.ui_kit.model.Gender
 import java.util.Date
 import javax.inject.Inject
 
@@ -19,7 +21,7 @@ class MedicalInfoViewModel @Inject constructor(
             userDetails = UserDetails(
                 fullName = "Cart",
                 bloodType = BloodType.FIRST_NEGATIVE,
-                sex = Sex.MALE,
+                gender = Gender.MALE,
                 weight = 65.0,
                 birthDate = Date()
             ),

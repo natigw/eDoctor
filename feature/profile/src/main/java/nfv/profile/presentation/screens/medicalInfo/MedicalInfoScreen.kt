@@ -50,6 +50,8 @@ import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.components.buttons.square.OutlinedButton
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.systemBars.TopBar
+import nfv.ui_kit.model.BloodType
+import nfv.ui_kit.model.Gender
 import nfv.ui_kit.theme.DefaultScreenPadding
 import nfv.ui_kit.theme.EDoctorTypography
 import java.util.Date
@@ -142,7 +144,7 @@ fun PersonalDetailsSection(
                 Spacer(Modifier.height(8.dp))
                 PersonalDetailsItem(
                     detailItem = PersonalDetailsItemData(
-                        title = stringResource(stringR.sex),
+                        title = stringResource(stringR.gender),
                         details = "Male"
                     )
                 )
@@ -366,7 +368,7 @@ private fun MedicalInfoScreenPrev() {
             userDetails = UserDetails(
                 fullName = "Cart",
                 bloodType = BloodType.FIRST_NEGATIVE,
-                sex = Sex.MALE,
+                gender = Gender.MALE,
                 weight = 65.0,
                 birthDate = Date()
             ),

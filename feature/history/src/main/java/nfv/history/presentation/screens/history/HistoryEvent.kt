@@ -4,6 +4,7 @@ sealed interface HistoryEvent {
 
     data class OnSearchTextChanged(val newValue: String) : HistoryEvent
     data class OnSearchTextSearched(val newValue: String) : HistoryEvent
+    data class OnReadStatusChanged(val id: String) : HistoryEvent
 
     data class OnClickDownloadDocument(val link: String, val title: String) : HistoryEvent
 

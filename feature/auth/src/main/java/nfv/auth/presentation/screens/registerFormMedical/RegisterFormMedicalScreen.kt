@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -67,13 +66,6 @@ fun RegisterFormMedicalScreen(
     ) { innerPadding ->
 
 
-//        val isFormValid = state.bloodType &&
-//                state.sex &&
-//                state.weight &&
-//                state.birthDate
-        val isFormValid = true
-        val registerButtonState = if (isFormValid) ButtonState.ENABLED else ButtonState.DISABLED
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -86,18 +78,14 @@ fun RegisterFormMedicalScreen(
             RegisterMedicalInfoSection(userFullName = state.fullNameText)
 
             RegisterFormMedicalSection(
-                state = state.copy(
-                    registerButtonState = registerButtonState
-                ),
+                state = state,
                 onUiEvent = onUiEvent
             )
 
             Spacer(Modifier.weight(1f))
 
             ButtonSection(
-                state = state.copy(
-                    registerButtonState = registerButtonState
-                ),
+                state = state,
                 onUiEvent = onUiEvent
             )
         }
@@ -200,8 +188,8 @@ fun ButtonSection(
             modifier = Modifier
                 .fillMaxWidth(),
             buttonType = ButtonTypes.LARGE,
-            state = state.registerButtonState,
-            textEnabled = "Register",
+            state = state.continueButtonState,
+            textEnabled = "Continue",
             onClick = {
                 onUiEvent(RegisterFormMedicalEvent.OnRegisterClicked)
             }
@@ -246,7 +234,7 @@ private fun RegisterFormMedicalScreenPrev() {
             gender = Gender.MALE,
             weight = 0.0,
             birthDate = Date(),
-            registerButtonState = ButtonState.DISABLED
+            continueButtonState = ButtonState.DISABLED
         ),
         onUiEvent = { }
     )

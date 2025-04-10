@@ -18,7 +18,6 @@ fun NavGraphBuilder.historyNavigation() {
         composable<HistoryRoute> {
             val viewModel = hiltViewModel<HistoryViewModel>()
             val state by viewModel.uiState.collectAsStateWithLifecycle()
-
             TestResultsScreen(
                 state = state,
                 onUiEvent = viewModel::handleEvent
