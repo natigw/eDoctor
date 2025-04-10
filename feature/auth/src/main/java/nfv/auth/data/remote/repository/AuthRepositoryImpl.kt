@@ -12,11 +12,12 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import nfv.auth.data.remote.model.request.LoginMailRequest
+import nfv.auth.data.remote.model.request.OTPVerifyRequest
 import nfv.auth.data.remote.model.request.RegisterMailRequest
 import nfv.auth.data.remote.model.response.LoginMailResponse
+import nfv.auth.data.remote.model.response.OTPVerifyResponse
 import nfv.auth.data.remote.model.response.RegisterMailResponse
-import nfv.auth.domain.model.LoginMailModel
-import nfv.auth.domain.model.RegisterMailModel
+import nfv.auth.domain.model.AuthenticationMailModel
 import nfv.auth.domain.repository.AuthRepository
 import nfv.network.endpoints.HttpRoutes
 import nfv.storage.local.domain.TokenStorage
@@ -27,25 +28,18 @@ class AuthRepositoryImpl @Inject constructor(
     private val tokenStorage: TokenStorage
 ) : AuthRepository {
 
-    override suspend fun registerWithEmail(email: String, password: String): RegisterMailModel? {
+    override suspend fun registerWithEmail(email: String) {
 
-        return try {
-            val response = client.post {
+        try {
+            client.post {
                 url(HttpRoutes.REGISTER_MAIL)
                 contentType(ContentType.Application.Json)
                 setBody(
                     RegisterMailRequest(
-                        email = email,
-                        password = password
+                        email = email
                     )
                 )
             }.body<RegisterMailResponse>()  // Deserialize response automatically
-
-            // Save token to DataStore
-            tokenStorage.saveToken(response.data)
-
-            // Convert RegisterMailResponse to RegisterMailModel and return
-            RegisterMailModel(response.data)
 
         } catch (e: RedirectResponseException) {
             // 3xx responses
@@ -68,7 +62,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun loginWithEmail(email: String, password: String): LoginMailModel? {
+    override suspend fun loginWithEmail(email: String, password: String): AuthenticationMailModel? {
 
         return try {
             val response = client.post {
@@ -84,7 +78,45 @@ class AuthRepositoryImpl @Inject constructor(
 
             tokenStorage.saveToken(response.data)
 
-            LoginMailModel(response.data)
+            AuthenticationMailModel(response.data)
+
+        } catch (e: RedirectResponseException) {
+            // 3xx responses
+            Log.d("loginMail", "Error: ${e.response.status.description}")
+            null
+        } catch (e: ClientRequestException) {
+            // 4xx responses
+            Log.d("loginMail", "Error: ${e.response.status.description}")
+            null
+        } catch (e: ServerResponseException) {
+            // 5xx responses
+            Log.d("loginMail", "Error: ${e.response.status.description}")
+            null
+        } catch (e: Exception) {
+            // other exceptions
+            Log.d("loginMail", "Error: ${e.message}")
+            e.printStackTrace()
+            null
+        }
+    }
+
+    override suspend fun registerVerifyOtp(email: String, otp: String, password: String): AuthenticationMailModel? {
+        return try {
+            val response = client.post {
+                url(HttpRoutes.VERIFY_OTP)
+                contentType(ContentType.Application.Json)
+                setBody(
+                    OTPVerifyRequest(
+                        email = email,
+                        otp = otp,
+                        password = password
+                    )
+                )
+            }.body<OTPVerifyResponse>()
+
+            tokenStorage.saveToken(response.data)
+
+            AuthenticationMailModel(response.data)
 
         } catch (e: RedirectResponseException) {
             // 3xx responses

@@ -11,8 +11,11 @@ import nfv.auth.domain.repository.AuthRepository
 import nfv.auth.domain.usecase.EmailValidatorUseCase
 import nfv.auth.domain.usecase.PasswordStrengthCheckerUseCase
 import nfv.navigation.di.Navigator
+import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.LoginRoute
+import nfv.navigation.routes.OnBoardRoute
 import nfv.navigation.routes.RegisterFormMedicalRoute
+import nfv.storage.local.data.AppPreferencesStorageImpl
 import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.inputFields.PasswordStrength
@@ -24,7 +27,6 @@ class RegisterFormViewModel @Inject constructor(
     private val passwordCheckerUseCase: PasswordStrengthCheckerUseCase,
     private val appPreferencesStorage: AppPreferencesStorage,
     private val navigator: Navigator,
-    private val repository: AuthRepository
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -120,27 +122,19 @@ class RegisterFormViewModel @Inject constructor(
                         )
                     }
 
-                    val response = repository.registerWithEmail(
-                        email = uiState.value.emailText,
-                        password = uiState.value.passwordText
-                    )
-
-                    uiState.update { old ->
-                        old.copy(
-                            continueButtonState = ButtonState.ENABLED
+                    appPreferencesStorage.setUserFullName(fullName = uiState.value.fullNameText)
+                    appPreferencesStorage.setUsername(
+                        username = uiState.value.fullNameText.substringBefore(
+                            " "
                         )
-                    }
-
-                    if (response != null) {
-                        appPreferencesStorage.setUserFullName(fullName = uiState.value.fullNameText)
-                        appPreferencesStorage.setUsername(
-                            username = uiState.value.fullNameText.substringBefore(
-                                " "
+                    )
+                    navigator.sendCommand {
+                        navigate(
+                            route = RegisterFormMedicalRoute(
+                                uiState.value.emailText,
+                                uiState.value.passwordText
                             )
                         )
-                        navigator.sendCommand {
-                            navigate(route = RegisterFormMedicalRoute(uiState.value.emailText))
-                        }
                     }
                 }
             }

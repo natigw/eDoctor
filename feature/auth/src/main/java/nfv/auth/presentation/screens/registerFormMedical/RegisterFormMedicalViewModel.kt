@@ -23,6 +23,7 @@ class RegisterFormMedicalViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val email = savedStateHandle.get<String>("email") ?: ""
+    private val password = savedStateHandle.get<String>("password") ?: ""
 
     val uiState = MutableStateFlow(
         RegisterFormMedicalState(
@@ -116,7 +117,12 @@ class RegisterFormMedicalViewModel @Inject constructor(
             RegisterFormMedicalEvent.OnRegisterClicked -> {
                 viewModelScope.launch {
                     navigator.sendCommand {
-                        navigate(route = RegisterOTPRoute(email))
+                        navigate(
+                            route = RegisterOTPRoute(
+                                email = email,
+                                password = password
+                            )
+                        )
                     }
                 }
             }

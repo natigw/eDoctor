@@ -21,12 +21,14 @@ data object RegisterFormRoute
 
 @Serializable
 data class RegisterFormMedicalRoute(
-    val email: String
+    val email: String,
+    val password: String
 )
 
 @Serializable
 data class RegisterOTPRoute(
-    val email: String
+    val email: String,
+    val password: String
 )
 
 @Serializable

@@ -4,7 +4,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RegisterMailRequest(
+data class OTPVerifyRequest(
     @SerializedName("email")
-    val email: String
+    val email: String,
+    @SerializedName("otp")
+    val otp: String,
+    @SerializedName("password")
+    val password: String
 )
