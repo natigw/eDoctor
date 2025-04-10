@@ -1,7 +1,9 @@
 package nfv.auth.presentation.screens.otp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,21 +14,36 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalEvent
+import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalState
 import nfv.ui_kit.components.systemBars.IconWithAction
 import nfv.ui_kit.components.inputFields.OtpInputField
 import nfv.ui_kit.components.systemBars.TopBar
@@ -42,8 +59,12 @@ import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
 fun OTPScreen(
-    receiver: String
+    state: OTPState,
+    onUiEvent: (OTPEvent) -> Unit
 ) {
+
+    val interactionSource = remember { MutableInteractionSource() }
+
     Scaffold(
         modifier = Modifier
             .systemBarsPadding(),
@@ -52,7 +73,7 @@ fun OTPScreen(
                 leadingIcon = IconWithAction(
                     icon = drawableR.ic_arrow_left,
                     action = {
-                        //TODO -> navigate back
+                        onUiEvent(OTPEvent.OnNavigateBack)
                     }
                 )
             )
@@ -78,28 +99,57 @@ fun OTPScreen(
                         style = EDoctorTypography.bodyMedium.copy(color = Typography700)
                             .toSpanStyle()
                     ) {
-                        append("Enter the 6-digit that we have sent via the phone number to ")
+                        append("Enter the 6-digit that we have sent via the email to ")
                     }
                     withStyle(
                         style = EDoctorTypography.bodyMedium
                             .copy(fontWeight = FontWeight.Bold)
                             .toSpanStyle()
                     ) {
-                        append(receiver)
+                        append(state.email)
                     }
                 }
             )
+
             Spacer(Modifier.height(32.dp))
 
-
             Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    repeat(6) {
-                        OtpInputField()
+                Box {
+                    CompositionLocalProvider(
+                        LocalTextSelectionColors provides TextSelectionColors(
+                            handleColor = Color.Transparent, backgroundColor = Color.Transparent
+                        )
+                    ) {
+                        OutlinedTextField(
+                            value = state.otp,
+                            onValueChange = {
+                                onUiEvent(OTPEvent.OnOtpChanged(it))
+                            },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.NumberPassword,
+                                imeAction = ImeAction.Done
+                            ),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                cursorColor = Color.Transparent,
+                                focusedBorderColor = Color.Transparent,
+                                unfocusedBorderColor = Color.Transparent
+                            ),
+                            visualTransformation = PasswordVisualTransformation(),
+                            interactionSource = interactionSource,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(76.dp)
+                                .alpha(0f)
+                                .pointerInput(Unit) {})
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        repeat(6) {
+                            OtpInputField(digit = if (it < state.otp.length) state.otp[it].toString() else "")
+                        }
                     }
                 }
 
@@ -115,7 +165,7 @@ fun OTPScreen(
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        text = "00:59",
+                        text = state.timer,
                         style = EDoctorTypography.labelMedium.copy(
                             fontWeight = FontWeight.Bold,
                             color = Typography700
@@ -133,7 +183,7 @@ fun OTPScreen(
                 state = ButtonState.ENABLED,
                 textEnabled = "Resend Code",
                 onClick = {
-
+                    onUiEvent(OTPEvent.OnResendClicked)
                 }
             )
             Spacer(Modifier.height(16.dp))
@@ -141,10 +191,10 @@ fun OTPScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 buttonType = ButtonTypes.LARGE,
-                state = ButtonState.DISABLED,
+                state = state.continueButtonState,
                 textEnabled = "Continue",
                 onClick = {
-
+                    onUiEvent(OTPEvent.OnContinueClicked)
                 }
             )
 
@@ -189,6 +239,7 @@ fun OTPScreen(
 @Composable
 private fun OTPScreenPrev() {
     OTPScreen(
-        receiver = "+994 51 649 91 93"
+        state = OTPState("", "", "", ButtonState.DISABLED),
+        onUiEvent = { }
     )
 }

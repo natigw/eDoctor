@@ -1,5 +1,6 @@
 package nfv.auth.presentation.screens.registerForm
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,12 +15,15 @@ import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.LoginRoute
 import nfv.navigation.routes.OnBoardRoute
 import nfv.navigation.routes.RegisterFormMedicalRoute
+import nfv.storage.local.data.AppPreferencesStorageImpl
+import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.inputFields.PasswordStrength
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterFormViewModel @Inject constructor(
+    private val appPreferencesStorage: AppPreferencesStorage,
     private val navigator: Navigator,
     private val repository: AuthRepository
 ) : ViewModel() {
@@ -36,6 +40,7 @@ class RegisterFormViewModel @Inject constructor(
         )
     )
 
+    @SuppressLint("SuspiciousIndentation")
     fun handleEvent(event: RegisterFormEvent) {
 
         var isFormValid: Boolean
@@ -115,8 +120,10 @@ class RegisterFormViewModel @Inject constructor(
                     }
 
                     if (response != null)
+                        appPreferencesStorage.setUserFullName(fullName = uiState.value.fullNameText)
+                        appPreferencesStorage.setUsername(username = uiState.value.fullNameText.substringBefore(" "))
                         navigator.sendCommand {
-                            navigate(route = RegisterFormMedicalRoute(uiState.value.fullNameText))
+                            navigate(route = RegisterFormMedicalRoute(uiState.value.emailText))
                         }
                 }
             }

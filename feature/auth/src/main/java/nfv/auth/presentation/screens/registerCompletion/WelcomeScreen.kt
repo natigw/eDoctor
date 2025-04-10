@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -31,19 +33,21 @@ import nfv.ui_kit.theme.Typography200
 import nfv.ui_kit.theme.Typography50
 import nfv.ui_kit.R.drawable as drawableR
 
-//TODO -> bu ekranda textler olan column tam merkezde, double-check icon ise onun ustunde olmalidi
-
 @Composable
 fun WelcomeScreen(
-    user: String
+    state: WelcomeScreenState,
+    onUiEvent: (WelcomeScreenEvent) -> Unit
 ) {
     Box(
         modifier = Modifier
+            .systemBarsPadding()
             .fillMaxSize()
-            .background(Primary500)
+            .background(Primary500),
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = Modifier
+                .offset(y = (-100).dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(BaseWhite)
                 .padding(12.dp)
@@ -60,7 +64,7 @@ fun WelcomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Hello, $user \uD83D\uDC4B",
+                text = "Hello, ${state.username} \uD83D\uDC4B",
                 style = EDoctorTypography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = Typography50
@@ -73,7 +77,7 @@ fun WelcomeScreen(
             )
         }
 
-        ActiveButton(  //TODO -> bunu basqa tip button et
+        ActiveButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
@@ -82,7 +86,7 @@ fun WelcomeScreen(
             state = ButtonState.ENABLED,
             textEnabled = "Continue",
             onClick = {
-
+                onUiEvent(WelcomeScreenEvent.OnContinueClicked)
             }
         )
     }
@@ -91,5 +95,10 @@ fun WelcomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun WelcomeScreenPrev() {
-    WelcomeScreen(user = "Natig")
+    WelcomeScreen(
+        state = WelcomeScreenState(
+            username = "Vusat Orujov"
+        ),
+        onUiEvent = {}
+    )
 }

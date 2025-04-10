@@ -13,13 +13,14 @@ import nfv.navigation.routes.HistoryRoute
 import nfv.navigation.routes.MapRoute
 import nfv.navigation.routes.MedicalInfoRoute
 import nfv.navigation.routes.ProfileRoute
+import nfv.storage.local.domain.AppPreferencesStorage
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val appPreferencesStorage: AppPreferencesStorage,
     private val navigator: Navigator,
     private val newsRepository: NewsRepository
-//    private val localPreferences: LocalRepository
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -32,6 +33,15 @@ class HomeViewModel @Inject constructor(
 
     init {
         fetchNews()
+        viewModelScope.launch {
+            appPreferencesStorage.getUsername().collect {
+                uiState.update { old ->
+                    old.copy(
+                        username = it.toString()
+                    )
+                }
+            }
+        }
     }
 
     private fun fetchNews() {

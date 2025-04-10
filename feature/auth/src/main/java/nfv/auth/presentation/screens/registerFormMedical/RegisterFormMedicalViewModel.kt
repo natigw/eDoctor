@@ -9,20 +9,24 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
+import nfv.navigation.routes.LoginRoute
+import nfv.navigation.routes.RegisterOTPRoute
+import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.components.buttons.model.ButtonState
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterFormMedicalViewModel @Inject constructor(
+    private val appPreferencesStorage: AppPreferencesStorage,
     private val navigator: Navigator,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val userFullName = savedStateHandle.get<String>("userFullName") ?: ""
+    private val email = savedStateHandle.get<String>("email") ?: ""
 
     val uiState = MutableStateFlow(
         RegisterFormMedicalState(
-            fullNameText = userFullName,
+            fullNameText = "",
             bloodType = null,
             gender = null,
             weight = null,
@@ -30,6 +34,18 @@ class RegisterFormMedicalViewModel @Inject constructor(
             continueButtonState = ButtonState.DISABLED
         )
     )
+
+    init {
+        viewModelScope.launch {
+            appPreferencesStorage.getUserFullName().collect {
+                uiState.update { old ->
+                    old.copy(
+                        fullNameText = it.toString()
+                    )
+                }
+            }
+        }
+    }
 
     fun handleEvent(event: RegisterFormMedicalEvent) {
 
@@ -100,7 +116,7 @@ class RegisterFormMedicalViewModel @Inject constructor(
             RegisterFormMedicalEvent.OnRegisterClicked -> {
                 viewModelScope.launch {
                     navigator.sendCommand {
-//                        navigate()
+                        navigate(route = RegisterOTPRoute(email))
                     }
                 }
             }
@@ -108,7 +124,7 @@ class RegisterFormMedicalViewModel @Inject constructor(
             RegisterFormMedicalEvent.GoToLoginScreen -> {
                 viewModelScope.launch {
                     navigator.sendCommand {
-//                        navigate()
+                        navigate(route = LoginRoute)
                     }
                 }
             }
