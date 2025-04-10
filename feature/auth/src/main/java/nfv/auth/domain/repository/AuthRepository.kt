@@ -1,12 +1,13 @@
 package nfv.auth.domain.repository
 
-import nfv.auth.domain.model.LoginMailModel
-import nfv.auth.domain.model.RegisterMailModel
+import nfv.auth.domain.model.AuthenticationMailModel
 
 interface AuthRepository {
 
-    suspend fun registerWithEmail(email: String, password: String) : RegisterMailModel?
+    suspend fun registerWithEmail(email: String)
 
-    suspend fun loginWithEmail(email: String, password: String) : LoginMailModel?
+    suspend fun registerVerifyOtp(email: String, otp: String, password: String) : AuthenticationMailModel?
+
+    suspend fun loginWithEmail(email: String, password: String) : AuthenticationMailModel?
 
 }

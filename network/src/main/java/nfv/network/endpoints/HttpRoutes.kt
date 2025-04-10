@@ -5,6 +5,7 @@ object HttpRoutes {
     private const val BASE_URL = "http://13.49.0.170:8080"
 
     const val REGISTER_MAIL = "$BASE_URL/register/mail"
+    const val VERIFY_OTP = "$BASE_URL/register/mail/verify"
     const val LOGIN_MAIL = "$BASE_URL/login/mail"
 
     const val NEWS = "$BASE_URL/news"

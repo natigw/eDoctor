@@ -1,5 +1,5 @@
 package nfv.auth.domain.model
 
-data class LoginMailModel(
+data class AuthenticationMailModel(
     val token: String
 )

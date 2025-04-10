@@ -25,7 +25,6 @@ import javax.inject.Inject
 class RegisterFormViewModel @Inject constructor(
     private val appPreferencesStorage: AppPreferencesStorage,
     private val navigator: Navigator,
-    private val repository: AuthRepository
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -106,29 +105,19 @@ class RegisterFormViewModel @Inject constructor(
                         )
                     }
 
-                    val response = repository.registerWithEmail(
-                        email = uiState.value.emailText,
-                        password = uiState.value.passwordText
-                    )
-
-                    Log.d("salam", response.toString())
-
-                    uiState.update { old ->
-                        old.copy(
-                            continueButtonState = ButtonState.ENABLED
+                    appPreferencesStorage.setUserFullName(fullName = uiState.value.fullNameText)
+                    appPreferencesStorage.setUsername(
+                        username = uiState.value.fullNameText.substringBefore(
+                            " "
                         )
-                    }
-
-                    if (response != null) {
-                        appPreferencesStorage.setUserFullName(fullName = uiState.value.fullNameText)
-                        appPreferencesStorage.setUsername(
-                            username = uiState.value.fullNameText.substringBefore(
-                                " "
+                    )
+                    navigator.sendCommand {
+                        navigate(
+                            route = RegisterFormMedicalRoute(
+                                uiState.value.emailText,
+                                uiState.value.passwordText
                             )
                         )
-                        navigator.sendCommand {
-                            navigate(route = RegisterFormMedicalRoute(uiState.value.emailText))
-                        }
                     }
                 }
             }
