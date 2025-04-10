@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import nfv.storage.local.model.SupportedLanguages
 import nfv.storage.local.model.SupportedThemes
 
-interface PreferencesStorage {
+interface UserPreferencesStorage {
 
     suspend fun saveLanguagePreference(language: SupportedLanguages)
     fun getCurrentLanguage(): Flow<SupportedLanguages>

@@ -7,7 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import nfv.storage.local.domain.PreferencesStorage
+import nfv.storage.local.domain.UserPreferencesStorage
 import nfv.storage.local.model.SupportedLanguages
 import nfv.storage.local.model.SupportedThemes
 import javax.inject.Inject
@@ -16,11 +16,15 @@ import javax.inject.Singleton
 private val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
 @Singleton
-class PreferencesStorageImpl @Inject constructor(
+class UserPreferencesStorageImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) : PreferencesStorage {
+) : UserPreferencesStorage {
 
-    private val CURRENT_LANGUAGE = stringPreferencesKey("current_language")
+    private companion object {
+        val CURRENT_LANGUAGE = stringPreferencesKey("current_language")
+        val CURRENT_THEME = stringPreferencesKey("current_theme")
+    }
+
 
     override suspend fun saveLanguagePreference(language: SupportedLanguages) {
         context.dataStore.edit { prefs ->
@@ -36,7 +40,6 @@ class PreferencesStorageImpl @Inject constructor(
     }
 
 
-    private val CURRENT_THEME = stringPreferencesKey("current_theme")
 
     override suspend fun saveThemePreference(theme: SupportedThemes) {
         context.dataStore.edit { prefs ->

@@ -11,29 +11,31 @@ import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(name = "token_preferences")
 
-private object PreferenceKeys {
-    val TOKEN_KEY = stringPreferencesKey("auth_token")
-}
-
 class TokenStorageImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : TokenStorage {
 
+
+    private companion object {
+        val TOKEN_KEY = stringPreferencesKey("auth_token")
+    }
+
+
     override suspend fun saveToken(token: String) {
         context.dataStore.edit { prefs ->
-            prefs[PreferenceKeys.TOKEN_KEY] = token
+            prefs[TOKEN_KEY] = token
         }
     }
 
     override fun getToken(): Flow<String?> {
         return context.dataStore.data.map { prefs ->
-            prefs[PreferenceKeys.TOKEN_KEY]
+            prefs[TOKEN_KEY]
         }
     }
 
     override suspend fun clearToken() {
         context.dataStore.edit { prefs ->
-            prefs.remove(PreferenceKeys.TOKEN_KEY)
+            prefs.remove(TOKEN_KEY)
         }
     }
 }

@@ -15,7 +15,8 @@ import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.LoginRoute
 import nfv.navigation.routes.MedicalInfoRoute
 import nfv.navigation.routes.TermsConditionsRoute
-import nfv.storage.local.domain.PreferencesStorage
+import nfv.storage.local.domain.AppPreferencesStorage
+import nfv.storage.local.domain.UserPreferencesStorage
 import nfv.storage.local.domain.TokenStorage
 import nfv.storage.local.model.SupportedLanguages
 import nfv.storage.local.model.SupportedThemes
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val navigator: Navigator,
     private val tokenStorage: TokenStorage,
-    private val preferencesStorage: PreferencesStorage
+    private val userPreferencesStorage: UserPreferencesStorage,
+    private val appPreferencesStorage: AppPreferencesStorage
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -41,7 +43,7 @@ class ProfileViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            preferencesStorage.getCurrentLanguage().collectLatest {
+            userPreferencesStorage.getCurrentLanguage().collectLatest {
                 uiState.update { old ->
                     old.copy(
                         currentLanguage = it
@@ -50,7 +52,7 @@ class ProfileViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            preferencesStorage.getCurrentTheme().collectLatest {
+            userPreferencesStorage.getCurrentTheme().collectLatest {
                 uiState.update { old ->
                     old.copy(
                         currentTheme = it
@@ -66,13 +68,13 @@ class ProfileViewModel @Inject constructor(
 
             is ProfileEvent.OnLanguageConfirmed -> {
                 viewModelScope.launch {
-                    preferencesStorage.saveLanguagePreference(event.language)
+                    userPreferencesStorage.saveLanguagePreference(event.language)
                 }
             }
 
             is ProfileEvent.OnThemeConfirmed -> {
                 viewModelScope.launch {
-                    preferencesStorage.saveThemePreference(event.theme)
+                    userPreferencesStorage.saveThemePreference(event.theme)
                 }
             }
 
@@ -143,6 +145,8 @@ class ProfileViewModel @Inject constructor(
 
             ProfileEvent.OnLogoutClicked -> {
                 viewModelScope.launch {
+
+                    appPreferencesStorage.updateLoggedInStatus(false)
 
                     tokenStorage.clearToken()
 

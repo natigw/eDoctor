@@ -25,7 +25,7 @@ import nfv.map.presentation.navigation.mapNavigation
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.AuthNavigation
 import nfv.profile.navigation.profileNavigation
-import nfv.storage.local.domain.PreferencesStorage
+import nfv.storage.local.domain.UserPreferencesStorage
 import nfv.storage.local.model.SupportedThemes
 import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.Primary500
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
     lateinit var navigator: Navigator
 
     @Inject
-    lateinit var preferencesStorage: PreferencesStorage
+    lateinit var userPreferencesStorage: UserPreferencesStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            val currentTheme = preferencesStorage.getCurrentTheme().collectAsState(initial = SupportedThemes.DARK)
+            val currentTheme = userPreferencesStorage.getCurrentTheme().collectAsState(initial = SupportedThemes.DARK)
 
             val navController = rememberNavController()
             val systemUiController = rememberSystemUiController()

@@ -8,15 +8,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
+import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.LoginRoute
-import nfv.storage.local.domain.OnBoardStorage
+import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.R
 import javax.inject.Inject
 
 @HiltViewModel
 class OnBoardViewModel @Inject constructor(
     private val navigator: Navigator,
-    private val onboardStorage: OnBoardStorage
+    private val appPreferencesStorage: AppPreferencesStorage
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -44,7 +45,13 @@ class OnBoardViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            onboardStorage.isCompleted().collectLatest {
+            appPreferencesStorage.isLoggedIn().collectLatest {
+                if (it)
+                    navigator.sendCommand {
+                        navigate(route = HomeRoute)
+                    }
+            }
+            appPreferencesStorage.isOnBoardCompleted().collectLatest {
                 if (it)
                     navigator.sendCommand {
                         navigate(route = LoginRoute)
@@ -60,7 +67,7 @@ class OnBoardViewModel @Inject constructor(
                 viewModelScope.launch {
                     if (uiState.value.currentPage == uiState.value.pages.size - 1) {
 
-                        onboardStorage.setCompleted(true)
+                        appPreferencesStorage.setOnBoardCompleted(true)
 
                         navigator.sendCommand {
                             navigate(route = LoginRoute)
@@ -83,7 +90,7 @@ class OnBoardViewModel @Inject constructor(
             OnBoardEvent.OnSkipClicked -> {
                 viewModelScope.launch {
 
-                    onboardStorage.setCompleted(true)
+                    appPreferencesStorage.setOnBoardCompleted(true)
 
                     navigator.sendCommand {
                         navigate(route = LoginRoute)

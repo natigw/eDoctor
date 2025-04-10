@@ -10,13 +10,15 @@ import nfv.auth.domain.repository.AuthRepository
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.RegisterFormRoute
+import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.components.buttons.model.ButtonState
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val navigator: Navigator,
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val appPreferencesStorage: AppPreferencesStorage
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -74,10 +76,13 @@ class LoginViewModel @Inject constructor(
                         )
                     }
 
-                    if (response != null)
+                    if (response != null) {
+                        appPreferencesStorage.updateLoggedInStatus(true)
+
                         navigator.sendCommand {
                             navigate(route = HomeRoute)
                         }
+                    }
                 }
             }
 

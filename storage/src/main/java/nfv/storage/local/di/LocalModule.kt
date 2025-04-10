@@ -4,10 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nfv.storage.local.data.OnBoardStorageImpl
-import nfv.storage.local.data.PreferencesStorageImpl
-import nfv.storage.local.domain.OnBoardStorage
-import nfv.storage.local.domain.PreferencesStorage
+import nfv.storage.local.data.AppPreferencesStorageImpl
+import nfv.storage.local.data.UserPreferencesStorageImpl
+import nfv.storage.local.domain.AppPreferencesStorage
+import nfv.storage.local.domain.UserPreferencesStorage
 import javax.inject.Singleton
 
 @Module
@@ -16,13 +16,13 @@ abstract class LocalModule {
 
     @Binds
     @Singleton
-    abstract fun bindOnBoardStorage(
-        impl: OnBoardStorageImpl
-    ): OnBoardStorage
+    abstract fun bindAppPreferencesStorage(
+        impl: AppPreferencesStorageImpl
+    ): AppPreferencesStorage
 
     @Binds
     @Singleton
-    abstract fun bindPreferencesStorage(
-        impl: PreferencesStorageImpl
-    ): PreferencesStorage
+    abstract fun bindUserPreferencesStorage(
+        impl: UserPreferencesStorageImpl
+    ): UserPreferencesStorage
 }
