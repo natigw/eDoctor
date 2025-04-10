@@ -71,7 +71,7 @@
     <string name="header_medical_info">Medical info</string>    <!-- TODO stringler her modulun ozunde olmalidi yoxsa bele olar?? -->
     <string name="header_change_passcode">Change passcode</string>
     <string name="header_terms_conditions">Terms and Conditions</string>
-    <string name="header_our_team">Our team</string>
+    <string name="header_about">About us</string>
 
     <string name="top_bar_leading_icon">Top bar leading icon</string>
     <string name="top_bar_trailing_icon">Top bar trailing icon</string>

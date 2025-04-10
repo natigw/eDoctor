@@ -64,7 +64,7 @@
     <string name="header_medical_info">Tibbi məlumat</string>
     <string name="header_change_passcode">Şifrəni dəyiş</string>
     <string name="header_terms_conditions">Şərtlər və qaydalar</string>
-    <string name="header_our_team">Komandamız</string>
+    <string name="header_about">Komandamız</string>
 
     <string name="top_bar_leading_icon">Yuxarı panel əsas ikon</string>
     <string name="top_bar_trailing_icon">Yuxarı panel son ikon</string>
