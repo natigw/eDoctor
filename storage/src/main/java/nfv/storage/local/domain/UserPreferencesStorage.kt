@@ -12,4 +12,9 @@ interface UserPreferencesStorage {
     suspend fun saveThemePreference(theme: SupportedThemes)
     fun getCurrentTheme(): Flow<SupportedThemes>
 
+    suspend fun updateBiometricsAllowStatus(allow: Boolean)
+    fun getBiometricsAllowedStatus(): Flow<Boolean>
+
+    suspend fun updateScreenshotsAllowStatus(allow: Boolean)
+    fun getScreenshotsAllowedStatus(): Flow<Boolean>
 }

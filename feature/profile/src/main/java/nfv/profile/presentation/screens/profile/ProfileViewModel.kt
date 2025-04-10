@@ -36,8 +36,8 @@ class ProfileViewModel @Inject constructor(
             profileLink = "",
             currentLanguage = SupportedLanguages.ENGLISH, //TODO -> better way??
             currentTheme = SupportedThemes.LIGHT,
-            allowBiometrics = true, //shared prefden
-            allowScreenshots = true //shared prefden
+            allowBiometrics = true,
+            allowScreenshots = false
         )
     )
 
@@ -56,6 +56,24 @@ class ProfileViewModel @Inject constructor(
                 uiState.update { old ->
                     old.copy(
                         currentTheme = it
+                    )
+                }
+            }
+        }
+        viewModelScope.launch {
+            userPreferencesStorage.getBiometricsAllowedStatus().collectLatest {
+                uiState.update { old ->
+                    old.copy(
+                        allowBiometrics = it
+                    )
+                }
+            }
+        }
+        viewModelScope.launch {
+            userPreferencesStorage.getScreenshotsAllowedStatus().collectLatest {
+                uiState.update { old ->
+                    old.copy(
+                        allowScreenshots = it
                     )
                 }
             }
@@ -107,10 +125,8 @@ class ProfileViewModel @Inject constructor(
                 viewModelScope.launch {
                     //code
 
-                    uiState.update { old ->
-                        old.copy(
-                            allowBiometrics = uiState.value.allowBiometrics.not()
-                        )
+                    viewModelScope.launch {
+                        userPreferencesStorage.updateBiometricsAllowStatus(uiState.value.allowBiometrics.not())
                     }
                 }
             }
@@ -119,10 +135,8 @@ class ProfileViewModel @Inject constructor(
                 viewModelScope.launch {
                     //code
 
-                    uiState.update { old ->
-                        old.copy(
-                            allowScreenshots = uiState.value.allowScreenshots.not()
-                        )
+                    viewModelScope.launch {
+                        userPreferencesStorage.updateScreenshotsAllowStatus(uiState.value.allowScreenshots.not())
                     }
                 }
             }

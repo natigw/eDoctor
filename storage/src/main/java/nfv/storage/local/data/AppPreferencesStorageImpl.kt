@@ -24,6 +24,7 @@ class AppPreferencesStorageImpl @Inject constructor(
         val ONBOARD_COMPLETED = booleanPreferencesKey("onboard_completed")
         val LOGGED_IN = booleanPreferencesKey("user_logged_in")
         val USER_FULLNAME = stringPreferencesKey("user_full_name")
+        val USERNAME = stringPreferencesKey("username")
     }
 
 
@@ -32,7 +33,6 @@ class AppPreferencesStorageImpl @Inject constructor(
             prefs[ONBOARD_COMPLETED] = completed
         }
     }
-
     override fun isOnBoardCompleted(): Flow<Boolean> {
         return context.dataStore.data.map { prefs ->
             prefs[ONBOARD_COMPLETED] ?: false
@@ -45,7 +45,6 @@ class AppPreferencesStorageImpl @Inject constructor(
             prefs[LOGGED_IN] = isLoggedIn
         }
     }
-
     override fun isLoggedIn(): Flow<Boolean> {
         return context.dataStore.data.map { prefs ->
             prefs[LOGGED_IN] ?: false
@@ -58,10 +57,21 @@ class AppPreferencesStorageImpl @Inject constructor(
             prefs[USER_FULLNAME] = fullName
         }
     }
-
     override fun getUserFullName(): Flow<String?> {
         return context.dataStore.data.map { prefs ->
             prefs[USER_FULLNAME]
+        }
+    }
+
+
+    override suspend fun setUsername(username: String) {
+        context.dataStore.edit { prefs ->
+            prefs[USERNAME] = username
+        }
+    }
+    override fun getUsername(): Flow<String?> {
+        return context.dataStore.data.map { prefs ->
+            prefs[USERNAME]
         }
     }
 }

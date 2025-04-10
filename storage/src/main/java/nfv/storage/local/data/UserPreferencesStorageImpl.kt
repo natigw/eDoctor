@@ -1,6 +1,7 @@
 package nfv.storage.local.data
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -23,6 +24,8 @@ class UserPreferencesStorageImpl @Inject constructor(
     private companion object {
         val CURRENT_LANGUAGE = stringPreferencesKey("current_language")
         val CURRENT_THEME = stringPreferencesKey("current_theme")
+        val ALLOW_BIOMETRICS = booleanPreferencesKey("allow_biometrics")
+        val ALLOW_SCREENSHOTS = booleanPreferencesKey("allow_screenshots")
     }
 
 
@@ -31,7 +34,6 @@ class UserPreferencesStorageImpl @Inject constructor(
             prefs[CURRENT_LANGUAGE] = language.name
         }
     }
-
     override fun getCurrentLanguage(): Flow<SupportedLanguages> {
         return context.dataStore.data.map { prefs ->
             val languageName = prefs[CURRENT_LANGUAGE] ?: SupportedLanguages.ENGLISH.name
@@ -40,17 +42,39 @@ class UserPreferencesStorageImpl @Inject constructor(
     }
 
 
-
     override suspend fun saveThemePreference(theme: SupportedThemes) {
         context.dataStore.edit { prefs ->
             prefs[CURRENT_THEME] = theme.name
         }
     }
-
     override fun getCurrentTheme(): Flow<SupportedThemes> {
         return context.dataStore.data.map { prefs ->
             val themeName = prefs[CURRENT_THEME] ?: SupportedThemes.LIGHT.name
             SupportedThemes.valueOf(themeName)
+        }
+    }
+
+
+    override suspend fun updateBiometricsAllowStatus(allow: Boolean) {
+        context.dataStore.edit { prefs ->
+            prefs[ALLOW_BIOMETRICS] = allow
+        }
+    }
+    override fun getBiometricsAllowedStatus(): Flow<Boolean> {
+        return context.dataStore.data.map { prefs ->
+            prefs[ALLOW_BIOMETRICS] ?: true
+        }
+    }
+
+
+    override suspend fun updateScreenshotsAllowStatus(allow: Boolean) {
+        context.dataStore.edit { prefs ->
+            prefs[ALLOW_SCREENSHOTS] = allow
+        }
+    }
+    override fun getScreenshotsAllowedStatus(): Flow<Boolean> {
+        return context.dataStore.data.map { prefs ->
+            prefs[ALLOW_SCREENSHOTS] ?: false
         }
     }
 }

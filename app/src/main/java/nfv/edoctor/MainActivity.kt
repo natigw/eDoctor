@@ -1,6 +1,7 @@
 package nfv.edoctor
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
+            val allowScreenShots = userPreferencesStorage.getScreenshotsAllowedStatus().collectAsState(initial = false)
             val currentTheme = userPreferencesStorage.getCurrentTheme().collectAsState(initial = SupportedThemes.DARK)
 
             val navController = rememberNavController()
@@ -53,6 +55,16 @@ class MainActivity : ComponentActivity() {
 
             val systemBarsColor = Primary500
             val navHostBackgroundColor = MaterialTheme.colorScheme.background
+
+            LaunchedEffect(allowScreenShots.value) {
+                if (!allowScreenShots.value)
+                    window.setFlags(
+                        WindowManager.LayoutParams.FLAG_SECURE,
+                        WindowManager.LayoutParams.FLAG_SECURE
+                    )
+                else
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            }
 
             LaunchedEffect(Unit) {
                 navigator.observe(this) { onCommand ->
