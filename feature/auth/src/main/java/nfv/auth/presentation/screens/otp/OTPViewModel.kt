@@ -1,5 +1,6 @@
 package nfv.auth.presentation.screens.otp
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +14,6 @@ import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.RegisterCompletionRoute
 import nfv.ui_kit.components.buttons.model.ButtonState
-import nfv.ui_kit.components.inputFields.PasswordStrength
 import javax.inject.Inject
 
 @HiltViewModel
@@ -82,10 +82,11 @@ class OTPViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun startTimerFlow() {
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
-            (6 downTo 0).asFlow().collect { seconds ->
+            (59 downTo 0).asFlow().collect { seconds ->
                 uiState.update { old ->
                     old.copy(timer = String.format("00:%02d", seconds))
                 }

@@ -119,12 +119,17 @@ class RegisterFormViewModel @Inject constructor(
                         )
                     }
 
-                    if (response != null)
+                    if (response != null) {
                         appPreferencesStorage.setUserFullName(fullName = uiState.value.fullNameText)
-                        appPreferencesStorage.setUsername(username = uiState.value.fullNameText.substringBefore(" "))
+                        appPreferencesStorage.setUsername(
+                            username = uiState.value.fullNameText.substringBefore(
+                                " "
+                            )
+                        )
                         navigator.sendCommand {
                             navigate(route = RegisterFormMedicalRoute(uiState.value.emailText))
                         }
+                    }
                 }
             }
 
