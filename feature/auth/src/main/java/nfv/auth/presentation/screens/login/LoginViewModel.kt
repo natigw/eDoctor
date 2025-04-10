@@ -10,7 +10,6 @@ import nfv.auth.domain.repository.AuthRepository
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.RegisterFormRoute
-import nfv.navigation.routes.RegisterRoute
 import nfv.ui_kit.components.buttons.model.ButtonState
 import javax.inject.Inject
 
@@ -52,14 +51,7 @@ class LoginViewModel @Inject constructor(
             }
 
             LoginEvent.OnForgotPasswordClicked -> {
-                viewModelScope.launch {
-                    navigator.sendCommand {
-
-//                        repository.registerWithEmail()
-
-//                        navigate(route = )   //TODO -> bu ekrana getsin
-                    }
-                }
+                //
             }
 
             is LoginEvent.OnLoginButtonClicked -> {
@@ -105,6 +97,7 @@ class LoginViewModel @Inject constructor(
 
             LoginEvent.OnNavigateBack -> {
                 viewModelScope.launch {
+
                     navigator.sendCommand {
                         this.popBackStack()
                     }

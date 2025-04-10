@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":navigation"))
     implementation(project(":network"))
+    implementation(project(":storage"))
     implementation(project(":ui_kit"))
 
     // Navigation

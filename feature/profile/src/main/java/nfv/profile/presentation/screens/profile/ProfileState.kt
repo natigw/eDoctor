@@ -1,7 +1,7 @@
 package nfv.profile.presentation.screens.profile
 
-import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
-import nfv.profile.presentation.screens.changeTheme.model.SupportedThemes
+import nfv.storage.local.model.SupportedLanguages
+import nfv.storage.local.model.SupportedThemes
 
 data class ProfileState(
     val userFullName: String,

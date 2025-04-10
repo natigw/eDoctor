@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.NavHost
@@ -23,8 +24,9 @@ import nfv.home.navigation.homeNavigation
 import nfv.map.presentation.navigation.mapNavigation
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.AuthNavigation
-import nfv.navigation.routes.HomeNavigation
 import nfv.profile.navigation.profileNavigation
+import nfv.storage.local.domain.PreferencesStorage
+import nfv.storage.local.model.SupportedThemes
 import nfv.ui_kit.theme.EDoctorTheme
 import nfv.ui_kit.theme.Primary500
 import javax.inject.Inject
@@ -35,11 +37,16 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var navigator: Navigator
 
+    @Inject
+    lateinit var preferencesStorage: PreferencesStorage
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
         setContent {
+
+            val currentTheme = preferencesStorage.getCurrentTheme().collectAsState(initial = SupportedThemes.DARK)
 
             val navController = rememberNavController()
             val systemUiController = rememberSystemUiController()
@@ -57,7 +64,7 @@ class MainActivity : ComponentActivity() {
                 systemUiController.setSystemBarsColor(color = systemBarsColor)
             }
 
-            EDoctorTheme(darkTheme = false) {
+            EDoctorTheme(darkTheme = currentTheme.value == SupportedThemes.DARK) {
 
                 val focusManager = LocalFocusManager.current
                 NavHost(
@@ -72,7 +79,7 @@ class MainActivity : ComponentActivity() {
                             }
                         ),
                     navController = navController,
-                    startDestination = HomeNavigation
+                    startDestination = AuthNavigation
                 ) {
                     authNavigation()
                     homeNavigation()

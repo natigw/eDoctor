@@ -38,11 +38,11 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.svg.SvgDecoder
-import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
 import nfv.ui_kit.components.buttons.square.ActiveButton
 import nfv.ui_kit.components.radioButton.RadioButton
+import nfv.storage.local.model.SupportedLanguages
 import nfv.ui_kit.theme.EDoctorTypography
 import nfv.ui_kit.R.drawable as drawableR
 

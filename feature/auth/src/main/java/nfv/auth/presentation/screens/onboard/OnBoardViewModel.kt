@@ -4,16 +4,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.LoginRoute
+import nfv.storage.local.domain.OnBoardStorage
 import nfv.ui_kit.R
 import javax.inject.Inject
 
 @HiltViewModel
 class OnBoardViewModel @Inject constructor(
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val onboardStorage: OnBoardStorage
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -39,22 +42,36 @@ class OnBoardViewModel @Inject constructor(
         )
     )
 
+    init {
+        viewModelScope.launch {
+            onboardStorage.isCompleted().collectLatest {
+                if (it)
+                    navigator.sendCommand {
+                        navigate(route = LoginRoute)
+                    }
+            }
+        }
+    }
+
     fun handleEvent(event: OnBoardEvent) {
         when (event) {
 
             OnBoardEvent.OnNextClicked -> {
                 viewModelScope.launch {
                     if (uiState.value.currentPage == uiState.value.pages.size - 1) {
+
+                        onboardStorage.setCompleted(true)
+
                         navigator.sendCommand {
                             navigate(route = LoginRoute)
                         }
+
                         uiState.update { old ->
                             old.copy(
                                 currentPage = 0
                             )
                         }
-                    }
-                    else
+                    } else
                         uiState.update { old ->
                             old.copy(
                                 currentPage = uiState.value.currentPage + 1
@@ -65,6 +82,9 @@ class OnBoardViewModel @Inject constructor(
 
             OnBoardEvent.OnSkipClicked -> {
                 viewModelScope.launch {
+
+                    onboardStorage.setCompleted(true)
+
                     navigator.sendCommand {
                         navigate(route = LoginRoute)
                     }

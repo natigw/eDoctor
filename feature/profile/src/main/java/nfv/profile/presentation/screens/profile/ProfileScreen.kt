@@ -49,9 +49,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import nfv.profile.presentation.screens.changeLanguage.ChangeLanguageDialog
-import nfv.profile.presentation.screens.changeLanguage.model.SupportedLanguages
-import nfv.profile.presentation.screens.changeTheme.model.SupportedThemes
-import nfv.profile.presentation.screens.changeTheme.presentation.ChangeThemeDialog
+import nfv.profile.presentation.screens.changeTheme.ChangeThemeDialog
+import nfv.storage.local.model.SupportedLanguages
+import nfv.storage.local.model.SupportedThemes
 import nfv.ui_kit.R
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.buttons.model.ButtonTypes
@@ -533,7 +533,7 @@ private fun ProfileScreenPrev() {
             userFullName = "",
             profileLink = "",
             currentLanguage = SupportedLanguages.ENGLISH,
-            currentTheme = SupportedThemes.DARK,
+            currentTheme = SupportedThemes.LIGHT,
             allowBiometrics = true,
             allowScreenshots = true
         ),

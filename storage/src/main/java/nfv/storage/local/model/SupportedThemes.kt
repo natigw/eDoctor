@@ -1,4 +1,4 @@
-package nfv.profile.presentation.screens.changeTheme.model
+package nfv.storage.local.model
 
 enum class SupportedThemes(val displayName: String) {
     LIGHT("Light"),//stringResource(stringR.light)),  //TODO -> bunu nece edimki stringresource-dan gotursun

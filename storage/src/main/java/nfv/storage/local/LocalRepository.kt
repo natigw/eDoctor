@@ -14,7 +14,6 @@ class LocalRepository(
 
     private companion object {
         val USERNAME = stringPreferencesKey("username")
-        val ONBOARD_COMPLETED = booleanPreferencesKey("onboard_completed")
     }
 
     val getUsername : Flow<String?> = dataStore.data.map { preferences ->
@@ -24,16 +23,6 @@ class LocalRepository(
     suspend fun updateUsername(username: String) {
         dataStore.edit { preferences ->
             preferences[USERNAME] = username
-        }
-    }
-
-    val isOnboardCompleted : Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[ONBOARD_COMPLETED] ?: false
-    }
-
-    suspend fun completeOnBoard() {
-        dataStore.edit { preferences ->
-            preferences[ONBOARD_COMPLETED] = true
         }
     }
 }

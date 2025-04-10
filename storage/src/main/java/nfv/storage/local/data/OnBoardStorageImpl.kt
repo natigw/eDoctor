@@ -7,18 +7,18 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import nfv.storage.local.domain.OnBoardingStorage
+import nfv.storage.local.domain.OnBoardStorage
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val Context.dataStore by preferencesDataStore(name = "app_preferences")
+private val Context.dataStore by preferencesDataStore(name = "onboard_preferences")
 
 @Singleton
-class OnBoardingStorageImpl @Inject constructor(
+class OnBoardStorageImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) : OnBoardingStorage {
+) : OnBoardStorage {
 
-    private val ONBOARD_COMPLETED = booleanPreferencesKey("on_board_completed")
+    private val ONBOARD_COMPLETED = booleanPreferencesKey("onboard_completed")
 
     override suspend fun setCompleted(completed: Boolean) {
         context.dataStore.edit { prefs ->

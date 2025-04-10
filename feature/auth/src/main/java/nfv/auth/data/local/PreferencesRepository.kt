@@ -4,9 +4,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import nfv.storage.local.model.SupportedLanguages
 
 class PreferencesRepository(
     private val dataStore: DataStore<Preferences>
@@ -28,8 +28,3 @@ class PreferencesRepository(
 
 }
 
-enum class SupportedLanguages(val inNative: String) {
-    ENGLISH("English"),          //0
-    AZERBAIJANI("Azərbaycanca"), //1
-    RUSSIAN("Русский")           //2
-}

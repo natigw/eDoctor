@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 import nfv.storage.local.domain.TokenStorage
 import javax.inject.Inject
 
-private val Context.dataStore by preferencesDataStore(name = "user_prefs")
+private val Context.dataStore by preferencesDataStore(name = "token_preferences")
 
 private object PreferenceKeys {
     val TOKEN_KEY = stringPreferencesKey("auth_token")
