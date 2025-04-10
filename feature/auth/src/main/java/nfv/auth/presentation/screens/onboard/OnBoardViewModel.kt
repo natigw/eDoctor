@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HomeRoute
+import nfv.navigation.routes.LockRoute
 import nfv.navigation.routes.LoginRoute
 import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.R
@@ -45,11 +46,24 @@ class OnBoardViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            appPreferencesStorage.isLoggedIn().collectLatest {
-                if (it)
-                    navigator.sendCommand {
-                        navigate(route = HomeRoute)
+            appPreferencesStorage.isLoggedIn().collectLatest { isLoggedIn ->
+                appPreferencesStorage.getPasscode().collectLatest { passcode ->
+                    if (isLoggedIn) {
+                        if (passcode == null) {
+                            navigator.sendCommand {
+                                navigate(route = HomeRoute)
+                            }
+                        } else {
+                            navigator.sendCommand {
+                                navigate(route = LockRoute)
+                            }
+                        }
+                    } else {
+                        navigator.sendCommand {
+                            navigate(route = LoginRoute)
+                        }
                     }
+                }
             }
             appPreferencesStorage.isOnBoardCompleted().collectLatest {
                 if (it)

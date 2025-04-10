@@ -6,6 +6,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import nfv.auth.presentation.screens.lock.LockScreen
+import nfv.auth.presentation.screens.lock.LockViewModel
 import nfv.auth.presentation.screens.login.LoginScreen
 import nfv.auth.presentation.screens.login.LoginViewModel
 import nfv.auth.presentation.screens.onboard.OnBoardScreen
@@ -21,6 +23,7 @@ import nfv.auth.presentation.screens.registerForm.RegisterFormViewModel
 import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalScreen
 import nfv.auth.presentation.screens.registerFormMedical.RegisterFormMedicalViewModel
 import nfv.navigation.routes.AuthNavigation
+import nfv.navigation.routes.LockRoute
 import nfv.navigation.routes.LoginRoute
 import nfv.navigation.routes.OnBoardRoute
 import nfv.navigation.routes.RegisterCompletionRoute
@@ -104,5 +107,14 @@ fun NavGraphBuilder.authNavigation() {
             )
         }
 
+        composable<LockRoute> {
+            val viewModel = hiltViewModel<LockViewModel>()
+            val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LockScreen(
+                state = state,
+                onUiEvent = viewModel::handleEvent
+            )
+        }
     }
 }

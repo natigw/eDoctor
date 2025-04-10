@@ -8,6 +8,7 @@ sealed interface ChangePasscodeEvent {
     data class OnDirectionTextColorUpdated(val newColor: Color): ChangePasscodeEvent
     data class OnPinListChanged(val newValue: List<Int>): ChangePasscodeEvent
     data class OnNewPinCodeUpdated(val newPin: List<Int>?): ChangePasscodeEvent
+    data class OnPinCodeSet(val newPin: List<Int>): ChangePasscodeEvent
 
     data object OnNavigateBack: ChangePasscodeEvent
 }

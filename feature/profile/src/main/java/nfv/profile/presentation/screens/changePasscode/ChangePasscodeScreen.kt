@@ -117,7 +117,8 @@ fun ChangePasscodeScreen(
                                             Success500
                                         )
                                     )   //TODO -> Material resource et
-                                    delay(1000)
+                                    delay(719)
+                                    onUiEvent(ChangePasscodeEvent.OnPinCodeSet(it))
                                 }
                             }
                         }

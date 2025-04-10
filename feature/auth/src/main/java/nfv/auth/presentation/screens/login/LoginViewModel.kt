@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import nfv.auth.domain.repository.AuthRepository
 import nfv.navigation.di.Navigator
 import nfv.navigation.routes.HomeRoute
+import nfv.navigation.routes.LockRoute
 import nfv.navigation.routes.RegisterFormRoute
 import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.components.buttons.model.ButtonState
@@ -28,6 +29,15 @@ class LoginViewModel @Inject constructor(
             loginButtonState = ButtonState.DISABLED
         )
     )
+
+    var passcode: List<Int>? = emptyList()
+    init {
+        viewModelScope.launch {
+            appPreferencesStorage.getPasscode().collect {
+                passcode = it
+            }
+        }
+    }
 
     fun handleEvent(event: LoginEvent) {
         when (event) {
@@ -80,7 +90,7 @@ class LoginViewModel @Inject constructor(
                         appPreferencesStorage.updateLoggedInStatus(true)
 
                         navigator.sendCommand {
-                            navigate(route = HomeRoute)
+                            navigate(route = if (passcode == null) HomeRoute else LockRoute)
                         }
                     }
                 }

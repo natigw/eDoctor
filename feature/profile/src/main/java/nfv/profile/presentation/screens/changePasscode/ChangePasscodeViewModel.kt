@@ -7,12 +7,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nfv.navigation.di.Navigator
+import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.theme.Typography900
 import javax.inject.Inject
 
 @HiltViewModel
 class ChangePasscodeViewModel @Inject constructor(
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val appPreferencesStorage: AppPreferencesStorage
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(
@@ -68,6 +70,15 @@ class ChangePasscodeViewModel @Inject constructor(
                 }
             }
 
+            is ChangePasscodeEvent.OnPinCodeSet -> {
+                viewModelScope.launch {
+                    appPreferencesStorage.updatePasscode(event.newPin)
+                    navigator.sendCommand {
+                        popBackStack()
+                    }
+                }
+            }
+
             ChangePasscodeEvent.OnNavigateBack -> {
                 viewModelScope.launch {
                     navigator.sendCommand {
@@ -77,5 +88,4 @@ class ChangePasscodeViewModel @Inject constructor(
             }
         }
     }
-
 }

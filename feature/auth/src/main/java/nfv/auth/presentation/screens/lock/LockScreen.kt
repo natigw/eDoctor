@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,12 +42,16 @@ import nfv.ui_kit.theme.Primary300
 import nfv.ui_kit.R.drawable as drawableR
 
 @Composable
-fun LockScreen() {
+fun LockScreen(
+    state: LockState,
+    onUiEvent: (LockEvent) -> Unit
+) {
 
     val context = LocalContext.current
 
     Column(
         modifier = Modifier
+            .systemBarsPadding()
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -71,17 +76,17 @@ fun LockScreen() {
             contentScale = ContentScale.Crop
         )
         Text(
-            text = "Username", //TODO -> backendden
+            text = state.username,
             style = EDoctorTypography.titleMedium.copy(fontWeight = FontWeight.Bold)
         )
         Spacer(Modifier.weight(1f))
 
-        val pinList by remember { mutableStateOf(listOf<Int>()) }
-
         PasscodeKeypadSection(
             keypadAuxiliaryButton = KeypadAuxiliaryButton.FINGERPRINT,
-            pinList = pinList,
-            onPinChange = {}
+            pinList = state.pinList,
+            onPinChange = {
+                onUiEvent(LockEvent.OnPinCodeChanged(it))
+            }
         )
 
         Spacer(Modifier.height(0.dp))
@@ -90,7 +95,7 @@ fun LockScreen() {
             textEnabled = "Forgot your PIN code?",
             state = ButtonState.ENABLED,
             onClick = {
-
+                onUiEvent(LockEvent.OnForgotPinClicked)
             }
         )
         Spacer(Modifier.height(16.dp))
@@ -100,5 +105,11 @@ fun LockScreen() {
 @Preview
 @Composable
 private fun LockScreenPrev() {
-    LockScreen()
+    LockScreen(
+        state = LockState(
+            username = "Username",
+            pinList = emptyList()
+        ),
+        onUiEvent = {}
+    )
 }
