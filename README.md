@@ -7,12 +7,13 @@
 ## 📱 Technologies used
 
 - 🩺 Intuitive user interface for medical history and interactions
-- 📄 Strict abstraction and maintainability with multi-modular design
+- 📦 Strict abstraction and maintainability with multi-modular design
 - 🔐 Secure and optimized Android app architecture (MVI)
 - 🧠 ViewModel-powered logic separation
-- 📦 Modern dependency injection using Hilt
+- 💉 Modern dependency injection using Hilt
 - 🌐 Multilingual support with runtime locale switching
 - 🧪 Test-ready codebase with jUnit and Instrumented tests
+- 📄 MobSF static codebase analysis
 - Backend built with Ktor and deployed in AWS Cloud for easy remote access: **http://13.49.0.170:8080/docs**
 
 ---
