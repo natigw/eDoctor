@@ -7,15 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nfv.auth.domain.repository.AuthRepository
 import nfv.auth.domain.usecase.EmailValidatorUseCase
 import nfv.auth.domain.usecase.PasswordStrengthCheckerUseCase
 import nfv.navigation.di.Navigator
-import nfv.navigation.routes.HomeRoute
 import nfv.navigation.routes.LoginRoute
-import nfv.navigation.routes.OnBoardRoute
 import nfv.navigation.routes.RegisterFormMedicalRoute
-import nfv.storage.local.data.AppPreferencesStorageImpl
 import nfv.storage.local.domain.AppPreferencesStorage
 import nfv.ui_kit.components.buttons.model.ButtonState
 import nfv.ui_kit.components.inputFields.PasswordStrength
