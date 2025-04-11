@@ -104,6 +104,8 @@ Contributions are welcome! Please follow these steps:
 - [Vusat Orujov](https://github.com/kematian05)
 - [Farid Guliyev](https://github.com/faridGuliyew)
 
+---
+
 ## Screenshots from eDoctor
 <table>
   <tr>
@@ -139,3 +141,13 @@ Contributions are welcome! Please follow these steps:
     <td><img src="https://github.com/user-attachments/assets/5a4f2c5f-bbb5-4768-a7de-adf8d18f0b44" width="200"/></td>
     <td><img src="https://github.com/user-attachments/assets/241d03d5-dcbf-46f7-bbbf-45704110bced" width="200"/></td>
   </tr>
+</table>
+
+
+---
+
+## 👨‍💻 Authors
+
+- [Natig Mammadov](https://github.com/natigw)
+- [Vusat Orujov](https://github.com/kematian05)
+- [Farid Guliyev](https://github.com/faridGuliyew)
