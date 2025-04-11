@@ -1,6 +1,6 @@
-# eDoctor
+# eDoctor - your health assistant
 
-**eDoctor** is a modern Android application designed to simplify and enhance doctor-patient interactions. Built with Kotlin and following clean architecture principles, eDoctor supports dynamic localization, secure data handling, and smooth user experience using Jetpack components and dependency injection via Hilt.
+**eDoctor** is a modern Android application designed to simplify and enhance patient interactions. Built with Kotlin and following clean architecture principles, eDoctor supports dynamic localization, secure data handling, and smooth user experience using Jetpack components and dependency injection via Hilt, and more.
 
 ---
 
@@ -16,29 +16,15 @@
 
 ---
 
-## 🛠 Tech Stack
-
-| Layer             | Technology        |
-|------------------|-------------------|
-| Language          | Kotlin            |
-| Architecture      | MVVM              |
-| DI Framework      | Hilt              |
-| Android Components| Jetpack (ViewModel, LiveData, etc.) |
-| Build System      | Gradle Kotlin DSL |
-| Localization      | Custom LocaleHelper |
-| Testing (Planned) | JUnit, Espresso   |
-
----
-
-## 🚀 Getting Started
+## How to run eDoctor?
 
 Follow these instructions to set up the project locally.
 
 ### Prerequisites
 
-- Android Studio Hedgehog (2023.1) or newer
-- Android SDK 33+
-- JDK 17
+- Android Studio (2023.1 or newer)
+- Android SDK 29+
+- JDK 17+
 - Gradle 8.x
 - Internet connection to sync dependencies
 
@@ -46,12 +32,12 @@ Follow these instructions to set up the project locally.
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/eDoctor.git
+   git clone https://github.com/natigw/eDoctor.git
    ```
 
 2. **Open the project in Android Studio**
 
-3. **Add local API keys (if required)**  
+3. **Add local API keys**  
    Create a file named `apikeys.properties` inside the `eDoctor` module directory:
    ```properties
    API_KEY=your_api_key_here
@@ -63,46 +49,16 @@ Follow these instructions to set up the project locally.
 5. **Build and Run**  
    Choose a device or emulator and run the project.
 
----
-
-## 🔐 Environment Variables
-
-The following environment variables are required:
-
-| Variable   | Description        |
-|------------|--------------------|
-| API_KEY    | Your backend/API key (if used) |
-
 Make sure your `apikeys.properties` file is excluded from version control, as defined in `.gitignore`.
 
 ---
 
-## 🧪 Testing (Coming Soon)
+## 🧪 Testing
 
 The app is structured for future integration with:
 
 - **Unit Testing:** `JUnit4`, `Mockito`
 - **UI Testing:** `Espresso`, `UI Automator`
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/my-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/my-feature`)
-5. Open a pull request
-
----
-
-## 👨‍💻 Authors
-
-- [Natig Mammadov](https://github.com/natigw)
-- [Vusat Orujov](https://github.com/kematian05)
-- [Farid Guliyev](https://github.com/faridGuliyew)
 
 ---
 
@@ -142,7 +98,6 @@ Contributions are welcome! Please follow these steps:
     <td><img src="https://github.com/user-attachments/assets/241d03d5-dcbf-46f7-bbbf-45704110bced" width="200"/></td>
   </tr>
 </table>
-
 
 ---
 
