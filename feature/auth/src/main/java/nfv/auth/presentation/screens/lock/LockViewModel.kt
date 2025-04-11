@@ -28,7 +28,6 @@ class LockViewModel @Inject constructor(
 
     var userPasscode: List<Int>? = emptyList()
 
-
     init {
         viewModelScope.launch {
             appPreferencesStorage.getUsername().collect {

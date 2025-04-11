@@ -50,7 +50,7 @@ class RegisterFormViewModel @Inject constructor(
             uiState.collectLatest {
                 isFormValid = it.fullNameText.isNotBlank() &&
                         it.emailText.isNotBlank() &&
-                        emailValidatorUseCase.execute(it.emailText).not() &&
+                        emailValidatorUseCase.execute(it.emailText) &&
                         it.passwordText.isNotBlank() &&
                         it.confirmPasswordText.isNotBlank() &&
                         it.arePasswordsIncompatible.not() &&
