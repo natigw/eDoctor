@@ -98,14 +98,18 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-
 ## Screenshots from eDoctor
 <table>
   <tr>
+   ## Auth Flow
     <td><img src="https://github.com/user-attachments/assets/93553baf-9b5f-44b1-b855-3cdd887cb42a" width="200"/></td>
     <td><img src="https://github.com/user-attachments/assets/20c5e7dc-dc9a-4233-b804-316986e39b3b" width="200"/></td>
-    <td><img src="https://github.com/user-attachments/assets/bdaa7f53-49a9-4afd-ba17-6934842de7b1" width="200"/></td>
-    <td><img src="https://github.com/user-attachments/assets/c45fec1d-cdd4-4192-8769-c14671c60222" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/a1838067-f28d-4844-af9a-755687c36803" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/9418ece7-d002-4914-b809-45fd4b4c8741" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/b79d949c-ccf9-4f88-a5da-851ce7b734be" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/9f2a4e05-6f07-4faa-839b-193487692d89" width="200"/></td>
   </tr>
   <tr>
     <td><img src="https://github.com/user-attachments/assets/985fda55-4072-4525-ae1a-df57d5b5f3ae" width="200"/></td>
