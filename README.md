@@ -98,11 +98,21 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
+## Screenshots from eDoctor
+<table>
+  <tr>
+    <td>img src="![OnBoard](https://github.com/user-attachments/assets/93553baf-9b5f-44b1-b855-3cdd887cb42a)" width="200"</td>
+    <td><img src="![LoginScreen](https://github.com/user-attachments/assets/20c5e7dc-dc9a-4233-b804-316986e39b3b)" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/bdaa7f53-49a9-4afd-ba17-6934842de7b1" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/c45fec1d-cdd4-4192-8769-c14671c60222" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/985fda55-4072-4525-ae1a-df57d5b5f3ae" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/e56b5d26-46eb-4203-be80-f382cd68d3c7" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/9639f402-fe29-4978-9f31-8ae16c991311" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/e9716de2-8512-4156-bc1b-ef8a30ef083b" width="200"/></td>
+  </tr>
 
 ## 👨‍💻 Authors
 
