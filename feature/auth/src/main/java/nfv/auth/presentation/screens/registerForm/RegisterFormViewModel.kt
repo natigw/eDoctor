@@ -46,7 +46,7 @@ class RegisterFormViewModel @Inject constructor(
             uiState.collectLatest {
                 isFormValid = it.fullNameText.isNotBlank() &&
                         it.emailText.isNotBlank() &&
-                        emailValidatorUseCase.execute(it.emailText) &&
+//                        emailValidatorUseCase.execute(it.emailText) &&
                         it.passwordText.isNotBlank() &&
                         it.confirmPasswordText.isNotBlank() &&
                         it.arePasswordsIncompatible.not() &&
@@ -104,6 +104,7 @@ class RegisterFormViewModel @Inject constructor(
                             emailHelperText = "*invalid email"
                         )
                     }
+                    return
                 } else
                     uiState.update {
                         it.copy(
