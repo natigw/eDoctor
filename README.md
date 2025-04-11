@@ -102,8 +102,8 @@ Contributions are welcome! Please follow these steps:
 ## Screenshots from eDoctor
 <table>
   <tr>
-    <td>img src="![OnBoard](https://github.com/user-attachments/assets/93553baf-9b5f-44b1-b855-3cdd887cb42a)" width="200"</td>
-    <td><img src="![LoginScreen](https://github.com/user-attachments/assets/20c5e7dc-dc9a-4233-b804-316986e39b3b)" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/93553baf-9b5f-44b1-b855-3cdd887cb42a" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/20c5e7dc-dc9a-4233-b804-316986e39b3b" width="200"/></td>
     <td><img src="https://github.com/user-attachments/assets/bdaa7f53-49a9-4afd-ba17-6934842de7b1" width="200"/></td>
     <td><img src="https://github.com/user-attachments/assets/c45fec1d-cdd4-4192-8769-c14671c60222" width="200"/></td>
   </tr>
