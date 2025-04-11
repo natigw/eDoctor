@@ -38,7 +38,7 @@ Follow these instructions to set up the project locally.
 2. **Open the project in Android Studio**
 
 3. **Add local API keys**  
-   Create a file named `apikeys.properties` inside the `eDoctor` module directory:
+   Create a file named `apikeys.properties` inside the `eDoctor` module directory and put your Google Maps API key:
    ```properties
    API_KEY=your_api_key_here
    ```
