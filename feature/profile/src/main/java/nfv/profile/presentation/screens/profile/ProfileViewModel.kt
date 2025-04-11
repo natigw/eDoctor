@@ -1,5 +1,7 @@
 package nfv.profile.presentation.screens.profile
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -105,6 +107,7 @@ class ProfileViewModel @Inject constructor(
 
             is ProfileEvent.OnLanguageConfirmed -> {
                 viewModelScope.launch {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(event.language.locale))
                     userPreferencesStorage.saveLanguagePreference(event.language)
                 }
             }

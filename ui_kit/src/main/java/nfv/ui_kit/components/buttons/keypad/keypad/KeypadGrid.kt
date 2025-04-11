@@ -25,7 +25,7 @@ fun PasscodeKeypadSection(
 
     val maxPinLength = 4
 
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
