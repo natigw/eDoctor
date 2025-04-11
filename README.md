@@ -14,7 +14,10 @@
 - 🌐 Multilingual support with runtime locale switching
 - 🧪 Test-ready codebase with Ktor
 
+- Backend built with Ktor and deployed in AWS Cloud for easy remote access: ***http://13.49.0.170:8080/docs***
+
 ---
+
 
 ## ▶️ How to run eDoctor?
 
