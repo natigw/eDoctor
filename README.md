@@ -1,6 +1,6 @@
 # eDoctor - your health assistant
 
-**eDoctor** is a modern Android application designed to simplify and enhance patient interactions. / Built with Kotlin and following clean architecture principles, eDoctor supports dynamic localization, secure data handling, and smooth user experience using Jetpack components and dependency injection via Hilt, and more.
+**eDoctor** is a modern Android application designed to simplify and enhance patient interactions. /Built with Kotlin and following clean architecture principles, eDoctor supports dynamic localization, secure data handling, and smooth user experience using Jetpack components and dependency\ injection via Hilt, and more.
 
 ---
 
